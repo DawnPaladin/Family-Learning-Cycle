@@ -14,6 +14,19 @@ var orphanage = new fabric.Rect({
 	selectable: false,
 });
 canvas.add(orphanage);
+fabric.Image.fromURL('img/cycle-btn.png', function(loadedImage) {
+	canvas.add(loadedImage);
+}, {
+	selectable: true,
+	left: 400,
+	top: 450,
+	hoverCursor: "pointer",
+	hasControls: false,
+	hasBorders: false,
+	lockMovementX: true,
+	lockMovementY: true,
+	name: "cycle-btn",
+});
 
 function setupPlatform(image) {
 	canvas.add(image); 
@@ -108,22 +121,24 @@ canvas.on('object:modified', dropToken);
 
 function dropToken(options){
 	var draggedToken = options.target;
-	var foundADock = false; // more predictable behavior if a token overlaps two platforms
-	for (var i = 0; i < platformRegistry.platformCount; i++) {
-		var platformIndex = "platform" + i;
-		platformRegistry[platformIndex].residents.remove(draggedToken.index); // remove token from residence in each platform
-		if (!foundADock && draggedToken.intersectsWithObject(platformRegistry[platformIndex].imageObject)) { // adapted from http://fabricjs.com/intersection/
-			platformRegistry[platformIndex].imageObject.dock(draggedToken);
+	if (draggedToken.index.indexOf("token") > -1) { // if this is a token
+		var foundADock = false; // more predictable behavior if a token overlaps two platforms
+		for (var i = 0; i < platformRegistry.platformCount; i++) {
+			var platformIndex = "platform" + i;
+			platformRegistry[platformIndex].residents.remove(draggedToken.index); // remove token from residence in each platform
+			if (!foundADock && draggedToken.intersectsWithObject(platformRegistry[platformIndex].imageObject)) { // adapted from http://fabricjs.com/intersection/
+				platformRegistry[platformIndex].imageObject.dock(draggedToken);
+				foundADock = true;
+			}
+			else {
+				distributeCrowd(platformRegistry[platformIndex].imageObject, platformRegistry[platformIndex].residents.list); // arrange tokens on the platform the token left
+			}
+		}
+		draggedToken.setCoords();
+		if (!foundADock && draggedToken.intersectsWithObject(orphanage)) {
+			orphan(draggedToken.index);
 			foundADock = true;
 		}
-		else {
-			distributeCrowd(platformRegistry[platformIndex].imageObject, platformRegistry[platformIndex].residents.list); // arrange tokens on the platform the token left
-		}
-	}
-	draggedToken.setCoords();
-	if (!foundADock && draggedToken.intersectsWithObject(orphanage)) {
-		orphan(draggedToken.index);
-		foundADock = true;
 	}
 }
 

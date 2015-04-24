@@ -105,19 +105,21 @@ document.getElementById("addChildBtn").addEventListener("click", function(){
 	newToken(name, grade, height, color);
 });
 
-document.getElementById("cycleBtn").addEventListener("click", function(){
-	var cachedPlatformRegistry = JSON.parse( JSON.stringify( platformRegistry ) );
-	for (var i = 0; i < platformRegistry.platformCount; i++) {
-		var sourcePlatformName = "platform" + i;
-		var targetPlatformCounter = new cyclicCounter(i, platformRegistry.platformCount - 1);
-		var targetPlatformName = "platform" + targetPlatformCounter.increment();
-		moveTokensToPlatform(musterTokens(cachedPlatformRegistry[sourcePlatformName].residents.list), platformRegistry[targetPlatformName]);
+canvas.on('mouse:down', function(options){
+	if (typeof options.target == "object" && options.target.name == "cycle-btn") {
+		var cachedPlatformRegistry = JSON.parse( JSON.stringify( platformRegistry ) );
+		for (var i = 0; i < platformRegistry.platformCount; i++) {
+			var sourcePlatformName = "platform" + i;
+			var targetPlatformCounter = new cyclicCounter(i, platformRegistry.platformCount - 1);
+			var targetPlatformName = "platform" + targetPlatformCounter.increment();
+			moveTokensToPlatform(musterTokens(cachedPlatformRegistry[sourcePlatformName].residents.list), platformRegistry[targetPlatformName]);
+		}
 	}
 });
 
-newPlatform(250, 200, "ECC", 'img/ECC.png');
-newPlatform(500, 500, "CTG", 'img/CTG.png');
-newPlatform(450, 800, "RTR", 'img/RTR.png');
+newPlatform(325, 200, "ECC", 'img/ECC.png');
+newPlatform(600, 500, "CTG", 'img/CTG.png');
+newPlatform(550, 800, "RTR", 'img/RTR.png');
 newPlatform(100, 800, "EXP", 'img/EXP.png');
 newPlatform( 50, 500, "MOD", 'img/MOD.png');
 
