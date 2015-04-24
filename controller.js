@@ -94,6 +94,7 @@ function walkToken(tokenData, coords) {
 	//console.log("Walk ", tokenData, " to ", coords);
 	tokenData.canvasGroup.animate(coords, {
 		duration: 750,
+		easing: fabric.util.ease.easeInOutCubic,
 		onChange: canvas.renderAll.bind(canvas),
 	});
 }
