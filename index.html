@@ -1,32 +1,42 @@
-<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
-<style>
-.controls {
-	margin-bottom: .5em;
-	font-family: "Source Sans Pro", sans-serif;
-}
-select, button {
-	font-family: "Source Sans Pro", sans-serif;
-	font-size: 16px;
-}
-.control {
-	margin: 0 0.5em;
-}
-.colorBox {
-	display: inline-block;
-}
-.colorBox::before {
-	width: 1.5em;
-	height: 1.5em;
-	content: '';
-	display: block;
-}
-.colorBox:checked::before { content: '✔'; text-align: center; }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Family Learning Cycle</title>
+	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 
-#FamilyLearningCycleToy {
-	border: 1px dotted silver;
-	margin: 0px;
-}
-</style>
+	<style>
+	.controls {
+		margin-bottom: .5em;
+		font-family: "Source Sans Pro", sans-serif;
+	}
+	select, button {
+		font-family: "Source Sans Pro", sans-serif;
+		font-size: 16px;
+	}
+	.control {
+		margin: 0 0.5em;
+	}
+	.colorBox {
+		display: inline-block;
+	}
+	.colorBox::before {
+		width: 1.5em;
+		height: 1.5em;
+		content: '';
+		display: block;
+	}
+	.colorBox:checked::before { content: '✔'; text-align: center; }
+
+	#FamilyLearningCycleToy {
+		border: 1px dotted silver;
+		margin: 0px;
+	}
+	</style>
+
+</head>
+ 
+<body>
 
 <div class="controls"> <!-- TODO: live preview when hovering over the controls -->
 	<span class="control">
@@ -80,7 +90,10 @@ select, button {
 
 <canvas id="FamilyLearningCycleToy" width="972" height="1000">Your browser is out-of-date. To display the Family Learning Cycle, you'll need to update it.</canvas><br>
 
-<script src="Fabric.js"></script>
+<script src="fabric.js"></script>
 <script src="model.js"></script>
 <script src="view.js"></script>
 <script src="controller.js"></script>
+
+</body>
+</html>
