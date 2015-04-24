@@ -9,7 +9,7 @@ var orphanage = new fabric.Rect({
 	width: 972,
 	height: 100,
 	left: 0,
-	top: 900,
+	top: 1700,
 	fill: "#F2F2F2",
 	selectable: false,
 });
@@ -19,7 +19,7 @@ fabric.Image.fromURL('img/cycle-btn.png', function(loadedImage) {
 }, {
 	selectable: true,
 	left: 400,
-	top: 450,
+	top: 750,
 	hoverCursor: "pointer",
 	hasControls: false,
 	hasBorders: false,

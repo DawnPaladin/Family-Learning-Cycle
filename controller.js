@@ -14,7 +14,7 @@ function newToken(name, gradeIndex, height, color) {
 	var tokenIndex = "token" + tokenRegistry.tokenCount++;
 	var tokenData = new Token(name, gradeObj, height, color);
 	tokenRegistry[tokenIndex] = tokenData;
-	tokenRegistry[tokenIndex].canvasGroup = drawNewToken(50, 225, name, gradeObj, height, color, tokenIndex);
+	tokenRegistry[tokenIndex].canvasGroup = drawNewToken(100, 500, name, gradeObj, height, color, tokenIndex);
 } //newToken("Twilight Sparkle", "1", 50, "#662D8A");
 function orphan(tokenIndex) {
 	console.log("Removing " + tokenIndex);
@@ -154,13 +154,26 @@ canvas.on('mouse:down', function(options){
 	}
 });
 
-newPlatform(325, 200, "ECC", 'img/ECC.png');
-newPlatform(600, 500, "CTG", 'img/CTG.png');
-newPlatform(550, 800, "RTR", 'img/RTR.png');
-newPlatform(100, 800, "EXP", 'img/EXP.png');
-newPlatform( 50, 500, "MOD", 'img/MOD.png');
+newPlatform( 50, 200, "Preschool", 'img/Preschool.png');
+newPlatform(200, 250, "Pre-K", 'img/Pre-K.png');
+newPlatform(350, 200, "Kindergarten", 'img/Kindergarten.png');
+newPlatform(500, 250, "LGS", 'img/LGS.png');
+newPlatform(650, 200, "ADV", 'img/USH.png'); // "ADV.png" gets hit by AdBlock
 
-window.setTimeout(function(){ // Generate some default tokens for testing purposes
+newPlatform(325,  500, "ECC", 'img/ECC.png');
+newPlatform(600,  800, "CTG", 'img/CTG.png');
+newPlatform(550, 1100, "RTR", 'img/RTR.png');
+newPlatform(100, 1100, "EXP", 'img/EXP.png');
+newPlatform( 50,  800, "MOD", 'img/MOD.png');
+
+newPlatform( 50, 1400, "AHL", 'img/AHL.png');
+newPlatform(275, 1425, "WHL", 'img/WHL.png');
+newPlatform(500, 1400, "US1", 'img/US1.png');
+newPlatform(725, 1425, "US2", 'img/US2.png');
+
+newPlatform(25, 1525, "college", 'img/college.png');
+
+/*window.setTimeout(function(){ // Generate some default tokens for testing purposes
 	newToken("Inkie", "1", 30, "#5377a6");
 	newToken("Blinkie", "2", 45, "#dd5b5a");
 	newToken("Pinkie", "3", 60, "#f9b5d1");
@@ -169,3 +182,4 @@ window.setTimeout(function(){ // Generate some default tokens for testing purpos
 		moveTokenToPlatform(tokenRegistry["token" + i], platformRegistry.platform0);
 	}
 }, 500);
+*/
