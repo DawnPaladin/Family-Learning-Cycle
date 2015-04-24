@@ -1,18 +1,26 @@
+/* Token taxonomy:
+	tokenRegistry: Collection of tokenData stored in model.js
+	tokenData: Found in tokenRegistry. Stores a tokenImage in tokenData.canvasGroup.
+	tokenIndex: Name of tokenData in tokenRegistry. tokenRegistry[tokenIndex] = tokenData
+	tokenImage: Canvas/fabric object. Stores a tokenIndex in tokenImage.index so you can get back to tokenData.
+	tokenRoster: Array of tokenIndexes.
+	tokenFormation: Array of tokenData. musterTokens(tokenRoster) = tokenFormation
+	tokenList is ambiguous. Don't use it.
+*/
+
+/* === creation and destruction === */
 function newToken(name, gradeIndex, height, color) {
 	var gradeObj = processGrade(gradeIndex);
 	var tokenIndex = "token" + tokenRegistry.tokenCount++;
-	var theToken = new Token(name, gradeObj, height, color);
-	tokenRegistry[tokenIndex] = theToken;
+	var tokenData = new Token(name, gradeObj, height, color);
+	tokenRegistry[tokenIndex] = tokenData;
 	tokenRegistry[tokenIndex].canvasGroup = drawNewToken(50, 225, name, gradeObj, height, color, tokenIndex);
-}
-//newToken("Twilight Sparkle", "1", 50, "#662D8A");
-
+} //newToken("Twilight Sparkle", "1", 50, "#662D8A");
 function orphan(tokenIndex) {
 	console.log("Removing " + tokenIndex);
-	eraseToken(tokenRegistry[tokenIndex].canvasGroup);
+	eraseTokenImage(tokenRegistry[tokenIndex].canvasGroup);
 	tokenRegistry[tokenIndex] = {};
 }
-
 function newPlatform(x, y, name, url) {
 	var thePlatform = new Platform(x, y, name, url);
 	var platformIndex = thePlatform.index;
@@ -29,6 +37,7 @@ function newPlatform(x, y, name, url) {
 	return platformRegistry[platformIndex];
 }
 
+/* === utility === */
 function lookupCanvasObjectByURL(url) {
 	for (var i = 0; i < canvas._objects.length; i++) {
 		try {
@@ -40,7 +49,6 @@ function lookupCanvasObjectByURL(url) {
 		}
 	}
 }
-
 function lookupPlatformByURL(url) {
 	for (var i = 0; i < platformRegistry.platformCount; i++) {
 		var platformIndex = "platform" + i;
@@ -52,48 +60,7 @@ function lookupPlatformByURL(url) {
 	}
 }
 
-function removeTokenFromAllPlatforms(token, redistribute) {
-	for (var i = 0; i < platformRegistry.platformCount; i++) { // remove token from all previous platforms
-		var platformIndex = "platform" + i;
-		platformRegistry[platformIndex].residents.remove(token.canvasGroup.index); // remove token from residence in each platform
-		if (redistribute)
-			distributeCrowd(platformRegistry[platformIndex].imageObject, platformRegistry[platformIndex].residents.list);
-	}
-}
-function moveTokenToPlatform(token, platform) {
-	removeTokenFromAllPlatforms(token, true);
-	platform.imageObject.dock(token.canvasGroup);
-	canvas.renderAll();
-}
-
-function walkToken(token, coords) {
-	//console.log("Walk ", token, " to ", coords);
-	token.canvasGroup.animate(coords, {
-		duration: 750,
-		onChange: canvas.renderAll.bind(canvas),
-	});
-}
-function moveTokensToPlatform(tokenList, platform, increment) {
-	for (var i = 0; i < tokenList.length; i++) {
-		moveTokenToPlatform(tokenList[i], platform);
-		if (increment)
-			incrementGrade(tokenList[i].canvasGroup);
-	}
-}
-function walkTokensToPlatform(tokenRoster, platform, increment) {
-	var formation = crowdDistribution(platform.imageObject, tokenRoster.length);
-	var tokens = musterTokens(tokenRoster);
-	for (var i = 0; i < tokenRoster.length; i++) {
-		walkToken(tokens[i], formation[i]);
-		if (increment)
-			incrementGrade(tokens[i].canvasGroup);
-		removeTokenFromAllPlatforms(tokens[i], false);
-		platform.residents.add(tokenRoster[i]);
-		tokens[i].canvasGroup.setCoords();
-	}
-}
-
-function musterTokens(tokenRoster) { // create an array of tokens from an array of token names
+function musterTokens(tokenRoster) { // convert an array of token names to an array of tokens
 	var formation = [];
 	for (var i = 0; i < tokenRoster.length; i++) {
 		formation.push(tokenRegistry[tokenRoster[i]]);
@@ -101,9 +68,50 @@ function musterTokens(tokenRoster) { // create an array of tokens from an array 
 	return formation;
 }
 
-function incrementGrade(token) {
-	var tokenIndex = token.index;
-	if (typeof tokenIndex !== "string") console.error("incrementGrade() expects a canvas group");
+function deregisterTokenFromAllPlatforms(tokenData, redistribute) {
+	for (var i = 0; i < platformRegistry.platformCount; i++) { // remove token from all previous platforms
+		var platformIndex = "platform" + i;
+		platformRegistry[platformIndex].residents.remove(tokenData.canvasGroup.index); // remove token from residence in each platform
+		if (redistribute)
+			distributeCrowd(platformRegistry[platformIndex].imageObject, platformRegistry[platformIndex].residents.list);
+	}
+}
+
+/* === movement === */
+function moveTokenToPlatform(tokenData, platform) {
+	deregisterTokenFromAllPlatforms(tokenData, true);
+	platform.imageObject.dock(tokenData.canvasGroup);
+	canvas.renderAll();
+}
+function moveTokensToPlatform(tokenFormation, platform, increment) {
+	for (var i = 0; i < tokenFormation.length; i++) {
+		moveTokenToPlatform(tokenFormation[i], platform);
+		if (increment)
+			incrementGrade(tokenFormation[i].canvasGroup);
+	}
+}
+function walkToken(tokenData, coords) {
+	//console.log("Walk ", tokenData, " to ", coords);
+	tokenData.canvasGroup.animate(coords, {
+		duration: 750,
+		onChange: canvas.renderAll.bind(canvas),
+	});
+}
+function walkTokensToPlatform(tokenRoster, platform, increment) {
+	var formation = crowdDistribution(platform.imageObject, tokenRoster.length);
+	var tokenFormation = musterTokens(tokenRoster);
+	for (var i = 0; i < tokenRoster.length; i++) {
+		walkToken(tokenFormation[i], formation[i]);
+		if (increment)
+			incrementGrade(tokenFormation[i].canvasGroup);
+		deregisterTokenFromAllPlatforms(tokenFormation[i], false);
+		platform.residents.add(tokenRoster[i]);
+		tokenFormation[i].canvasGroup.setCoords();
+	}
+}
+
+function incrementGrade(tokenImage) {
+	var tokenIndex = tokenImage.index;
 	var oldGradeIndex = Number(tokenRegistry[tokenIndex].grade.index);
 	var newGradeIndex = oldGradeIndex + 1;
 	if (newGradeIndex > 14) {
@@ -114,15 +122,16 @@ function incrementGrade(token) {
 
 	// update canvas object
 	var gradeObj = tokenRegistry[tokenIndex].grade;
-	token._objects[5].text = gradeObj.line1;
-	token._objects[6].text = gradeObj.line2;
+	tokenImage._objects[5].text = gradeObj.line1;
+	tokenImage._objects[6].text = gradeObj.line2;
 	if (gradeObj.line2Size == "large")
-		token._objects[6].fontSize = 36;
+		tokenImage._objects[6].fontSize = 36;
 	else
-		token._objects[6].fontSize = 12;
+		tokenImage._objects[6].fontSize = 12;
 	canvas.renderAll();
 }
 
+/* === initialization === */
 document.getElementById("addChildBtn").addEventListener("click", function(){ 
 	var name = document.getElementById("nameField").value;
 	var grade = document.getElementById("gradeSelect").value;

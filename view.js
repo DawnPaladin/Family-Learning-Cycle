@@ -155,6 +155,6 @@ function dropToken(options){
 	}
 }
 
-function eraseToken(token) {
-	canvas.remove(token);
+function eraseTokenImage(tokenImage) {
+	canvas.remove(tokenImage);
 }
