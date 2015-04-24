@@ -53,6 +53,19 @@ function distributeCrowd(platformImage, residentsList) { // distribute crowd of 
 	}
 }
 
+function crowdDistribution(originImageObject, memberCount) {
+	var crowdWidth = (memberCount - 1) * PERSON_WIDTH + (memberCount - 1) * PLATFORM_ELBOW_ROOM;
+	var crowdLeftEdge = -crowdWidth / 2;
+	var memberLocations = [];
+	var y = originImageObject.getCenterPoint().y;
+	for (var i = 0; i < memberCount; i++) {
+		var offsetFromCenter = crowdLeftEdge + (PERSON_WIDTH + PLATFORM_ELBOW_ROOM) * i;
+		var x = originImageObject.getCenterPoint().x + offsetFromCenter;
+		memberLocations.push({left: x, top:y});
+	}
+	return memberLocations;
+}
+
 function drawNewToken(x, y, name, gradeObj, height, color, tokenIndex) {
 	var head = new fabric.Circle({
 		radius: HEAD_RADIUS,

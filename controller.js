@@ -52,14 +52,26 @@ function lookupPlatformByURL(url) {
 	}
 }
 
-function moveTokenToPlatform(token, platform) {
+function removeTokenFromAllPlatforms(token, redistribute) {
 	for (var i = 0; i < platformRegistry.platformCount; i++) { // remove token from all previous platforms
 		var platformIndex = "platform" + i;
 		platformRegistry[platformIndex].residents.remove(token.canvasGroup.index); // remove token from residence in each platform
-		distributeCrowd(platformRegistry[platformIndex].imageObject, platformRegistry[platformIndex].residents.list);
+		if (redistribute)
+			distributeCrowd(platformRegistry[platformIndex].imageObject, platformRegistry[platformIndex].residents.list);
 	}
+}
+function moveTokenToPlatform(token, platform) {
+	removeTokenFromAllPlatforms(token, true);
 	platform.imageObject.dock(token.canvasGroup);
 	canvas.renderAll();
+}
+
+function walkToken(token, coords) {
+	//console.log("Walk ", token, " to ", coords);
+	token.canvasGroup.animate(coords, {
+		duration: 750,
+		onChange: canvas.renderAll.bind(canvas),
+	});
 }
 function moveTokensToPlatform(tokenList, platform, increment) {
 	for (var i = 0; i < tokenList.length; i++) {
@@ -68,11 +80,23 @@ function moveTokensToPlatform(tokenList, platform, increment) {
 			incrementGrade(tokenList[i].canvasGroup);
 	}
 }
+function walkTokensToPlatform(tokenRoster, platform, increment) {
+	var formation = crowdDistribution(platform.imageObject, tokenRoster.length);
+	var tokens = musterTokens(tokenRoster);
+	for (var i = 0; i < tokenRoster.length; i++) {
+		walkToken(tokens[i], formation[i]);
+		if (increment)
+			incrementGrade(tokens[i].canvasGroup);
+		removeTokenFromAllPlatforms(tokens[i], false);
+		platform.residents.add(tokenRoster[i]);
+		tokens[i].canvasGroup.setCoords();
+	}
+}
 
-function musterTokens(tokenNames) { // create an array of tokens from an array of token names
+function musterTokens(tokenRoster) { // create an array of tokens from an array of token names
 	var formation = [];
-	for (var i = 0; i < tokenNames.length; i++) {
-		formation.push(tokenRegistry[tokenNames[i]]);
+	for (var i = 0; i < tokenRoster.length; i++) {
+		formation.push(tokenRegistry[tokenRoster[i]]);
 	}
 	return formation;
 }
@@ -107,18 +131,6 @@ document.getElementById("addChildBtn").addEventListener("click", function(){
 	newToken(name, grade, height, color);
 });
 
-document.getElementById("testBtn").addEventListener("click", function(){
-	tokenRegistry.token0.canvasGroup.animate(
-		{
-			"left": '+=100', 
-			"top": '+=100',
-		}, {
-			duration: 1000,
-			onChange: canvas.renderAll.bind(canvas),
-		}
-	);
-});
-
 canvas.on('mouse:down', function(options){
 	if (typeof options.target == "object" && options.target.name == "cycle-btn") {
 		var cachedPlatformRegistry = JSON.parse( JSON.stringify( platformRegistry ) );
@@ -126,7 +138,8 @@ canvas.on('mouse:down', function(options){
 			var sourcePlatformName = "platform" + i;
 			var targetPlatformCounter = new cyclicCounter(i, platformRegistry.platformCount - 1);
 			var targetPlatformName = "platform" + targetPlatformCounter.increment();
-			moveTokensToPlatform(musterTokens(cachedPlatformRegistry[sourcePlatformName].residents.list), platformRegistry[targetPlatformName], true);
+			//console.log("walkTokensToPlatform(", cachedPlatformRegistry[sourcePlatformName].residents.list, platformRegistry[targetPlatformName], true, ");");
+			walkTokensToPlatform(cachedPlatformRegistry[sourcePlatformName].residents.list, platformRegistry[targetPlatformName], true);
 		}
 	}
 });
@@ -145,4 +158,4 @@ window.setTimeout(function(){
 	for (var i = 0; i < tokenRegistry.tokenCount; i++) {
 		moveTokenToPlatform(tokenRegistry["token" + i], platformRegistry.platform0);
 	}
-}, 100);
+}, 500);
