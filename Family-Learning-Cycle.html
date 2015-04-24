@@ -1,9 +1,36 @@
 <style>
+.controls {
+	margin-bottom: .5em;
+}
 #FamilyLearningCycleToy {
 	border: 1px dotted silver;
 	margin: 0px;
 }
 </style>
+
+<div class="controls"> <!-- TODO: live preview when hovering over the controls -->
+	<span class="chooseColor">[ Choose color ]</span>
+	<label for="heightSlider">Height</label><input type="range" id="heightSlider" min="20" max="70" step="5">
+	<label for="nameField">Name</label> <input id="nameField">
+	<label for="gradeSelect">Grade</label> <select id="gradeSelect">
+		<option>Preschool</option>
+		<option>Pre-K</option>
+		<option>Kindergarten</option>
+		<option>1st grade</option>
+		<option>2nd grade</option>
+		<option>3rd grade</option>
+		<option>4th grade</option>
+		<option>5th grade</option>
+		<option>6th grade</option>
+		<option>7th grade</option>
+		<option>8th grade</option>
+		<option>9th grade</option>
+		<option>10th grade</option>
+		<option>11th grade</option>
+		<option>12th grade</option>
+	</select>
+	<button id="addChildBtn">Add child</button>
+</div>
 
 <canvas id="FamilyLearningCycleToy" width="800" height="650">Your browser is out-of-date. To display the Family Learning Cycle, you'll need to update it.</canvas><br>
 

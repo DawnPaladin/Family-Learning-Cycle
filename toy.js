@@ -18,33 +18,37 @@ function setupBoardSpace(image) {
 	canvas.sendToBack(image);
 	boardSpaces.push(image);
 
-	image.dock = function(figurine) {
+	image.dock = function(token) {
 		console.log("Docking with " + image);
-		figurine.left = image.getCenterPoint().x;
-		figurine.top = image.getCenterPoint().y;
-		figurine.setCoords();
+		token.left = image.getCenterPoint().x;
+		token.top = image.getCenterPoint().y;
+		token.setCoords();
 	};
 }
 
-function addFigurine(x, y, height, color) {
+function addToken(x, y, height, color) {
 	var head = new fabric.Circle({
 		radius: HEAD_RADIUS,
+		left: 0.5, // half-pixel offset to prevent fuzzy antialiasing
 	});
 	var shoulders = new fabric.Circle({
 		radius: HEAD_RADIUS,
-		top: HEAD_RADIUS*2.5
+		top: HEAD_RADIUS*2.5,
+		left: 0.5,
 	});
 	var torso = new fabric.Rect({
 		width: PERSON_WIDTH,
 		height: height,
-		top: HEAD_RADIUS*3.5
+		top: HEAD_RADIUS*3.5,
+		left: 0.5,
 	});
 	var base = new fabric.Circle({
 		radius: HEAD_RADIUS,
-		top: HEAD_RADIUS*2.5 + height
+		top: HEAD_RADIUS*2.5 + height,
+		left: 0.5,
 	});
-	var figurine = new fabric.Group([head, shoulders, torso, base], {
-		left: x + 0.5, // half-pixel offset to prevent fuzzy antialiasing
+	var token = new fabric.Group([head, shoulders, torso, base], {
+		left: x,
 		top: y,
 		fill: color,
 		originX: "center",
@@ -52,21 +56,21 @@ function addFigurine(x, y, height, color) {
 		hasBorders: false,
 		hasControls: false
 	});
-	canvas.add(figurine);
-	return figurine;
+	canvas.add(token);
+	return token;
 }
 
-var Twilight = addFigurine(26, 200, 60, "#662D8A");
-var Pinkie = addFigurine(150, 200, 40, "#ED458D");
+var Twilight = addToken(26, 200, 60, "#662D8A");
+var Pinkie = addToken(150, 200, 40, "#ED458D");
 
-canvas.on('object:modified', dropFigurine);
+canvas.on('object:modified', dropToken);
 
-function dropFigurine(options){
-	var draggedFigurine = options.target;
-	draggedFigurine.setCoords();
+function dropToken(options){
+	var draggedToken = options.target;
+	draggedToken.setCoords();
 	for (var i = 0; i < boardSpaces.length; i++) {
-		if (draggedFigurine.intersectsWithObject(boardSpaces[i])) { // adapted from http://fabricjs.com/intersection/
-			boardSpaces[i].dock(draggedFigurine);
+		if (draggedToken.intersectsWithObject(boardSpaces[i])) { // adapted from http://fabricjs.com/intersection/
+			boardSpaces[i].dock(draggedToken);
 			return true;
 		}
 	}
