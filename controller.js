@@ -107,6 +107,18 @@ document.getElementById("addChildBtn").addEventListener("click", function(){
 	newToken(name, grade, height, color);
 });
 
+document.getElementById("testBtn").addEventListener("click", function(){
+	tokenRegistry.token0.canvasGroup.animate(
+		{
+			"left": '+=100', 
+			"top": '+=100',
+		}, {
+			duration: 1000,
+			onChange: canvas.renderAll.bind(canvas),
+		}
+	);
+});
+
 canvas.on('mouse:down', function(options){
 	if (typeof options.target == "object" && options.target.name == "cycle-btn") {
 		var cachedPlatformRegistry = JSON.parse( JSON.stringify( platformRegistry ) );
