@@ -160,7 +160,7 @@ newPlatform(550, 800, "RTR", 'img/RTR.png');
 newPlatform(100, 800, "EXP", 'img/EXP.png');
 newPlatform( 50, 500, "MOD", 'img/MOD.png');
 
-window.setTimeout(function(){
+window.setTimeout(function(){ // Generate some default tokens for testing purposes
 	newToken("Inkie", "1", 30, "#5377a6");
 	newToken("Blinkie", "2", 45, "#dd5b5a");
 	newToken("Pinkie", "3", 60, "#f9b5d1");
