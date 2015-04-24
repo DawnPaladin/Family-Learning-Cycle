@@ -25,7 +25,7 @@ function newToken(name, rawGrade, height, color) {
 	var tokenIndex = "token" + tokenRegistry.tokenCount++;
 	var theToken = new Token(name, gradeObj, height, color);
 	tokenRegistry[tokenIndex] = theToken;
-	tokenRegistry[tokenIndex].canvasGroup = drawNewToken(10, 200, name, gradeObj, height, color, tokenIndex);
+	tokenRegistry[tokenIndex].canvasGroup = drawNewToken(50, 225, name, gradeObj, height, color, tokenIndex);
 }
 //newToken("Twilight Sparkle", "1", 50, "#662D8A");
 
@@ -74,6 +74,29 @@ function lookupPlatformByURL(url) {
 	}
 }
 
+function moveTokenToPlatform(token, platform) {
+	for (var i = 0; i < platformRegistry.platformCount; i++) { // remove token from all previous platforms
+		var platformIndex = "platform" + i;
+		platformRegistry[platformIndex].residents.remove(token.canvasGroup.index); // remove token from residence in each platform
+		distributeCrowd(platformRegistry[platformIndex].imageObject, platformRegistry[platformIndex].residents.list);
+	}
+	platform.imageObject.dock(token.canvasGroup);
+	canvas.renderAll();
+}
+function moveTokensToPlatform(tokenList, platform) {
+	for (var i = 0; i < tokenList.length; i++) {
+		moveTokenToPlatform(tokenList[i], platform);
+	}
+}
+
+function musterTokens(tokenNames) { // create an array of tokens from an array of token names
+	var formation = [];
+	for (var i = 0; i < tokenNames.length; i++) {
+		formation.push(tokenRegistry[tokenNames[i]]);
+	}
+	return formation;
+}
+
 document.getElementById("addChildBtn").addEventListener("click", function(){ 
 	var name = document.getElementById("nameField").value;
 	var grade = document.getElementById("gradeSelect").value;
@@ -82,8 +105,28 @@ document.getElementById("addChildBtn").addEventListener("click", function(){
 	newToken(name, grade, height, color);
 });
 
+document.getElementById("cycleBtn").addEventListener("click", function(){
+	var cachedPlatformRegistry = JSON.parse( JSON.stringify( platformRegistry ) );
+	for (var i = 0; i < platformRegistry.platformCount; i++) {
+		var sourcePlatformName = "platform" + i;
+		var targetPlatformCounter = new cyclicCounter(i, platformRegistry.platformCount - 1);
+		var targetPlatformName = "platform" + targetPlatformCounter.increment();
+		moveTokensToPlatform(musterTokens(cachedPlatformRegistry[sourcePlatformName].residents.list), platformRegistry[targetPlatformName]);
+	}
+});
+
 newPlatform(250, 200, "ECC", 'img/ECC.png');
 newPlatform(500, 500, "CTG", 'img/CTG.png');
 newPlatform(450, 800, "RTR", 'img/RTR.png');
 newPlatform(100, 800, "EXP", 'img/EXP.png');
 newPlatform( 50, 500, "MOD", 'img/MOD.png');
+
+window.setTimeout(function(){
+	newToken("Inkie", "1", 30, "#5377a6");
+	newToken("Blinkie", "2", 45, "#dd5b5a");
+	newToken("Pinkie", "3", 60, "#f9b5d1");
+	newToken("Clyde", "4", 70, "#ffa544");
+	for (var i = 0; i < tokenRegistry.tokenCount; i++) {
+		moveTokenToPlatform(tokenRegistry["token" + i], platformRegistry.platform0);
+	}
+}, 100);

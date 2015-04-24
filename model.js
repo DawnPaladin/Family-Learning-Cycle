@@ -7,6 +7,7 @@ function Token(name, grade, height, color) { // class definition
 	this.height = height;
 	this.color = color;
 	this.location = {x: 0, y: 0};
+	this.canvasGroup = null;
 }
 
 function Platform(x, y, name, url) {
@@ -15,6 +16,7 @@ function Platform(x, y, name, url) {
 	this.url = url;
 	this.index = "platform" + platformRegistry.platformCount++;
 	this.residents = { list: [] };
+	this.imageObject = null;
 	var residentRegistry = this.residents;
 	residentRegistry.add = function(tokenIndex) {
 		residentRegistry.list.push(tokenIndex);
@@ -30,5 +32,15 @@ function Platform(x, y, name, url) {
 		var arrayIndex = residentRegistry.find(tokenIndex);
 		if (arrayIndex > -1)
 			residentRegistry.list.splice(arrayIndex, 1);
+	};
+}
+
+function cyclicCounter(initial, maximum) {
+	this.counter = initial;
+	this.maximum = maximum;
+	this.increment = function(){
+		if (++this.counter > maximum)
+			this.counter = 0;
+		return this.counter;
 	};
 }

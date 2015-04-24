@@ -21,6 +21,7 @@ function setupPlatform(image) {
 	var platform = lookupPlatformByURL(image._element.src);
 
 	image.dock = function(token) {
+		//console.log("Docking " + token + " into " + image);
 		token.top = image.getCenterPoint().y;
 		platform.residents.add(token.index);
 		distributeCrowd(image, platform.residents.list);
