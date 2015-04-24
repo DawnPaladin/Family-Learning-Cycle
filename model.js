@@ -44,3 +44,34 @@ function cyclicCounter(initial, maximum) {
 		return this.counter;
 	};
 }
+
+function processGrade(gradeIndex) {
+	// process value from Grade dropdown
+	var gradeLevels = ["Preschool", "Pre-K", "Kindergarten", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
+	var gradeText = gradeLevels[gradeIndex];
+	var gradeObj = { 
+		index: gradeIndex, 
+		line2Size: "large" 
+	};
+	switch (gradeText) {
+		case "Preschool":
+			gradeObj.line1 = "Pre-";
+			gradeObj.line2 = "school";
+			gradeObj.line2Size = "small";
+			break;
+		case "Pre-K":
+			gradeObj.line1 = "Pre-";
+			gradeObj.line2 = "K";
+			break;
+		case "Kindergarten":
+			gradeObj.line1 = "Kinder-";
+			gradeObj.line2 = "garten";
+			gradeObj.line2Size = "small";
+			break;
+		default:
+			gradeObj.line1 = "Grade";
+			gradeObj.line2 = gradeText;
+			break;
+	}
+	return gradeObj;
+}

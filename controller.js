@@ -1,27 +1,5 @@
-function newToken(name, rawGrade, height, color) {
-	// process value from Grade dropdown
-	var gradeObj = { line2Size: "large" };
-	switch (rawGrade) {
-		case "Preschool":
-			gradeObj.line1 = "Pre-";
-			gradeObj.line2 = "school";
-			gradeObj.line2Size = "small";
-			break;
-		case "Pre-K":
-			gradeObj.line1 = "Pre-";
-			gradeObj.line2 = "K";
-			break;
-		case "Kindergarten":
-			gradeObj.line1 = "Kinder-";
-			gradeObj.line2 = "garten";
-			gradeObj.line2Size = "small";
-			break;
-		default:
-			gradeObj.line1 = "Grade";
-			gradeObj.line2 = rawGrade;
-			break;
-	}
-
+function newToken(name, gradeIndex, height, color) {
+	var gradeObj = processGrade(gradeIndex);
 	var tokenIndex = "token" + tokenRegistry.tokenCount++;
 	var theToken = new Token(name, gradeObj, height, color);
 	tokenRegistry[tokenIndex] = theToken;
@@ -83,9 +61,11 @@ function moveTokenToPlatform(token, platform) {
 	platform.imageObject.dock(token.canvasGroup);
 	canvas.renderAll();
 }
-function moveTokensToPlatform(tokenList, platform) {
+function moveTokensToPlatform(tokenList, platform, increment) {
 	for (var i = 0; i < tokenList.length; i++) {
 		moveTokenToPlatform(tokenList[i], platform);
+		if (increment)
+			incrementGrade(tokenList[i].canvasGroup);
 	}
 }
 
@@ -95,6 +75,28 @@ function musterTokens(tokenNames) { // create an array of tokens from an array o
 		formation.push(tokenRegistry[tokenNames[i]]);
 	}
 	return formation;
+}
+
+function incrementGrade(token) {
+	var tokenIndex = token.index;
+	if (typeof tokenIndex !== "string") console.error("incrementGrade() expects a canvas group");
+	var oldGradeIndex = Number(tokenRegistry[tokenIndex].grade.index);
+	var newGradeIndex = oldGradeIndex + 1;
+	if (newGradeIndex > 14) {
+		console.warn("Attempted to increment a grade past 12.");
+		newGradeIndex = 14;
+	}
+	tokenRegistry[tokenIndex].grade = processGrade(newGradeIndex);
+
+	// update canvas object
+	var gradeObj = tokenRegistry[tokenIndex].grade;
+	token._objects[5].text = gradeObj.line1;
+	token._objects[6].text = gradeObj.line2;
+	if (gradeObj.line2Size == "large")
+		token._objects[6].fontSize = 36;
+	else
+		token._objects[6].fontSize = 12;
+	canvas.renderAll();
 }
 
 document.getElementById("addChildBtn").addEventListener("click", function(){ 
@@ -112,7 +114,7 @@ canvas.on('mouse:down', function(options){
 			var sourcePlatformName = "platform" + i;
 			var targetPlatformCounter = new cyclicCounter(i, platformRegistry.platformCount - 1);
 			var targetPlatformName = "platform" + targetPlatformCounter.increment();
-			moveTokensToPlatform(musterTokens(cachedPlatformRegistry[sourcePlatformName].residents.list), platformRegistry[targetPlatformName]);
+			moveTokensToPlatform(musterTokens(cachedPlatformRegistry[sourcePlatformName].residents.list), platformRegistry[targetPlatformName], true);
 		}
 	}
 });
