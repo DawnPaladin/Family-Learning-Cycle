@@ -31,7 +31,7 @@ select, button {
 <div class="controls"> <!-- TODO: live preview when hovering over the controls -->
 	<span class="control">
 		<label for="nameField">Name</label> 
-		<input id="nameField">
+		<input id="nameField" value="Billy Bob">
 	</span>
 	<span class="control">
 		<label for="gradeSelect">Grade</label> 
@@ -67,7 +67,7 @@ select, button {
 			.colorBox:nth-of-type(5)::before { background-color: #5377a6; }
 			.colorBox:nth-of-type(6)::before { background-color: #90d823; }
 		</style>
-		<input type="radio" name="chooseColor" class="colorBox" value="#dd5b5a">
+		<input type="radio" name="chooseColor" class="colorBox" value="#dd5b5a" checked>
 		<input type="radio" name="chooseColor" class="colorBox" value="#ffa544">
 		<input type="radio" name="chooseColor" class="colorBox" value="#f9b5d1">
 		<input type="radio" name="chooseColor" class="colorBox" value="#b66de2">
@@ -77,7 +77,7 @@ select, button {
 	<button id="addChildBtn" class="control">Add child</button>
 </div>
 
-<canvas id="FamilyLearningCycleToy" width="972" height="800">Your browser is out-of-date. To display the Family Learning Cycle, you'll need to update it.</canvas><br>
+<canvas id="FamilyLearningCycleToy" width="972" height="1000">Your browser is out-of-date. To display the Family Learning Cycle, you'll need to update it.</canvas><br>
 
 <script src="Fabric.js"></script>
 <script src="model.js"></script>

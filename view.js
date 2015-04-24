@@ -5,17 +5,11 @@ var PERSON_WIDTH = 50;
 var HEAD_RADIUS = PERSON_WIDTH / 2;
 var debugging = false;
 
-fabric.Image.fromURL('img/ECC.svg', setupPlatform, { left: 250, top: 100, selectable: false, });
-fabric.Image.fromURL('img/CTG.svg', setupPlatform, { left: 500, top: 300, selectable: false, });
-fabric.Image.fromURL('img/RTR.svg', setupPlatform, { left: 450, top: 500, selectable: false, });
-fabric.Image.fromURL('img/EXP.svg', setupPlatform, { left: 100, top: 500, selectable: false, });
-fabric.Image.fromURL('img/MOD.svg', setupPlatform, { left:  50, top: 300, selectable: false, });
-
 var orphanage = new fabric.Rect({
 	width: 972,
 	height: 100,
 	left: 0,
-	top: 700,
+	top: 900,
 	fill: "#F2F2F2",
 	selectable: false,
 });
@@ -24,14 +18,14 @@ canvas.add(orphanage);
 function setupPlatform(image) {
 	canvas.add(image); 
 	canvas.sendToBack(image);
-	platformRegistry.push(image);
-
+	var platform = lookupPlatformByURL(image._element.src);
 	image.dock = function(token) {
-		console.log("Docking with " + image);
 		token.left = image.getCenterPoint().x;
 		token.top = image.getCenterPoint().y;
 		token.setCoords();
+		platform.residents.add(token.index);
 	};
+	platform.imageObject = image;
 }
 
 function drawNewToken(x, y, name, gradeObj, height, color, tokenIndex) {
@@ -103,14 +97,18 @@ canvas.on('object:modified', dropToken);
 function dropToken(options){
 	var draggedToken = options.target;
 	draggedToken.setCoords();
-	for (var i = 0; i < platformRegistry.length; i++) {
-		if (draggedToken.intersectsWithObject(platformRegistry[i])) { // adapted from http://fabricjs.com/intersection/
-			platformRegistry[i].dock(draggedToken);
+	for (var i = 0; i < platformRegistry.platformCount; i++) {
+		var platformIndex = "platform" + i;
+		if (draggedToken.intersectsWithObject(platformRegistry[platformIndex].imageObject)) { // adapted from http://fabricjs.com/intersection/
+			platformRegistry[platformIndex].imageObject.dock(draggedToken);
 			return true;
 		}
+		else
+			platformRegistry[platformIndex].residents.remove(draggedToken.index); // remove token from residence in each platform it's not docked to
 	}
 	if (draggedToken.intersectsWithObject(orphanage)) {
 		orphan(draggedToken.index);
+		return true;
 	}
 }
 
