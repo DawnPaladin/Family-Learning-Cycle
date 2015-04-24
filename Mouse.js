@@ -26,8 +26,8 @@
 	},false);
 
 	window.addEventListener("mousemove",onMouseMove = function(event){
-		Mouse.x = event.pageX;
-		Mouse.y = event.pageY;
+		Mouse.x = event.pageX - canvas.offsetLeft;
+		Mouse.y = event.pageY - canvas.offsetTop;
 		event.preventDefault();
 	    event.stopPropagation();
 	},false);

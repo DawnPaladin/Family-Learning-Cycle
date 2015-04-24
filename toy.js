@@ -2,6 +2,7 @@ var canvas = document.getElementById("FamilyLearningCycleToy");
 var brush = canvas.getContext("2d");
 
 var PERSON_WIDTH = 50;
+var HEAD_RADIUS = PERSON_WIDTH / 2;
 var debugging = false;
 
 function drawCircle(x, y, radius, color) {
@@ -21,7 +22,6 @@ function drawHalfCircle(x, y, radius, facingUp, color) {
 	brush.fill();
 }
 function drawPerson(x, y, height, color) {
-	var HEAD_RADIUS = PERSON_WIDTH / 2;
 	var shoulders = 	{ x: x, 						y: y+HEAD_RADIUS*2.5 			};
 	shoulders.left = 	{ x: shoulders.x - HEAD_RADIUS, y: shoulders.y 					};
 	shoulders.right = 	{ x: shoulders.x + HEAD_RADIUS, y: shoulders.y 					};
@@ -43,6 +43,17 @@ function Draggable(originalX, originalY, height, color) {
 	var self = this;
 	self.x = originalX;
 	self.y = originalY;
+	self.bounding = {
+		set: function() {
+			self.bounding.minX = self.x - HEAD_RADIUS;
+			self.bounding.minY = self.y - HEAD_RADIUS;
+			self.bounding.maxX = self.x + HEAD_RADIUS;
+			self.bounding.maxY = self.y + HEAD_RADIUS * 2.5 + height;
+			self.bounding.width = HEAD_RADIUS * 2;
+			self.bounding.height = HEAD_RADIUS * 4.5 + height;
+		}
+	};
+	self.bounding.set();
 	//self.gotoX = x;
 	//self.gotoY = y;
 
@@ -61,18 +72,31 @@ function Draggable(originalX, originalY, height, color) {
 	self.drag = function(newX, newY) {
 		self.x = newX;
 		self.y = newY;
-		self.draw(newX, newY);
+		self.draw(self.x, self.y);
+		self.bounding.set();
 	};
 
 }
 
-var Bobby = new Draggable(76, 75.5, 60, "#C5B7DA");
+var Bobby = new Draggable(50.5, 75.5, 60, "#C5B7DA");
 
 window.addEventListener("mousemove", function(event) {
-	var deltaX = Math.abs(Mouse.x - Bobby.x);
-	var deltaY = Math.abs(Mouse.y - Bobby.y);
-	if (deltaX < PERSON_WIDTH && deltaY < PERSON_WIDTH && Mouse.pressed) {
-		// drag handling
-		Bobby.drag(Mouse.x+0.5,Mouse.y+0.5);
+	if (Mouse.pressed) {
+		//showHitbox();
+		var XonTargetA = Mouse.x >= Bobby.bounding.minX;
+		var XonTargetB = Mouse.x <= Bobby.bounding.maxX; 
+		var YonTargetA = Mouse.y >= Bobby.bounding.minY;
+		var YonTargetB = Mouse.y <= Bobby.bounding.maxY;
+		console.log(Mouse.x, Mouse.y, Bobby.bounding, XonTargetA, XonTargetB, YonTargetA, YonTargetB);
+		if (XonTargetA && XonTargetB && YonTargetA && YonTargetB) {
+			// drag handling
+			Bobby.drag(Mouse.x+0.5,Mouse.y+0.5);
+		}
 	}
 });
+
+document.getElementById("showHitboxBtn").addEventListener("click", showHitbox);
+function showHitbox(){
+	drawCircle(Bobby.x, Bobby.y, 3, "rgba(0,0,0,.5)");
+	brush.fillRect(Bobby.bounding.minX, Bobby.bounding.minY, Bobby.bounding.width, Bobby.bounding.height);
+}
