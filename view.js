@@ -1,8 +1,8 @@
 var canvas = new fabric.Canvas("FamilyLearningCycleToy");
-var brush = canvas.getContext("2d");
 
 var PERSON_WIDTH = 50;
 var HEAD_RADIUS = PERSON_WIDTH / 2;
+var PLATFORM_ELBOW_ROOM = 20;
 var debugging = false;
 
 var orphanage = new fabric.Rect({
@@ -19,13 +19,24 @@ function setupPlatform(image) {
 	canvas.add(image); 
 	canvas.sendToBack(image);
 	var platform = lookupPlatformByURL(image._element.src);
+
 	image.dock = function(token) {
-		token.left = image.getCenterPoint().x;
 		token.top = image.getCenterPoint().y;
-		token.setCoords();
 		platform.residents.add(token.index);
+		distributeCrowd(image, platform.residents.list);
+		token.setCoords();
 	};
 	platform.imageObject = image;
+}
+
+function distributeCrowd(platformImage, residentsList) { // distribute crowd of tokens across the platform
+	var crowdWidth = (residentsList.length - 1) * PERSON_WIDTH + (residentsList.length - 1) * PLATFORM_ELBOW_ROOM; // distance between first and last midpoints
+	var crowdLeftEdge = -crowdWidth / 2;
+	for (var i = 0; i < residentsList.length; i++) {
+		var offsetFromCenter = crowdLeftEdge + (PERSON_WIDTH + PLATFORM_ELBOW_ROOM) * i;
+		tokenRegistry[residentsList[i]].canvasGroup.left = platformImage.getCenterPoint().x + offsetFromCenter;
+		tokenRegistry[residentsList[i]].canvasGroup.setCoords();
+	}
 }
 
 function drawNewToken(x, y, name, gradeObj, height, color, tokenIndex) {
@@ -96,19 +107,22 @@ canvas.on('object:modified', dropToken);
 
 function dropToken(options){
 	var draggedToken = options.target;
-	draggedToken.setCoords();
+	var foundADock = false; // more predictable behavior if a token overlaps two platforms
 	for (var i = 0; i < platformRegistry.platformCount; i++) {
 		var platformIndex = "platform" + i;
-		if (draggedToken.intersectsWithObject(platformRegistry[platformIndex].imageObject)) { // adapted from http://fabricjs.com/intersection/
+		platformRegistry[platformIndex].residents.remove(draggedToken.index); // remove token from residence in each platform
+		if (!foundADock && draggedToken.intersectsWithObject(platformRegistry[platformIndex].imageObject)) { // adapted from http://fabricjs.com/intersection/
 			platformRegistry[platformIndex].imageObject.dock(draggedToken);
-			return true;
+			foundADock = true;
 		}
-		else
-			platformRegistry[platformIndex].residents.remove(draggedToken.index); // remove token from residence in each platform it's not docked to
+		else {
+			distributeCrowd(platformRegistry[platformIndex].imageObject, platformRegistry[platformIndex].residents.list); // arrange tokens on the platform the token left
+		}
 	}
-	if (draggedToken.intersectsWithObject(orphanage)) {
+	draggedToken.setCoords();
+	if (!foundADock && draggedToken.intersectsWithObject(orphanage)) {
 		orphan(draggedToken.index);
-		return true;
+		foundADock = true;
 	}
 }
 
