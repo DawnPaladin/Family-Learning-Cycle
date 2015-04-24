@@ -28,8 +28,15 @@ function newToken(name, rawGrade, height, color) {
 	tokenRegistry[tokenIndex].canvasGroup = drawNewToken(10, 200, name, gradeObj, height, color, tokenIndex);
 }
 
-//document.getElementById("addChildBtn").addEventListener("click", function(){ newToken("Applejack", "12", 50, "orange");});
-newToken("Twilight Sparkle", "1", 50, "#662D8A");
+document.getElementById("addChildBtn").addEventListener("click", function(){ 
+	var name = document.getElementById("nameField").value;
+	var grade = document.getElementById("gradeSelect").value;
+	var height = Number(document.getElementById("heightSlider").value);
+	var color = document.querySelector('input[name = "chooseColor"]:checked').value;
+	console.log(name, grade, height, color);
+	newToken(name, grade, height, color);
+});
+//newToken("Twilight Sparkle", "1", 50, "#662D8A");
 
 function orphan(tokenIndex) {
 	console.log("Removing " + tokenIndex);
