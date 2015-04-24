@@ -1,0 +1,41 @@
+{
+	"folders":
+	[
+		{
+			"file_exclude_patterns":
+			[
+				"*.min.*"
+			],
+			"folder_exclude_patterns":
+			[
+				"#Archive",
+				"#Branding",
+				"#Graphics",
+				"#Libraries",
+				"#Text content"
+			],
+			"path": "C:\\Users\\James\\Documents\\Portal\\Development"
+		},
+		{
+			"file_exclude_patterns":
+			[
+				"*.min.*"
+			],
+			"path": "C:\\Users\\James\\Documents\\Portal\\FTP\\inc"
+		},
+		{
+			"file_exclude_patterns":
+			[
+				"*.min.*"
+			],
+			"path": "C:\\Users\\James\\Documents\\Portal\\Dreamweaver WebDAV\\s2kSmartCenter"
+		},
+		{
+			"file_exclude_patterns":
+			[
+				"*.min.*"
+			],
+			"path": "C:\\Users\\James\\Documents\\Portal\\Pages server"
+		}
+	]
+}
