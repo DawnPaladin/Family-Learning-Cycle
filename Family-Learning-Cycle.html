@@ -9,8 +9,6 @@
 </style>
 
 <div class="controls"> <!-- TODO: live preview when hovering over the controls -->
-	<span class="chooseColor">[ Choose color ]</span>
-	<label for="heightSlider">Height</label><input type="range" id="heightSlider" min="20" max="70" step="5">
 	<label for="nameField">Name</label> <input id="nameField">
 	<label for="gradeSelect">Grade</label> <select id="gradeSelect">
 		<option>Preschool</option>
@@ -29,10 +27,14 @@
 		<option>11th grade</option>
 		<option>12th grade</option>
 	</select>
+	<label for="heightSlider">Height</label><input type="range" id="heightSlider" min="20" max="70" step="5">
+	<span class="chooseColor">[ Choose color ]</span>
 	<button id="addChildBtn">Add child</button>
 </div>
 
 <canvas id="FamilyLearningCycleToy" width="800" height="650">Your browser is out-of-date. To display the Family Learning Cycle, you'll need to update it.</canvas><br>
 
 <script src="Fabric.js"></script>
-<script src="toy.js"></script>
+<script src="model.js"></script>
+<script src="view.js"></script>
+<script src="controller.js"></script>
