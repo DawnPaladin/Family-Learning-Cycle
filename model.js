@@ -17,6 +17,7 @@ function Platform(x, y, name, url) {
 	this.index = "platform" + platformRegistry.platformCount++;
 	this.residents = { list: [] };
 	this.imageObject = null;
+	this.disabled = false;
 	var residentRegistry = this.residents;
 	residentRegistry.add = function(tokenIndex) {
 		residentRegistry.list.push(tokenIndex);

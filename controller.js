@@ -132,6 +132,17 @@ function incrementGrade(tokenImage) {
 	canvas.renderAll();
 }
 
+function disablePlatform(platform) {
+	platform.disabled = true;
+	platform.imageObject.opacity = 0.5;
+	canvas.renderAll();
+}
+function enablePlatform(platform) {
+	platform.disabled = false;
+	platform.imageObject.opacity = 1;
+	canvas.renderAll();
+}
+
 /* === initialization === */
 document.getElementById("addChildBtn").addEventListener("click", function(){ 
 	var name = document.getElementById("nameField").value;
@@ -147,7 +158,10 @@ canvas.on('mouse:down', function(options){
 		for (var i = 0; i < platformRegistry.platformCount; i++) {
 			var sourcePlatformName = "platform" + i;
 			var targetPlatformCounter = new cyclicCounter(i, platformRegistry.platformCount - 1);
-			var targetPlatformName = "platform" + targetPlatformCounter.increment();
+			var targetPlatformName;
+			do
+				targetPlatformName = "platform" + targetPlatformCounter.increment();
+			while (platformRegistry[targetPlatformName].disabled === true);
 			//console.log("walkTokensToPlatform(", cachedPlatformRegistry[sourcePlatformName].residents.list, platformRegistry[targetPlatformName], true, ");");
 			walkTokensToPlatform(cachedPlatformRegistry[sourcePlatformName].residents.list, platformRegistry[targetPlatformName], true);
 		}
