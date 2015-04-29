@@ -77,9 +77,26 @@ function deregisterTokenFromAllPlatforms(tokenData, redistribute) {
 	}
 }
 
+function clearResidentsFromPlatforms() {
+	for (var i = 0; i < platformRegistry.platformCount; i++) {
+		var platformIndex = "platform" + i;
+		platformRegistry[platformIndex].residents.list = [];
+	}
+}
+
+function tokensInFLC() {
+	var foundAToken = false;
+	for (var i = 5; i <= 9; i++) {
+		var platformIndex = "platform" + i;
+		if (platformRegistry[platformIndex].residents.list.length > 0)
+			foundAToken = true;
+	}
+	return foundAToken;
+}
+
 /* === movement === */
 function moveTokenToPlatform(tokenData, platform) {
-	deregisterTokenFromAllPlatforms(tokenData, true);
+	//deregisterTokenFromAllPlatforms(tokenData, true);
 	platform.imageObject.dock(tokenData.canvasGroup);
 	canvas.renderAll();
 }
@@ -98,15 +115,17 @@ function walkToken(tokenData, coords) {
 		onChange: canvas.renderAll.bind(canvas),
 	});
 }
-function walkTokensToPlatform(tokenRoster, platform, increment) {
+function walkTokensToPlatform(tokenRoster, platform, increment, updateRosters) {
 	var formation = crowdDistribution(platform.imageObject, tokenRoster.length);
 	var tokenFormation = musterTokens(tokenRoster);
 	for (var i = 0; i < tokenRoster.length; i++) {
 		walkToken(tokenFormation[i], formation[i]);
 		if (increment)
 			incrementGrade(tokenFormation[i].canvasGroup);
-		deregisterTokenFromAllPlatforms(tokenFormation[i], false);
-		platform.residents.add(tokenRoster[i]);
+		if (updateRosters) {
+			deregisterTokenFromAllPlatforms(tokenFormation[i], false);
+			platform.residents.add(tokenRoster[i]);
+		}
 		tokenFormation[i].canvasGroup.setCoords();
 	}
 }
@@ -143,16 +162,6 @@ function enablePlatform(platform) {
 	canvas.renderAll();
 }
 
-function tokensInFLC() {
-	var foundAToken = false;
-	for (var i = 5; i <= 9; i++) {
-		var platformIndex = "platform" + i;
-		if (platformRegistry[platformIndex].residents.list.length > 0)
-			foundAToken = true;
-	}
-	return foundAToken;
-}
-
 /* === initialization === */
 document.getElementById("addChildBtn").addEventListener("click", function(){ 
 	var name = document.getElementById("nameField").value;
@@ -168,7 +177,10 @@ canvas.on('mouse:down', function(options){
 	else
 		enablePlatform(platformRegistry.platform4);
 	if (typeof options.target == "object" && options.target.name == "cycle-btn") {
+
 		var cachedPlatformRegistry = JSON.parse( JSON.stringify( platformRegistry ) );
+		clearResidentsFromPlatforms();
+
 		for (var i = platformRegistry.platformCount - 1; i >= 0; i--) { // iterate in reverse order to improve detection of disabled platforms
 			var sourcePlatformName = "platform" + i;
 			var targetPlatformCounter = new cyclicCounter(i, platformRegistry.platformCount - 1);
@@ -176,11 +188,17 @@ canvas.on('mouse:down', function(options){
 			do
 				targetPlatformName = "platform" + targetPlatformCounter.increment();
 			while (platformRegistry[targetPlatformName].disabled === true);
-			//if (cachedPlatformRegistry[sourcePlatformName].residents.list.length > 0)
-			//	console.log("walkTokensToPlatform(", cachedPlatformRegistry[sourcePlatformName].residents.list, platformRegistry[targetPlatformName], true, ");");
-			walkTokensToPlatform(cachedPlatformRegistry[sourcePlatformName].residents.list, platformRegistry[targetPlatformName], true);
+
+			// assign tokens to platforms
+			platformRegistry[targetPlatformName].residents.list = platformRegistry[targetPlatformName].residents.list.concat(cachedPlatformRegistry[sourcePlatformName].residents.list);
+
+			//if (platformRegistry[targetPlatformName].residents.list.length > 0)
+			//	console.log("walkTokensToPlatform(", platformRegistry[targetPlatformName].residents.list/*, platformRegistry[targetPlatformName], true, ");"*/);
+			walkTokensToPlatform(platformRegistry[targetPlatformName].residents.list, platformRegistry[targetPlatformName], true, false);
+
+			// kids shouldn't use ADV if they have siblings in the FLC
 			if (tokensInFLC())
-				disablePlatform(platformRegistry.platform4); // kids shouldn't use ADV if they have siblings in the FLC
+				disablePlatform(platformRegistry.platform4);
 			else
 				enablePlatform(platformRegistry.platform4);
 		}
