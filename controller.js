@@ -226,6 +226,15 @@ canvas.on('mouse:down', function(options){
 			walkTokensToPlatform(platformRegistry[platformName].residents.list, platformRegistry[platformName], true, false);
 		}
 
+		// collect 9th graders and move them into high school
+		var highSchoolRoster = [];
+		for (var k = 0; k < tokenRegistry.tokenCount; k++) {
+			var tokenIndex = "token" + k;
+			if (tokenRegistry[tokenIndex].grade.index == 11)
+				highSchoolRoster.push(tokenIndex);
+		}
+		walkTokensToPlatform(highSchoolRoster, platformRegistry.platform10, false, true);
+
 		// kids shouldn't use ADV if they have siblings in the FLC
 		if (tokensInFLC())
 			disablePlatform(platformRegistry.platform4);
