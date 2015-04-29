@@ -143,6 +143,16 @@ function enablePlatform(platform) {
 	canvas.renderAll();
 }
 
+function tokensInFLC() {
+	var foundAToken = false;
+	for (var i = 5; i <= 9; i++) {
+		var platformIndex = "platform" + i;
+		if (platformRegistry[platformIndex].residents.list.length > 0)
+			foundAToken = true;
+	}
+	return foundAToken;
+}
+
 /* === initialization === */
 document.getElementById("addChildBtn").addEventListener("click", function(){ 
 	var name = document.getElementById("nameField").value;
@@ -153,17 +163,26 @@ document.getElementById("addChildBtn").addEventListener("click", function(){
 });
 
 canvas.on('mouse:down', function(options){
+	if (tokensInFLC())
+		disablePlatform(platformRegistry.platform4); // kids shouldn't use ADV if they have siblings in the FLC
+	else
+		enablePlatform(platformRegistry.platform4);
 	if (typeof options.target == "object" && options.target.name == "cycle-btn") {
 		var cachedPlatformRegistry = JSON.parse( JSON.stringify( platformRegistry ) );
-		for (var i = 0; i < platformRegistry.platformCount; i++) {
+		for (var i = platformRegistry.platformCount - 1; i >= 0; i--) { // iterate in reverse order to improve detection of disabled platforms
 			var sourcePlatformName = "platform" + i;
 			var targetPlatformCounter = new cyclicCounter(i, platformRegistry.platformCount - 1);
 			var targetPlatformName;
 			do
 				targetPlatformName = "platform" + targetPlatformCounter.increment();
 			while (platformRegistry[targetPlatformName].disabled === true);
-			//console.log("walkTokensToPlatform(", cachedPlatformRegistry[sourcePlatformName].residents.list, platformRegistry[targetPlatformName], true, ");");
+			//if (cachedPlatformRegistry[sourcePlatformName].residents.list.length > 0)
+			//	console.log("walkTokensToPlatform(", cachedPlatformRegistry[sourcePlatformName].residents.list, platformRegistry[targetPlatformName], true, ");");
 			walkTokensToPlatform(cachedPlatformRegistry[sourcePlatformName].residents.list, platformRegistry[targetPlatformName], true);
+			if (tokensInFLC())
+				disablePlatform(platformRegistry.platform4); // kids shouldn't use ADV if they have siblings in the FLC
+			else
+				enablePlatform(platformRegistry.platform4);
 		}
 	}
 });
