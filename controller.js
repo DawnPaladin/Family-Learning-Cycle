@@ -104,7 +104,7 @@ function moveTokensToPlatform(tokenFormation, platform, increment) {
 	for (var i = 0; i < tokenFormation.length; i++) {
 		moveTokenToPlatform(tokenFormation[i], platform);
 		if (increment)
-			incrementGrade(tokenFormation[i].canvasGroup);
+			incrementTokenGrade(tokenFormation[i].canvasGroup);
 	}
 }
 function walkToken(tokenData, coords) {
@@ -121,7 +121,7 @@ function walkTokensToPlatform(tokenRoster, platform, increment, updateRosters) {
 	for (var i = 0; i < tokenRoster.length; i++) {
 		walkToken(tokenFormation[i], formation[i]);
 		if (increment)
-			incrementGrade(tokenFormation[i].canvasGroup);
+			incrementTokenGrade(tokenFormation[i].canvasGroup);
 		if (updateRosters) {
 			deregisterTokenFromAllPlatforms(tokenFormation[i], false);
 			platform.residents.add(tokenRoster[i]);
@@ -130,7 +130,7 @@ function walkTokensToPlatform(tokenRoster, platform, increment, updateRosters) {
 	}
 }
 
-function incrementGrade(tokenImage) {
+function incrementTokenGrade(tokenImage) {
 	var tokenIndex = tokenImage.index;
 	var oldGradeIndex = Number(tokenRegistry[tokenIndex].grade.index);
 	var newGradeIndex = oldGradeIndex + 1;
@@ -149,6 +149,33 @@ function incrementGrade(tokenImage) {
 	else
 		tokenImage._objects[6].fontSize = 12;
 	canvas.renderAll();
+}
+
+function nextYear(platformNumber) {
+	var targetPlatformCounter = null;
+
+	// prep platformNumber for incrementation
+	if (platformNumber < 3) { // source platform: Preschool through God's Creation
+		targetPlatformCounter = new linearCounter(platformNumber);
+	}
+	if (platformNumber == 3) { // source platform: LGS
+		if (tokensInFLC()) {
+			targetPlatformCounter = new linearCounter(4);
+		}
+		else
+			targetPlatformCounter = new linearCounter(3);
+	}
+	if (platformNumber > 3 && platformNumber < 10) {
+		targetPlatformCounter = new cyclicCounter(platformNumber, 5, 9);
+	}
+	if (platformNumber >= 10 && platformNumber < 14) {
+		targetPlatformCounter = new linearCounter(platformNumber);
+	}
+	if (platformNumber == 14)
+		targetPlatformCounter = new linearCounter(13);
+	if (targetPlatformCounter === null)
+		console.error("Could not assign targetPlatformCounter");
+	 return targetPlatformCounter.increment();
 }
 
 function disablePlatform(platform) {
@@ -172,36 +199,39 @@ document.getElementById("addChildBtn").addEventListener("click", function(){
 });
 
 canvas.on('mouse:down', function(options){
-	if (tokensInFLC())
-		disablePlatform(platformRegistry.platform4); // kids shouldn't use ADV if they have siblings in the FLC
-	else
-		enablePlatform(platformRegistry.platform4);
 	if (typeof options.target == "object" && options.target.name == "cycle-btn") {
+
+		/*if (tokensInFLC())
+			disablePlatform(platformRegistry.platform4); // kids shouldn't use ADV if they have siblings in the FLC
+		else
+			enablePlatform(platformRegistry.platform4);*/
 
 		var cachedPlatformRegistry = JSON.parse( JSON.stringify( platformRegistry ) );
 		clearResidentsFromPlatforms();
 
-		for (var i = platformRegistry.platformCount - 1; i >= 0; i--) { // iterate in reverse order to improve detection of disabled platforms
+		for (var i = platformRegistry.platformCount - 1; i >= 0; i--) { // iterate over platforms in reverse order to improve detection of disabled platforms
 			var sourcePlatformName = "platform" + i;
-			var targetPlatformCounter = new cyclicCounter(i, platformRegistry.platformCount - 1);
-			var targetPlatformName;
-			do
-				targetPlatformName = "platform" + targetPlatformCounter.increment();
-			while (platformRegistry[targetPlatformName].disabled === true);
+			var targetPlatformName = "platform" + nextYear(i);
+			//console.log(sourcePlatformName, targetPlatformName);
 
 			// assign tokens to platforms
 			platformRegistry[targetPlatformName].residents.list = platformRegistry[targetPlatformName].residents.list.concat(cachedPlatformRegistry[sourcePlatformName].residents.list);
-
-			//if (platformRegistry[targetPlatformName].residents.list.length > 0)
-			//	console.log("walkTokensToPlatform(", platformRegistry[targetPlatformName].residents.list/*, platformRegistry[targetPlatformName], true, ");"*/);
-			walkTokensToPlatform(platformRegistry[targetPlatformName].residents.list, platformRegistry[targetPlatformName], true, false);
-
-			// kids shouldn't use ADV if they have siblings in the FLC
-			if (tokensInFLC())
-				disablePlatform(platformRegistry.platform4);
-			else
-				enablePlatform(platformRegistry.platform4);
 		}
+
+		//if (platformRegistry[targetPlatformName].residents.list.length > 0)
+		//	console.log("walkTokensToPlatform(", platformRegistry[targetPlatformName].residents.list/*, platformRegistry[targetPlatformName], true, ");"*/);
+		
+		for (var j = 0; j < platformRegistry.platformCount; j++) {
+			var platformName = "platform" + j;
+			walkTokensToPlatform(platformRegistry[platformName].residents.list, platformRegistry[platformName], true, false);
+		}
+
+		// kids shouldn't use ADV if they have siblings in the FLC
+		if (tokensInFLC())
+			disablePlatform(platformRegistry.platform4);
+		else
+			enablePlatform(platformRegistry.platform4);
+
 	}
 });
 

@@ -36,13 +36,22 @@ function Platform(x, y, name, url) {
 	};
 }
 
-function cyclicCounter(initial, maximum) {
+function cyclicCounter(initial, minimum, maximum) {
 	this.counter = initial;
+	this.minimum = minimum;
 	this.maximum = maximum;
+	if (this.initial > this.maximum || this.initial < this.minimum)
+		this.counter = this.minimum;
 	this.increment = function(){
 		if (++this.counter > maximum)
-			this.counter = 0;
+			this.counter = this.minimum;
 		return this.counter;
+	};
+}
+function linearCounter(initial) {
+	this.counter = initial;
+	this.increment = function() {
+		return ++this.counter;
 	};
 }
 
