@@ -14,6 +14,7 @@ function Platform(x, y, name, url) {
 	this.location = {x: x, y: y};
 	this.name = name;
 	this.url = url;
+	this.location = Locations[name];
 	this.index = "platform" + platformRegistry.platformCount++;
 	this.residents = { list: [] };
 	this.imageObject = null;
@@ -35,6 +36,33 @@ function Platform(x, y, name, url) {
 			residentRegistry.list.splice(arrayIndex, 1);
 	};
 }
+
+function List(){
+	List.makeNode = function(name, sectionName) {
+		return {
+			name: name,
+			section: sectionName,
+			next: null
+		};
+	};
+	this.add = function(array, sectionName, listType) {
+		for (var i = 0; i < array.length; i++) {
+			this[array[i]] = List.makeNode(array[i], sectionName);
+		}
+		for (var j = 0; j < array.length; j++) {
+			this[array[j]].next = this[array[j+1]];
+		}
+		this.first = this[array[0]];
+		this.last = this[array[array.length - 1]];
+		if (listType == "circular") {
+			this.last.next = this.first;
+		}
+	};
+}
+
+var Locations = new List();
+Locations.add(["Preschool", "Pre-K", "Kindergarten", "LGS", "ADV"], "Discover");
+Locations.add(["ECC", "CTG", "RTR", "EXP", "MOD"], "Investigate", "circular");
 
 function cyclicCounter(initial, minimum, maximum) {
 	this.counter = initial;
