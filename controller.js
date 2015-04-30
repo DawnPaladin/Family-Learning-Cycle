@@ -34,6 +34,7 @@ function newPlatform(x, y, name, url) {
 			selectable: false, 
 		}
 	);
+	Locations[name].platformIndex = platformIndex;
 	return platformRegistry[platformIndex];
 }
 
@@ -85,13 +86,13 @@ function clearResidentsFromPlatforms() {
 }
 
 function tokensInFLC() {
-	var foundAToken = false;
-	for (var i = 5; i <= 9; i++) {
-		var platformIndex = "platform" + i;
-		if (platformRegistry[platformIndex].residents.list.length > 0)
-			foundAToken = true;
+	var foundFLCPlatform = false;
+	for (var i = 0; i < tokenRegistry.tokenCount; i++) {
+		var tokenIndex = "token" + i;
+		if (tokenRegistry[tokenIndex].location.section == "Investigate")
+			foundFLCPlatform = true;
 	}
-	return foundAToken;
+	return foundFLCPlatform;
 }
 
 /* === movement === */
@@ -115,16 +116,19 @@ function walkToken(tokenData, coords) {
 		onChange: canvas.renderAll.bind(canvas),
 	});
 }
-function walkTokensToPlatform(tokenRoster, platform, increment, updateRosters) {
+function walkTokensToPlatform(tokenRoster, platform, incrementGrade, updateRosters) {
 	var formation = crowdDistribution(platform.imageObject, tokenRoster.length);
 	var tokenFormation = musterTokens(tokenRoster);
 	for (var i = 0; i < tokenRoster.length; i++) {
 		walkToken(tokenFormation[i], formation[i]);
-		if (increment)
+		if (incrementGrade)
 			incrementTokenGrade(tokenFormation[i].canvasGroup);
 		if (updateRosters) {
+			// update platform information about tokens
 			deregisterTokenFromAllPlatforms(tokenFormation[i], false);
 			platform.residents.add(tokenRoster[i]);
+			// update token information about platforms
+			tokenFormation[i].location = platform.location;
 		}
 		tokenFormation[i].canvasGroup.setCoords();
 	}
@@ -151,33 +155,6 @@ function incrementTokenGrade(tokenImage) {
 	canvas.renderAll();
 }
 
-function nextYear(platformNumber) {
-	var targetPlatformCounter = null;
-
-	// prep platformNumber for incrementation
-	if (platformNumber < 3) { // source platform: Preschool through God's Creation
-		targetPlatformCounter = new LinearCounter(platformNumber);
-	}
-	if (platformNumber == 3) { // source platform: LGS
-		if (tokensInFLC()) {
-			targetPlatformCounter = new LinearCounter(4);
-		}
-		else
-			targetPlatformCounter = new LinearCounter(3);
-	}
-	if (platformNumber > 3 && platformNumber < 10) {
-		targetPlatformCounter = new CyclicCounter(platformNumber, 5, 9);
-	}
-	if (platformNumber >= 10 && platformNumber < 14) {
-		targetPlatformCounter = new LinearCounter(platformNumber);
-	}
-	if (platformNumber == 14)
-		targetPlatformCounter = new LinearCounter(13);
-	if (targetPlatformCounter === null)
-		console.error("Could not assign targetPlatformCounter");
-	 return targetPlatformCounter.increment();
-}
-
 function disablePlatform(platform) {
 	platform.disabled = true;
 	platform.imageObject.opacity = 0.5;
@@ -198,49 +175,64 @@ document.getElementById("addChildBtn").addEventListener("click", function(){
 	newToken(name, grade, height, color);
 });
 
+var cycleYear = Locations.ECC;
 canvas.on('mouse:down', function(options){
 	if (typeof options.target == "object" && options.target.name == "cycle-btn") {
 
-		/*if (tokensInFLC())
-			disablePlatform(platformRegistry.platform4); // kids shouldn't use ADV if they have siblings in the FLC
-		else
-			enablePlatform(platformRegistry.platform4);*/
-
-		var cachedPlatformRegistry = jQuery.extend({}, platformRegistry);
-		clearResidentsFromPlatforms();
-		console.log(cachedPlatformRegistry);
-
-		for (var i = platformRegistry.platformCount - 1; i >= 0; i--) { // iterate over platforms in reverse order to improve detection of disabled platforms
-			var sourcePlatformName = "platform" + i;
-			var targetPlatformName = "platform" + nextYear(i);
-			//console.log(sourcePlatformName, targetPlatformName);
-
-			// assign tokens to platforms
-			platformRegistry[targetPlatformName].residents.list = platformRegistry[targetPlatformName].residents.list.concat(cachedPlatformRegistry[sourcePlatformName].residents.list);
-		}
-
-		//if (platformRegistry[targetPlatformName].residents.list.length > 0)
-		//	console.log("walkTokensToPlatform(", platformRegistry[targetPlatformName].residents.list/*, platformRegistry[targetPlatformName], true, ");"*/);
-		
-		for (var j = 0; j < platformRegistry.platformCount; j++) {
-			var platformName = "platform" + j;
-			walkTokensToPlatform(platformRegistry[platformName].residents.list, platformRegistry[platformName], true, false);
-		}
-
-		// collect 9th graders and move them into high school
-		var highSchoolRoster = [];
-		for (var k = 0; k < tokenRegistry.tokenCount; k++) {
-			var tokenIndex = "token" + k;
-			if (tokenRegistry[tokenIndex].grade.index == 11)
-				highSchoolRoster.push(tokenIndex);
-		}
-		walkTokensToPlatform(highSchoolRoster, platformRegistry.platform10, false, true);
-
-		// kids shouldn't use ADV if they have siblings in the FLC
-		if (tokensInFLC())
+		if (tokensInFLC()) {
+			cycleYear = cycleYear.next;
 			disablePlatform(platformRegistry.platform4);
-		else
+		}
+		else {
+			cycleYear = Locations.ECC;
 			enablePlatform(platformRegistry.platform4);
+		}
+
+		// determine changed token locations
+		for (var i = 0; i < tokenRegistry.tokenCount; i++) {
+			var tokenIndex = "token" + i;
+			incrementTokenGrade(tokenRegistry[tokenIndex].canvasGroup);
+			var tokenLocation = tokenRegistry[tokenIndex].location;
+			if (tokenLocation.section == "Discover") {
+				if ((tokenLocation.name == "ADV") || (tokenLocation.name == "LGS" && tokensInFLC()))
+					tokenRegistry[tokenIndex].location = cycleYear;
+				else
+					tokenRegistry[tokenIndex].location = tokenLocation.next;
+			}
+			if (tokenLocation.section == "Investigate") {
+				if (tokenRegistry[tokenIndex].grade.index == 11)
+					tokenRegistry[tokenIndex].location = Locations.AHL;
+				else
+					tokenRegistry[tokenIndex].location = cycleYear;
+			}
+			if (tokenLocation.section == "Declare") {
+				if (tokenLocation.name == "US2")
+					tokenRegistry[tokenIndex].location = Locations.college;
+				else
+					tokenRegistry[tokenIndex].location = tokenLocation.next;
+			}
+		}
+
+		// special case handling: A token enters ADV when the FLC was just activated
+		if (tokensInFLC() && platformRegistry.platform4.residents.list.length > 0) {
+			for (var l = 0; l < platformRegistry.platform4.residents.list.length; l++) {
+				platformRegistry.platform4.residents.list[l].location = cycleYear;
+			}
+			disablePlatform(platformRegistry.platform4);
+		}
+
+		// move tokens to their new locations
+		for (var j = 0; j < platformRegistry.platformCount; j++) {
+			var platformIndex = "platform" + j; 
+			var platformName = platformRegistry[platformIndex].name;
+			var roster = [];
+			for (var k = 0; k < tokenRegistry.tokenCount; k++) {
+				var tokenIndex = "token" + k; // jshint ignore:line
+				if (tokenRegistry[tokenIndex].location.name == platformName)
+					roster.push(tokenIndex);
+			}
+			walkTokensToPlatform(roster, platformRegistry[platformIndex], false, true);
+		}
 
 	}
 });

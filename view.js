@@ -37,6 +37,7 @@ function setupPlatform(image) {
 		//console.log("Docking " + token + " into " + image);
 		token.top = image.getCenterPoint().y;
 		platform.residents.add(token.index);
+		tokenRegistry[token.index].location = platform.location;
 		distributeCrowd(image, platform.residents.list);
 		token.setCoords();
 	};

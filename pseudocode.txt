@@ -14,10 +14,8 @@ For each token:
 	Advance my grade a year
 	Check my location
 	If in Discover
-		If at AHL
-			Move to Investigate
-		If at LGS and ADV is disabled
-			Move to Investigate
+		If at ADV, or at LGS and there are tokens in FLC
+			Move to active year
 		Otherwise
 			Move to the next year
 	If in Investigate
@@ -66,3 +64,6 @@ Examples:
 	"college", "unplaced"
 		section: null
 		next: null
+
+Tokens know which platforms they're on. This gets used for advancing them.
+Platforms know which tokens are on them. This is used to calculate centering.

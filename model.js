@@ -8,6 +8,7 @@ function Token(name, grade, height, color) { // class definition
 	this.color = color;
 	this.coords = {x: 0, y: 0};
 	this.canvasGroup = null;
+	this.location = null;
 }
 
 function Platform(x, y, name, url) {
@@ -20,7 +21,9 @@ function Platform(x, y, name, url) {
 	this.imageObject = null;
 	this.disabled = false;
 	var residentRegistry = this.residents;
+	var platformName = this.name;
 	residentRegistry.add = function(tokenIndex) {
+		//console.log("Adding", tokenIndex, "to", platformName, "registry, called by", arguments.callee.caller.toString());
 		residentRegistry.list.push(tokenIndex);
 	};
 	residentRegistry.find = function(tokenIndex) {
@@ -42,7 +45,8 @@ function List(){
 		return {
 			name: name,
 			section: sectionName,
-			next: null
+			next: null,
+			platformIndex: null,
 		};
 	};
 	this.add = function(array, sectionName, listType) {
@@ -63,6 +67,9 @@ function List(){
 var Locations = new List();
 Locations.add(["Preschool", "Pre-K", "Kindergarten", "LGS", "ADV"], "Discover");
 Locations.add(["ECC", "CTG", "RTR", "EXP", "MOD"], "Investigate", "circular");
+Locations.add(["AHL", "WHL", "US1", "US2"], "Declare");
+Locations.college = List.makeNode("college", "other");
+Locations.orphanage = List.makeNode("orphanage", "other");
 
 function CyclicCounter(initial, minimum, maximum) {
 	this.counter = initial;
