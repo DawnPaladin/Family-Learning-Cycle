@@ -206,8 +206,9 @@ canvas.on('mouse:down', function(options){
 		else
 			enablePlatform(platformRegistry.platform4);*/
 
-		var cachedPlatformRegistry = JSON.parse( JSON.stringify( platformRegistry ) );
+		var cachedPlatformRegistry = jQuery.extend({}, platformRegistry);
 		clearResidentsFromPlatforms();
+		console.log(cachedPlatformRegistry);
 
 		for (var i = platformRegistry.platformCount - 1; i >= 0; i--) { // iterate over platforms in reverse order to improve detection of disabled platforms
 			var sourcePlatformName = "platform" + i;
