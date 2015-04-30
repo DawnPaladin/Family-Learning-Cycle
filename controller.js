@@ -29,8 +29,8 @@ function newPlatform(x, y, name, url) {
 		platformRegistry[platformIndex].url, // path to image
 		setupPlatform, // callback after loading image
 		{ // options to pass to new image object
-			left: platformRegistry[platformIndex].location.x, 
-			top: platformRegistry[platformIndex].location.y, 
+			left: platformRegistry[platformIndex].coords.x, 
+			top: platformRegistry[platformIndex].coords.y, 
 			selectable: false, 
 		}
 	);

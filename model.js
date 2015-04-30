@@ -6,12 +6,12 @@ function Token(name, grade, height, color) { // class definition
 	this.grade = grade;
 	this.height = height;
 	this.color = color;
-	this.location = {x: 0, y: 0};
+	this.coords = {x: 0, y: 0};
 	this.canvasGroup = null;
 }
 
 function Platform(x, y, name, url) {
-	this.location = {x: x, y: y};
+	this.coords = {x: x, y: y};
 	this.name = name;
 	this.url = url;
 	this.location = Locations[name];
