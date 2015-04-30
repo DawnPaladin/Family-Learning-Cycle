@@ -64,7 +64,7 @@ var Locations = new List();
 Locations.add(["Preschool", "Pre-K", "Kindergarten", "LGS", "ADV"], "Discover");
 Locations.add(["ECC", "CTG", "RTR", "EXP", "MOD"], "Investigate", "circular");
 
-function cyclicCounter(initial, minimum, maximum) {
+function CyclicCounter(initial, minimum, maximum) {
 	this.counter = initial;
 	this.minimum = minimum;
 	this.maximum = maximum;
@@ -76,7 +76,7 @@ function cyclicCounter(initial, minimum, maximum) {
 		return this.counter;
 	};
 }
-function linearCounter(initial) {
+function LinearCounter(initial) {
 	this.counter = initial;
 	this.increment = function() {
 		return ++this.counter;

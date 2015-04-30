@@ -156,23 +156,23 @@ function nextYear(platformNumber) {
 
 	// prep platformNumber for incrementation
 	if (platformNumber < 3) { // source platform: Preschool through God's Creation
-		targetPlatformCounter = new linearCounter(platformNumber);
+		targetPlatformCounter = new LinearCounter(platformNumber);
 	}
 	if (platformNumber == 3) { // source platform: LGS
 		if (tokensInFLC()) {
-			targetPlatformCounter = new linearCounter(4);
+			targetPlatformCounter = new LinearCounter(4);
 		}
 		else
-			targetPlatformCounter = new linearCounter(3);
+			targetPlatformCounter = new LinearCounter(3);
 	}
 	if (platformNumber > 3 && platformNumber < 10) {
-		targetPlatformCounter = new cyclicCounter(platformNumber, 5, 9);
+		targetPlatformCounter = new CyclicCounter(platformNumber, 5, 9);
 	}
 	if (platformNumber >= 10 && platformNumber < 14) {
-		targetPlatformCounter = new linearCounter(platformNumber);
+		targetPlatformCounter = new LinearCounter(platformNumber);
 	}
 	if (platformNumber == 14)
-		targetPlatformCounter = new linearCounter(13);
+		targetPlatformCounter = new LinearCounter(13);
 	if (targetPlatformCounter === null)
 		console.error("Could not assign targetPlatformCounter");
 	 return targetPlatformCounter.increment();
