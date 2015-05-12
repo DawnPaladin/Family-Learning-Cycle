@@ -1,0 +1,15 @@
+{
+  "name": "flc-toy",
+  "version": "1.0.0",
+  "description": "Demonstration of My Father's World's unique curriculum system.",
+  "author": "James Harris <james@designthroughstorytelling.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DawnPaladin/Family-Learning-Cycle"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-concat": "^0.5.1",
+    "grunt-contrib-watch": "^0.6.1"
+  }
+}
