@@ -16,10 +16,13 @@ module.exports = function(grunt) {
          }
       },
       watch: {
-         files: ['src/*.js', 'Gruntfile.js'],
-         tasks: ['concat'],
-         options: {
-            livereload: true,
+         all: {
+            files: ['src/model.js', 'src/view.js', 'src/controller.js', 'Gruntfile.js', 'index.html'],
+            tasks: ['concat'],
+            options: {
+               livereload: true,
+               interval: 1007
+            }
          }
       },
       express: { // from http://rhumaric.com/2013/07/renewing-the-grunt-livereload-magic/ and http://thecrumb.com/2014/03/15/using-grunt-for-live-reload/
