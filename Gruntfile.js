@@ -1,5 +1,8 @@
 module.exports = function(grunt) {
 
+   // load plugins
+   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+
    // Project configuration
    grunt.initConfig({
       pkg: grunt.file.readJSON('package.json'),
@@ -13,15 +16,29 @@ module.exports = function(grunt) {
          }
       },
       watch: {
-         files: ['src/*.js'],
-         tasks: ['concat']
+         files: ['src/*.js', 'Gruntfile.js'],
+         tasks: ['concat'],
+         options: {
+            livereload: true,
+         }
+      },
+      express: { // from http://rhumaric.com/2013/07/renewing-the-grunt-livereload-magic/ and http://thecrumb.com/2014/03/15/using-grunt-for-live-reload/
+         all: {
+            options: {
+               port: 9000,
+               hostname: "0.0.0.0",
+               bases: ['C:\\Users\\James\\Documents\\Repositories\\Family-Learning-Cycle\\'],
+               livereload: true
+            }
+         }
+      },
+      open: {
+         all: {
+            path: 'http://localhost:<%= express.all.options.port%>'
+         }
       }
    });
 
-   // Load plugins
-   grunt.loadNpmTasks('grunt-contrib-concat');
-   grunt.loadNpmTasks('grunt-contrib-watch');
-
    // Run tasks
-   grunt.registerTask('default', ['concat', 'watch']);
+   grunt.registerTask('default', ['concat', 'express', 'open', 'watch']);
 };
