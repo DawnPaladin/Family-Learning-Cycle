@@ -237,24 +237,24 @@ canvas.on('mouse:down', function(options){
 	}
 });
 
-newPlatform( 50, 200, "Preschool", 'img/Preschool.png');
-newPlatform(200, 250, "Pre-K", 'img/Pre-K.png');
-newPlatform(350, 200, "Kindergarten", 'img/Kindergarten.png');
-newPlatform(500, 250, "LGS", 'img/LGS.png');
-newPlatform(650, 200, "ADV", 'img/USH.png'); // "ADV.png" gets hit by AdBlock
+newPlatform( 50, 200, "Preschool", 'images/Preschool.png');
+newPlatform(200, 250, "Pre-K", 'images/Pre-K.png');
+newPlatform(350, 200, "Kindergarten", 'images/Kindergarten.png');
+newPlatform(500, 250, "LGS", 'images/LGS.png');
+newPlatform(650, 200, "ADV", 'images/USH.png'); // "ADV.png" gets hit by AdBlock
 
-newPlatform(325,  500, "ECC", 'img/ECC.png');
-newPlatform(600,  800, "CTG", 'img/CTG.png');
-newPlatform(550, 1100, "RTR", 'img/RTR.png');
-newPlatform(100, 1100, "EXP", 'img/EXP.png');
-newPlatform( 50,  800, "MOD", 'img/MOD.png');
+newPlatform(325,  500, "ECC", 'images/ECC.png');
+newPlatform(600,  800, "CTG", 'images/CTG.png');
+newPlatform(550, 1100, "RTR", 'images/RTR.png');
+newPlatform(100, 1100, "EXP", 'images/EXP.png');
+newPlatform( 50,  800, "MOD", 'images/MOD.png');
 
-newPlatform( 50, 1400, "AHL", 'img/AHL.png');
-newPlatform(275, 1425, "WHL", 'img/WHL.png');
-newPlatform(500, 1400, "US1", 'img/US1.png');
-newPlatform(725, 1425, "US2", 'img/US2.png');
+newPlatform( 50, 1400, "AHL", 'images/AHL.png');
+newPlatform(275, 1425, "WHL", 'images/WHL.png');
+newPlatform(500, 1400, "US1", 'images/US1.png');
+newPlatform(725, 1425, "US2", 'images/US2.png');
 
-newPlatform(25, 1525, "college", 'img/college.png');
+newPlatform(25, 1525, "college", 'images/college.png');
 
 /*window.setTimeout(function(){ // Generate some default tokens for testing purposes
 	newToken("Inkie", "1", 30, "#5377a6");

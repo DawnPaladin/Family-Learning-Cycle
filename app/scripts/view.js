@@ -14,7 +14,7 @@ var orphanage = new fabric.Rect({
 	selectable: false,
 });
 canvas.add(orphanage);
-fabric.Image.fromURL('img/cycle-btn.png', function(loadedImage) {
+fabric.Image.fromURL('images/cycle-btn.png', function(loadedImage) {
 	canvas.add(loadedImage);
 }, {
 	selectable: true,
