@@ -1,3 +1,4 @@
+'use strict';
 /* Token taxonomy:
 	tokenRegistry: Collection of tokenData stored in model.js
 	tokenData: Found in tokenRegistry. Stores a tokenImage in tokenData.canvasGroup.
@@ -11,13 +12,13 @@
 /* === creation and destruction === */
 function newToken(name, gradeIndex, height, color) {
 	var gradeObj = processGrade(gradeIndex);
-	var tokenIndex = "token" + tokenRegistry.tokenCount++;
+	var tokenIndex = 'token' + tokenRegistry.tokenCount++;
 	var tokenData = new Token(name, gradeObj, height, color);
 	tokenRegistry[tokenIndex] = tokenData;
 	tokenRegistry[tokenIndex].canvasGroup = drawNewToken(100, 500, name, gradeObj, height, color, tokenIndex);
-} //newToken("Twilight Sparkle", "1", 50, "#662D8A");
+} //newToken('Twilight Sparkle', '1', 50, '#662D8A');
 function orphan(tokenIndex) {
-	console.log("Removing " + tokenIndex);
+	console.log('Removing ' + tokenIndex);
 	eraseTokenImage(tokenRegistry[tokenIndex].canvasGroup);
 	tokenRegistry[tokenIndex] = {};
 }
@@ -52,7 +53,7 @@ function lookupCanvasObjectByURL(url) {
 }
 function lookupPlatformByURL(url) {
 	for (var i = 0; i < platformRegistry.platformCount; i++) {
-		var platformIndex = "platform" + i;
+		var platformIndex = 'platform' + i;
 		var platformURL = platformRegistry[platformIndex].url;
 		var endOfPlatformURL = platformURL.substr(platformURL.length - 7);
 		var endOfURL = url.substr(url.length - 7);
@@ -71,7 +72,7 @@ function musterTokens(tokenRoster) { // convert an array of token names to an ar
 
 function deregisterTokenFromAllPlatforms(tokenData, redistribute) {
 	for (var i = 0; i < platformRegistry.platformCount; i++) { // remove token from all previous platforms
-		var platformIndex = "platform" + i;
+		var platformIndex = 'platform' + i;
 		platformRegistry[platformIndex].residents.remove(tokenData.canvasGroup.index); // remove token from residence in each platform
 		if (redistribute)
 			distributeCrowd(platformRegistry[platformIndex].imageObject, platformRegistry[platformIndex].residents.list);
@@ -80,7 +81,7 @@ function deregisterTokenFromAllPlatforms(tokenData, redistribute) {
 
 function clearResidentsFromPlatforms() {
 	for (var i = 0; i < platformRegistry.platformCount; i++) {
-		var platformIndex = "platform" + i;
+		var platformIndex = 'platform' + i;
 		platformRegistry[platformIndex].residents.list = [];
 	}
 }
@@ -88,8 +89,8 @@ function clearResidentsFromPlatforms() {
 function tokensInFLC() {
 	var foundFLCPlatform = false;
 	for (var i = 0; i < tokenRegistry.tokenCount; i++) {
-		var tokenIndex = "token" + i;
-		if (tokenRegistry[tokenIndex].location.section == "Investigate")
+		var tokenIndex = 'token' + i;
+		if (tokenRegistry[tokenIndex].location.section == 'Investigate')
 			foundFLCPlatform = true;
 	}
 	return foundFLCPlatform;
@@ -109,7 +110,7 @@ function moveTokensToPlatform(tokenFormation, platform, increment) {
 	}
 }
 function walkToken(tokenData, coords) {
-	//console.log("Walk ", tokenData, " to ", coords);
+	//console.log('Walk ', tokenData, ' to ', coords);
 	tokenData.canvasGroup.animate(coords, {
 		duration: 750,
 		easing: fabric.util.ease.easeInOutCubic,
@@ -139,7 +140,7 @@ function incrementTokenGrade(tokenImage) {
 	var oldGradeIndex = Number(tokenRegistry[tokenIndex].grade.index);
 	var newGradeIndex = oldGradeIndex + 1;
 	if (newGradeIndex > 14) {
-		console.warn("Attempted to increment a grade past 12.");
+		console.warn('Attempted to increment a grade past 12.');
 		newGradeIndex = 14;
 	}
 	tokenRegistry[tokenIndex].grade = processGrade(newGradeIndex);
@@ -148,7 +149,7 @@ function incrementTokenGrade(tokenImage) {
 	var gradeObj = tokenRegistry[tokenIndex].grade;
 	tokenImage._objects[5].text = gradeObj.line1;
 	tokenImage._objects[6].text = gradeObj.line2;
-	if (gradeObj.line2Size == "large")
+	if (gradeObj.line2Size == 'large')
 		tokenImage._objects[6].fontSize = 36;
 	else
 		tokenImage._objects[6].fontSize = 12;
@@ -167,17 +168,17 @@ function enablePlatform(platform) {
 }
 
 /* === initialization === */
-document.getElementById("addChildBtn").addEventListener("click", function(){ 
-	var name = document.getElementById("nameField").value;
-	var grade = document.getElementById("gradeSelect").value;
-	var height = Number(document.getElementById("heightSlider").value);
+document.getElementById('addChildBtn').addEventListener('click', function(){ 
+	var name = document.getElementById('nameField').value;
+	var grade = document.getElementById('gradeSelect').value;
+	var height = Number(document.getElementById('heightSlider').value);
 	var color = document.querySelector('input[name = "chooseColor"]:checked').value;
 	newToken(name, grade, height, color);
 });
 
 var cycleYear = Locations.ECC;
 canvas.on('mouse:down', function(options){
-	if (typeof options.target == "object" && options.target.name == "cycle-btn") {
+	if (typeof options.target == 'object' && options.target.name == 'cycle-btn') {
 
 		if (tokensInFLC()) {
 			cycleYear = cycleYear.next;
@@ -190,23 +191,23 @@ canvas.on('mouse:down', function(options){
 
 		// determine changed token locations
 		for (var i = 0; i < tokenRegistry.tokenCount; i++) {
-			var tokenIndex = "token" + i;
+			var tokenIndex = 'token' + i;
 			incrementTokenGrade(tokenRegistry[tokenIndex].canvasGroup);
 			var tokenLocation = tokenRegistry[tokenIndex].location;
-			if (tokenLocation.section == "Discover") {
-				if ((tokenLocation.name == "ADV") || (tokenLocation.name == "LGS" && tokensInFLC()))
+			if (tokenLocation.section == 'Discover') {
+				if ((tokenLocation.name == 'ADV') || (tokenLocation.name == 'LGS' && tokensInFLC()))
 					tokenRegistry[tokenIndex].location = cycleYear;
 				else
 					tokenRegistry[tokenIndex].location = tokenLocation.next;
 			}
-			if (tokenLocation.section == "Investigate") {
+			if (tokenLocation.section == 'Investigate') {
 				if (tokenRegistry[tokenIndex].grade.index == 11)
 					tokenRegistry[tokenIndex].location = Locations.AHL;
 				else
 					tokenRegistry[tokenIndex].location = cycleYear;
 			}
-			if (tokenLocation.section == "Declare") {
-				if (tokenLocation.name == "US2")
+			if (tokenLocation.section == 'Declare') {
+				if (tokenLocation.name == 'US2')
 					tokenRegistry[tokenIndex].location = Locations.college;
 				else
 					tokenRegistry[tokenIndex].location = tokenLocation.next;
@@ -223,11 +224,11 @@ canvas.on('mouse:down', function(options){
 
 		// move tokens to their new locations
 		for (var j = 0; j < platformRegistry.platformCount; j++) {
-			var platformIndex = "platform" + j; 
+			var platformIndex = 'platform' + j; 
 			var platformName = platformRegistry[platformIndex].name;
 			var roster = [];
 			for (var k = 0; k < tokenRegistry.tokenCount; k++) {
-				var tokenIndex = "token" + k; // jshint ignore:line
+				var tokenIndex = 'token' + k; // jshint ignore:line
 				if (tokenRegistry[tokenIndex].location.name == platformName)
 					roster.push(tokenIndex);
 			}
@@ -237,32 +238,32 @@ canvas.on('mouse:down', function(options){
 	}
 });
 
-newPlatform( 50, 200, "Preschool", 'images/Preschool.png');
-newPlatform(200, 250, "Pre-K", 'images/Pre-K.png');
-newPlatform(350, 200, "Kindergarten", 'images/Kindergarten.png');
-newPlatform(500, 250, "LGS", 'images/LGS.png');
-newPlatform(650, 200, "ADV", 'images/USH.png'); // "ADV.png" gets hit by AdBlock
+newPlatform( 50, 200, 'Preschool', 'images/Preschool.png');
+newPlatform(200, 250, 'Pre-K', 'images/Pre-K.png');
+newPlatform(350, 200, 'Kindergarten', 'images/Kindergarten.png');
+newPlatform(500, 250, 'LGS', 'images/LGS.png');
+newPlatform(650, 200, 'ADV', 'images/USH.png'); // 'ADV.png' gets hit by AdBlock
 
-newPlatform(325,  500, "ECC", 'images/ECC.png');
-newPlatform(600,  800, "CTG", 'images/CTG.png');
-newPlatform(550, 1100, "RTR", 'images/RTR.png');
-newPlatform(100, 1100, "EXP", 'images/EXP.png');
-newPlatform( 50,  800, "MOD", 'images/MOD.png');
+newPlatform(325,  500, 'ECC', 'images/ECC.png');
+newPlatform(600,  800, 'CTG', 'images/CTG.png');
+newPlatform(550, 1100, 'RTR', 'images/RTR.png');
+newPlatform(100, 1100, 'EXP', 'images/EXP.png');
+newPlatform( 50,  800, 'MOD', 'images/MOD.png');
 
-newPlatform( 50, 1400, "AHL", 'images/AHL.png');
-newPlatform(275, 1425, "WHL", 'images/WHL.png');
-newPlatform(500, 1400, "US1", 'images/US1.png');
-newPlatform(725, 1425, "US2", 'images/US2.png');
+newPlatform( 50, 1400, 'AHL', 'images/AHL.png');
+newPlatform(275, 1425, 'WHL', 'images/WHL.png');
+newPlatform(500, 1400, 'US1', 'images/US1.png');
+newPlatform(725, 1425, 'US2', 'images/US2.png');
 
-newPlatform(25, 1525, "college", 'images/college.png');
+newPlatform(25, 1525, 'college', 'images/college.png');
 
 /*window.setTimeout(function(){ // Generate some default tokens for testing purposes
-	newToken("Inkie", "1", 30, "#5377a6");
-	newToken("Blinkie", "2", 45, "#dd5b5a");
-	newToken("Pinkie", "3", 60, "#f9b5d1");
-	newToken("Clyde", "4", 70, "#ffa544");
+	newToken('Inkie', '1', 30, '#5377a6');
+	newToken('Blinkie', '2', 45, '#dd5b5a');
+	newToken('Pinkie', '3', 60, '#f9b5d1');
+	newToken('Clyde', '4', 70, '#ffa544');
 	for (var i = 0; i < tokenRegistry.tokenCount; i++) {
-		moveTokenToPlatform(tokenRegistry["token" + i], platformRegistry.platform0);
+		moveTokenToPlatform(tokenRegistry['token' + i], platformRegistry.platform0);
 	}
 }, 500);
 */
