@@ -1,7 +1,15 @@
-var tokenRegistry = { tokenCount: 0 };
-var platformRegistry = { platformCount: 0 };
+'use strict';
 
-function Token(name, grade, height, color) { // class definition
+var flcToy = {
+	model: {},
+	view: {},
+	controller: {},
+};
+
+flcToy.model.tokenRegistry = { tokenCount: 0 };
+flcToy.model.platformRegistry = { platformCount: 0 };
+
+flcToy.model.Token = function(name, grade, height, color) { // class definition
 	this.name = name;
 	this.grade = grade;
 	this.height = height;
@@ -9,14 +17,14 @@ function Token(name, grade, height, color) { // class definition
 	this.coords = {x: 0, y: 0};
 	this.canvasGroup = null;
 	this.location = null;
-}
+};
 
-function Platform(x, y, name, url) {
+flcToy.model.Platform = function(x, y, name, url) {
 	this.coords = {x: x, y: y};
 	this.name = name;
 	this.url = url;
-	this.location = Locations[name];
-	this.index = "platform" + platformRegistry.platformCount++;
+	this.location = flcToy.model.Locations[name];
+	this.index = "platform" + flcToy.model.platformRegistry.platformCount++;
 	this.residents = { list: [] };
 	this.imageObject = null;
 	this.disabled = false;
@@ -28,19 +36,21 @@ function Platform(x, y, name, url) {
 	};
 	residentRegistry.find = function(tokenIndex) {
 		for (var i = 0; i < residentRegistry.list.length; i++) {
-			if (residentRegistry.list[i].indexOf(tokenIndex) > -1)
+			if (residentRegistry.list[i].indexOf(tokenIndex) > -1) {
 				return i;
+			}
 		}
 		return -1;
 	};
 	residentRegistry.remove = function(tokenIndex) {
 		var arrayIndex = residentRegistry.find(tokenIndex);
-		if (arrayIndex > -1)
+		if (arrayIndex > -1) {
 			residentRegistry.list.splice(arrayIndex, 1);
+		}
 	};
-}
+};
 
-function List(){
+var List = function(){
 	List.makeNode = function(name, sectionName) {
 		return {
 			name: name,
@@ -58,39 +68,41 @@ function List(){
 		}
 		this.first = this[array[0]];
 		this.last = this[array[array.length - 1]];
-		if (listType == "circular") {
+		if (listType === "circular") {
 			this.last.next = this.first;
 		}
 	};
-}
+};
 
-var Locations = new List();
-Locations.add(["Preschool", "Pre-K", "Kindergarten", "LGS", "ADV"], "Discover");
-Locations.add(["ECC", "CTG", "RTR", "EXP", "MOD"], "Investigate", "circular");
-Locations.add(["AHL", "WHL", "US1", "US2"], "Declare");
-Locations.college = List.makeNode("college", "other");
-Locations.orphanage = List.makeNode("orphanage", "other");
+flcToy.model.Locations = new List();
+flcToy.model.Locations.add(["Preschool", "Pre-K", "Kindergarten", "LGS", "ADV"], "Discover");
+flcToy.model.Locations.add(["ECC", "CTG", "RTR", "EXP", "MOD"], "Investigate", "circular");
+flcToy.model.Locations.add(["AHL", "WHL", "US1", "US2"], "Declare");
+flcToy.model.Locations.college = List.makeNode("college", "other");
+flcToy.model.Locations.orphanage = List.makeNode("orphanage", "other");
 
-function CyclicCounter(initial, minimum, maximum) {
+flcToy.model.CyclicCounter = function(initial, minimum, maximum) {
 	this.counter = initial;
 	this.minimum = minimum;
 	this.maximum = maximum;
-	if (this.initial > this.maximum || this.initial < this.minimum)
+	if (this.initial > this.maximum || this.initial < this.minimum) {
 		this.counter = this.minimum;
+	}
 	this.increment = function(){
-		if (++this.counter > maximum)
+		if (++this.counter > maximum) {
 			this.counter = this.minimum;
+		}
 		return this.counter;
 	};
-}
-function LinearCounter(initial) {
+};
+flcToy.model.LinearCounter = function(initial) {
 	this.counter = initial;
 	this.increment = function() {
 		return ++this.counter;
 	};
-}
+};
 
-function processGrade(gradeIndex) {
+flcToy.model.processGrade = function(gradeIndex) {
 	// process value from Grade dropdown
 	var gradeLevels = ["Preschool", "Pre-K", "Kindergarten", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
 	var gradeText = gradeLevels[gradeIndex];
@@ -119,4 +131,4 @@ function processGrade(gradeIndex) {
 			break;
 	}
 	return gradeObj;
-}
+};
