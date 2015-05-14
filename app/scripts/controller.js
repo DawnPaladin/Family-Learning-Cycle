@@ -176,6 +176,9 @@ flcToy.controller.enablePlatform = function(platform) {
 };
 
 /* === initialization === */
+
+flcToy.cycleYear = flcToy.model.Locations.ECC;
+
 document.getElementById('addChildBtn').addEventListener('click', function(){ 
 	var name = document.getElementById('nameField').value;
 	var grade = document.getElementById('gradeSelect').value;
@@ -184,72 +187,74 @@ document.getElementById('addChildBtn').addEventListener('click', function(){
 	flcToy.controller.newToken(name, grade, height, color);
 });
 
-var cycleYear = flcToy.model.Locations.ECC;
+flcToy.controller.advanceCycle = function() {
+
+	if (flcToy.controller.tokensInFLC()) {
+		flcToy.cycleYear = flcToy.cycleYear.next;
+		flcToy.controller.disablePlatform(flcToy.model.platformRegistry.platform4);
+	}
+	else {
+		flcToy.cycleYear = flcToy.model.Locations.ECC;
+		flcToy.controller.enablePlatform(flcToy.model.platformRegistry.platform4);
+	}
+
+	// determine changed token locations
+	for (var i = 0; i < flcToy.model.tokenRegistry.tokenCount; i++) {
+		var tokenIndex = 'token' + i;
+		flcToy.controller.incrementTokenGrade(flcToy.model.tokenRegistry[tokenIndex].canvasGroup);
+		var tokenLocation = flcToy.model.tokenRegistry[tokenIndex].location;
+		if (tokenLocation.section === 'Discover') {
+			if ((tokenLocation.name === 'ADV') || (tokenLocation.name === 'LGS' && flcToy.controller.tokensInFLC())) {
+				flcToy.model.tokenRegistry[tokenIndex].location = flcToy.cycleYear;
+			}
+			else {
+				flcToy.model.tokenRegistry[tokenIndex].location = tokenLocation.next;
+			}
+		}
+		if (tokenLocation.section === 'Investigate') {
+			if (flcToy.model.tokenRegistry[tokenIndex].grade.index === 11) {
+				flcToy.model.tokenRegistry[tokenIndex].location = flcToy.model.Locations.AHL;
+			}
+			else {
+				flcToy.model.tokenRegistry[tokenIndex].location = flcToy.cycleYear;
+			}
+		}
+		if (tokenLocation.section === 'Declare') {
+			if (tokenLocation.name === 'US2') {
+				flcToy.model.tokenRegistry[tokenIndex].location = flcToy.model.Locations.college;
+			}
+			else {
+				flcToy.model.tokenRegistry[tokenIndex].location = tokenLocation.next;
+			}
+		}
+	}
+
+	// special case handling: A token enters ADV when the FLC was just activated
+	if (flcToy.controller.tokensInFLC() && flcToy.model.platformRegistry.platform4.residents.list.length > 0) {
+		for (var l = 0; l < flcToy.model.platformRegistry.platform4.residents.list.length; l++) {
+			flcToy.model.platformRegistry.platform4.residents.list[l].location = flcToy.cycleYear;
+		}
+		flcToy.controller.disablePlatform(flcToy.model.platformRegistry.platform4);
+	}
+
+	// move tokens to their new locations
+	for (var j = 0; j < flcToy.model.platformRegistry.platformCount; j++) {
+		var platformIndex = 'platform' + j; 
+		var platformName = flcToy.model.platformRegistry[platformIndex].name;
+		var roster = [];
+		for (var k = 0; k < flcToy.model.tokenRegistry.tokenCount; k++) {
+			var tokenIndex = 'token' + k; // jshint ignore:line
+			if (flcToy.model.tokenRegistry[tokenIndex].location.name === platformName) {
+				roster.push(tokenIndex);
+			}
+		}
+		flcToy.controller.walkTokensToPlatform(roster, flcToy.model.platformRegistry[platformIndex], false, true);
+	}
+};
+
 flcToy.view.canvas.on('mouse:down', function(options){
 	if (typeof options.target === 'object' && options.target.name === 'cycle-btn') {
-
-		if (flcToy.controller.tokensInFLC()) {
-			cycleYear = cycleYear.next;
-			flcToy.controller.disablePlatform(flcToy.model.platformRegistry.platform4);
-		}
-		else {
-			cycleYear = flcToy.model.Locations.ECC;
-			flcToy.controller.enablePlatform(flcToy.model.platformRegistry.platform4);
-		}
-
-		// determine changed token locations
-		for (var i = 0; i < flcToy.model.tokenRegistry.tokenCount; i++) {
-			var tokenIndex = 'token' + i;
-			flcToy.controller.incrementTokenGrade(flcToy.model.tokenRegistry[tokenIndex].canvasGroup);
-			var tokenLocation = flcToy.model.tokenRegistry[tokenIndex].location;
-			if (tokenLocation.section === 'Discover') {
-				if ((tokenLocation.name === 'ADV') || (tokenLocation.name === 'LGS' && flcToy.controller.tokensInFLC())) {
-					flcToy.model.tokenRegistry[tokenIndex].location = cycleYear;
-				}
-				else {
-					flcToy.model.tokenRegistry[tokenIndex].location = tokenLocation.next;
-				}
-			}
-			if (tokenLocation.section === 'Investigate') {
-				if (flcToy.model.tokenRegistry[tokenIndex].grade.index === 11) {
-					flcToy.model.tokenRegistry[tokenIndex].location = flcToy.model.Locations.AHL;
-				}
-				else {
-					flcToy.model.tokenRegistry[tokenIndex].location = cycleYear;
-				}
-			}
-			if (tokenLocation.section === 'Declare') {
-				if (tokenLocation.name === 'US2') {
-					flcToy.model.tokenRegistry[tokenIndex].location = flcToy.model.Locations.college;
-				}
-				else {
-					flcToy.model.tokenRegistry[tokenIndex].location = tokenLocation.next;
-				}
-			}
-		}
-
-		// special case handling: A token enters ADV when the FLC was just activated
-		if (flcToy.controller.tokensInFLC() && flcToy.model.platformRegistry.platform4.residents.list.length > 0) {
-			for (var l = 0; l < flcToy.model.platformRegistry.platform4.residents.list.length; l++) {
-				flcToy.model.platformRegistry.platform4.residents.list[l].location = cycleYear;
-			}
-			flcToy.controller.disablePlatform(flcToy.model.platformRegistry.platform4);
-		}
-
-		// move tokens to their new locations
-		for (var j = 0; j < flcToy.model.platformRegistry.platformCount; j++) {
-			var platformIndex = 'platform' + j; 
-			var platformName = flcToy.model.platformRegistry[platformIndex].name;
-			var roster = [];
-			for (var k = 0; k < flcToy.model.tokenRegistry.tokenCount; k++) {
-				var tokenIndex = 'token' + k; // jshint ignore:line
-				if (flcToy.model.tokenRegistry[tokenIndex].location.name === platformName) {
-					roster.push(tokenIndex);
-				}
-			}
-			flcToy.controller.walkTokensToPlatform(roster, flcToy.model.platformRegistry[platformIndex], false, true);
-		}
-
+		flcToy.controller.advanceCycle();
 	}
 });
 
