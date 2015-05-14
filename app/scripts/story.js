@@ -13,12 +13,14 @@ var story = {
 		}
 	],
 	currentPage: -1,
+	tokenRegistry: {},
 	turnPageForward: function(){
 		var currentPage = story.pages[++story.currentPage];
 		storyBox.text(currentPage.text);
 		if (Array.isArray(currentPage.token) || false) { // if page has an associated token, create it
 			var tokenIndex = flcToy.controller.newToken.apply(null, currentPage.token);
-			currentPage.tokenIndex = tokenIndex;
+			var tokenName = currentPage.token[0];
+			story.tokenRegistry[tokenName] = tokenIndex;
 		}
 	},
 	turnPageBackward: function(){
@@ -26,7 +28,9 @@ var story = {
 		var currentPage = story.pages[--story.currentPage];
 		storyBox.text(currentPage.text);
 		if (Array.isArray(oldPage.token) || false) { // if pages has an associated token, orphan it
-			flcToy.controller.orphan(oldPage.tokenIndex);
+			var tokenName = oldPage.token[0];
+			var tokenIndex = story.tokenRegistry[tokenName];
+			flcToy.controller.orphan(tokenIndex);
 		}
 	},
 };
