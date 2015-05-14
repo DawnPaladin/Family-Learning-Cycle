@@ -15,6 +15,7 @@ flcToy.controller.newToken = function (name, gradeIndex, height, color) {
 	var tokenData = new flcToy.model.Token(name, gradeObj, height, color);
 	flcToy.model.tokenRegistry[tokenIndex] = tokenData;
 	flcToy.model.tokenRegistry[tokenIndex].canvasGroup = flcToy.view.drawNewToken(100, 500, name, gradeObj, height, color, tokenIndex);
+	return tokenIndex;
 }; //newToken('Twilight Sparkle', '1', 50, '#662D8A');
 flcToy.controller.orphan = function(tokenIndex) {
 	console.log('Removing ' + tokenIndex);
