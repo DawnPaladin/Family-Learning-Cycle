@@ -1,4 +1,18 @@
-.controls {
+body {
+  width: 972px;
+  font-family: "Source Sans Pro", sans-serif;
+  margin: auto;
+  font-size: 1.15em;
+  line-height: 1.5em;
+}
+.img-right {
+  float: right;
+  margin: 0 1em;
+}
+.clearfix {
+  overflow: auto;
+}
+.toyControls {
   margin-top: 1em;
   margin-bottom: 1.5em;
   font-family: "Source Sans Pro", sans-serif;
@@ -7,7 +21,7 @@ select, button {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 16px;
 }
-.control {
+.toyControl {
   margin: 0 0.5em;
 }
 .colorBox {
@@ -24,10 +38,26 @@ select, button {
 }
 .colorBox:checked::before { content: '✔'; text-align: center; }
 
+.flc-toy-wrapper {
+  width: 1800px;
+  width: 972px;
+}
 #FamilyLearningCycleToy {
   border: 1px dotted silver;
   margin: 0px;
 }
 canvas {
   -webkit-tap-highlight-color:rgba(0,0,0,0); /* prevent canvas from being highlighted on taps */
+}
+.storyHoverBox {
+  position: fixed;
+  bottom: 1em;
+  width: 50%;
+  background-color: white;
+  border: 1px solid silver;
+  box-shadow: .5em .5em .5em #F0F0F0;
+  padding: .5em;
+}
+.storyControls {
+  float: right;
 }

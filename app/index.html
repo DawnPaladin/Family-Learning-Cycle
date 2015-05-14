@@ -22,12 +22,12 @@
 		<![endif]-->
 
 
-		<div class="controls">
-			<span class="control">
+		<div class="toyControls">
+			<span class="toyControl">
 				<label for="nameField">Name</label> 
 				<input id="nameField" value="Guy">
 			</span>
-			<span class="control">
+			<span class="toyControl">
 				<label for="gradeSelect">Grade</label> 
 				<select id="gradeSelect">
 					<option value="0">Preschool</option>
@@ -47,11 +47,11 @@
 					<option value="14">12th grade</option>
 				</select>
 			</span>
-			<span class="control">
+			<span class="toyControl">
 				<label for="heightSlider">Height</label>
 				<input type="range" id="heightSlider" min="20" max="70" step="5">
 			</span>
-			<span class="control">
+			<span class="toyControl">
 				<label>Color</label>
 				<style>
 					.colorBox:nth-of-type(1)::before { background-color: #dd5b5a; }
@@ -68,11 +68,19 @@
 				<input type="radio" name="chooseColor" class="colorBox" value="#5377a6">
 				<input type="radio" name="chooseColor" class="colorBox" value="#90d823">
 			</span>
-			<button id="addChildBtn" class="control">Add child</button>
-			<!-- <button id="testBtn" class="control"></button> -->
+			<button id="addChildBtn" class="toyControl">Add child</button>
+			<!-- <button id="testBtn" class="toyControl"></button> -->
 		</div>
 
-		<canvas id="FamilyLearningCycleToy" width="972" height="1800">Your browser is out-of-date. To display the Family Learning Cycle, you'll need to update it.</canvas><br>
+		<div class="flc-toy-wrapper">
+			<canvas id="FamilyLearningCycleToy" width="972" height="1800">Your browser is out-of-date. To display the Family Learning Cycle, you'll need to update it.</canvas>
+			<div class="storyHoverBox">
+				<div class="storyControls">
+					<button id="storyPrevBtn">&lt;</button>
+					<button id="storyNextBtn">Next &gt;</button>
+				</div>
+			</div>
+		</div>
 		<!-- build:js(.) scripts/vendor.js -->
 		<!-- bower:js -->
 		<script src="bower_components/jquery/dist/jquery.js"></script>
