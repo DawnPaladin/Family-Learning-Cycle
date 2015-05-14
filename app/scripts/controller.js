@@ -1,4 +1,3 @@
-'use strict';
 /* Token taxonomy:
 	flcToy.model.tokenRegistry: Collection of tokenData stored in model.js
 	tokenData: Found in flcToy.model.tokenRegistry. Stores a tokenImage in tokenData.canvasGroup.
