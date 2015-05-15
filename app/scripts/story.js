@@ -4,7 +4,7 @@ var story = {
 			{ 
 				text: "Let's imagine a family with one child named Robert. Robert's parents start him out in Preschool.", 
 				tokens: [
-					{
+					{ //format: string name, string gradeIndex, int height (20-70), string color
 						name: "Robert",
 						init: ["Robert", "0", 50, "#dd5b5a"],
 						platform: "platform0"
@@ -25,6 +25,90 @@ var story = {
 			{ text: "(Keep advancing Robert through high school.)", advance: true },
 			{ text: "(Keep advancing Robert through high school.)", advance: true },
 			{ text: "Robert graduates from high school and is ready to begin a career or leave for college.", advance: true }
+		],
+		Carpenters: [
+			{
+				text: "Daniel is starting preschool at the same time Molly is transferring in from 2nd grade in a public school.",
+				tokens: [
+					{ //format: string name, string gradeIndex, int height (20-70), string color
+						name: "Daniel",
+						init: ["Daniel", "0", 55, "#ffa544"],
+						platform: "platform0"
+					}, {
+						name: "Molly",
+						init: ["Molly", "4", 70, "#f9b5d1"],
+						platform: "platform4"
+					}
+				]
+			}, {
+				text: "At the end of the year, Molly advances to Exploring Countries and Cultures while Daniel moves into Pre-K.",
+				advance: true
+			}, {
+				text: "The Carpenter family is blessed with two more children, one after another: Matthew and Alicia.",
+				advance: true,
+				tokens: [
+					{
+						name: "Matthew",
+						init: ["Matthew", "0", 45, "#5377a6"],
+						platform: "platform0"
+					}
+				]
+			}, {
+				text: "Adventures in US History is only used for students who don't have older siblings in the Family Learning Cycle. [grey it out] When Daniel finishes first grade, instead of doing Adventures, he joins Molly in the Family Learning Cycle. Mrs. Carpenter will teach Exploration to 1850 to both children, giving each child material appropriate for their age level as spelled out in the Teacher's Manual.",
+				advance: true,
+				tokens: [
+					{
+						name: "Alicia",
+						init: ["Alicia", "0", 35, "#b66de2"],
+						platform: "platform0"
+					}
+				]
+			}, {
+				text: "As each child finishes the Discover section, they join the rest of the family in the Family Learning Cycle, whatever year they happen to be on.",
+				advance: true
+			}, {
+				text: "As each child finishes the Discover section, they join the rest of the family in the Family Learning Cycle, whatever year they happen to be on.",
+				advance: true
+			}, {
+				text: "As each child finishes the Discover section, they join the rest of the family in the Family Learning Cycle, whatever year they happen to be on.",
+				advance: true
+			}, {
+				text: "When Molly hits 9th grade, she's finished the cycle and moves on to Declare. Her younger siblings continue the cycle without her.",
+				advance: true
+			}, {
+				text: "When Molly hits 9th grade, she's finished the cycle and moves on to Declare. Her younger siblings continue the cycle without her.",
+				advance: true
+			}, {
+				text: "When Molly hits 9th grade, she's finished the cycle and moves on to Declare. Her younger siblings continue the cycle without her.",
+				advance: true
+			}, {
+				text: "When Molly hits 9th grade, she's finished the cycle and moves on to Declare. Her younger siblings continue the cycle without her.",
+				advance: true
+			}, {
+				text: "Molly graduates from high school just as Daniel enters it.",
+				advance: true
+			}, {
+				text: "Molly graduates from high school just as Daniel enters it.",
+				advance: true
+			}, {
+				text: "Matthew and Amanda each enter High School as they hit 9th grade.",
+				advance: true
+			}, {
+				text: "Matthew and Amanda each enter High School as they hit 9th grade.",
+				advance: true
+			}, {
+				text: "Matthew and Amanda each enter High School as they hit 9th grade.",
+				advance: true
+			}, {
+				text: "Matthew and Amanda each enter High School as they hit 9th grade.",
+				advance: true
+			}, {
+				text: "Matthew and Amanda each enter High School as they hit 9th grade.",
+				advance: true
+			}, {
+				text: "Having successfully educated five children preschool through 12th grade, Mrs. Carpenter retires to a beach in Hawaii.",
+				advance: true
+			}
 		]
 	},
 	box: jQuery('#storyText'),
@@ -36,6 +120,9 @@ var story = {
 
 		story.box.text(currentPage.text);
 
+		if (currentPage.advance || false) {
+			flcToy.controller.advanceCycle();
+		}
 		// if page has associated tokens, create them
 		if (Array.isArray(currentPage.tokens) || false) {
 			for (var i = 0; i < currentPage.tokens.length; i++) {
@@ -46,9 +133,6 @@ var story = {
 				var platformData = flcToy.model.platformRegistry[currentToken.platform];
 				flcToy.controller.moveTokenToPlatform(tokenData, platformData);
 			}
-		}
-		if (currentPage.advance || false) {
-			flcToy.controller.advanceCycle();
 		}
 	},
 	turnPageBackward: function(){
@@ -69,6 +153,6 @@ var story = {
 jQuery('#storyPrevBtn').click(story.turnPageBackward);
 jQuery('#storyNextBtn').click(story.turnPageForward);
 setTimeout(function(){
-	story.pages = story.library.Robert;
+	story.pages = story.library.Carpenters;
 	story.turnPageForward();
 }, 100);
