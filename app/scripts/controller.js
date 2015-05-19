@@ -99,6 +99,51 @@ flcToy.controller.tokensInFLC = function() {
 	}
 	return foundFLCPlatform;
 };
+function clone(obj) { // from http://stackoverflow.com/a/728694/1805453
+    var copy;
+
+    // Handle the 3 simple types, and null or undefined
+    if (null === obj || "object" !== typeof obj) {
+    	return obj;
+    }
+
+    // Handle Date
+    if (obj instanceof Date) {
+        copy = new Date();
+        copy.setTime(obj.getTime());
+        return copy;
+    }
+
+    // Handle Array
+    if (obj instanceof Array) {
+        copy = [];
+        for (var i = 0, len = obj.length; i < len; i++) {
+            copy[i] = clone(obj[i]);
+        }
+        return copy;
+    }
+
+    // Handle Object
+    if (obj instanceof Object) {
+        copy = {};
+        for (var attr in obj) {
+            if (obj.hasOwnProperty(attr)) {
+            	if (attr === "location") {
+            		var locationName = obj.location.name;
+            		copy.location = flcToy.model.Locations[locationName];
+            	} else if (attr === "canvasGroup") {
+            		// don't copy canvasGroups recursively
+            		copy.canvasGroup = obj.canvasGroup;
+            	} else {
+            		copy[attr] = clone(obj[attr]);
+            	}
+            }
+        }
+        return copy;
+    }
+
+    throw new Error("Unable to copy obj! Its type isn't supported.");
+}
 
 /* === movement === */
 flcToy.controller.moveTokenToPlatform = function(tokenData, platform) {
@@ -189,6 +234,11 @@ document.getElementById('addChildBtn').addEventListener('click', function(){
 
 flcToy.controller.advanceCycle = function() {
 
+	// save current state to history
+	flcToy.model.tokenRegistry.prev = clone(flcToy.model.tokenRegistry);
+	//flcToy.model.platformRegistry.prev = jQuery.extend(true, {},flcToy.model.platformRegistry);
+
+	// enable/disable ADV depending on whether the FLC is active
 	if (flcToy.controller.tokensInFLC()) {
 		flcToy.cycleYear = flcToy.cycleYear.next;
 		flcToy.controller.disablePlatform(flcToy.model.platformRegistry.platform4);
@@ -208,7 +258,9 @@ flcToy.controller.advanceCycle = function() {
 				flcToy.model.tokenRegistry[tokenIndex].location = flcToy.cycleYear;
 			}
 			else {
+				//console.log(tokenRegistryCopy.token0.location.name);
 				flcToy.model.tokenRegistry[tokenIndex].location = tokenLocation.next;
+				//console.log(tokenRegistryCopy.token0.location.name);
 			}
 		}
 		if (tokenLocation.section === 'Investigate') {
@@ -250,6 +302,18 @@ flcToy.controller.advanceCycle = function() {
 		}
 		flcToy.controller.walkTokensToPlatform(roster, flcToy.model.platformRegistry[platformIndex], false, true);
 	}
+};
+
+flcToy.controller.reverseCycle = function() {
+
+	// restore previous state from history
+	try {
+		flcToy.model.tokenRegistry = flcToy.model.tokenRegistry.prev;
+		flcToy.model.platformRegistry = flcToy.model.platformRegistry.prev;
+	} catch (error) {
+		console.err("Cannot restore board state from history.");
+	}
+
 };
 
 flcToy.view.canvas.on('mouse:down', function(options){
