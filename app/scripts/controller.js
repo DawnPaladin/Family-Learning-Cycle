@@ -131,9 +131,9 @@ function clone(obj) { // from http://stackoverflow.com/a/728694/1805453
             	if (attr === "location") {
             		var locationName = obj.location.name;
             		copy.location = flcToy.model.Locations[locationName];
-            	} else if (attr === "canvasGroup") {
-            		// don't copy canvasGroups recursively
-            		copy.canvasGroup = obj.canvasGroup;
+            	} else if (attr === "canvasGroup" || attr === "imageObject") {
+            		// don't copy these recursively
+            		copy[attr] = obj[attr];
             	} else {
             		copy[attr] = clone(obj[attr]);
             	}
@@ -236,7 +236,7 @@ flcToy.controller.advanceCycle = function() {
 
 	// save current state to history
 	flcToy.model.tokenRegistry.prev = clone(flcToy.model.tokenRegistry);
-	//flcToy.model.platformRegistry.prev = jQuery.extend(true, {},flcToy.model.platformRegistry);
+	flcToy.model.platformRegistry.prev = clone(flcToy.model.platformRegistry);
 
 	// enable/disable ADV depending on whether the FLC is active
 	if (flcToy.controller.tokensInFLC()) {
