@@ -185,6 +185,20 @@ flcToy.controller.walkTokensToPlatform = function(tokenRoster, platform, increme
 		tokenFormation[i].canvasGroup.setCoords();
 	}
 };
+flcToy.controller.updateAllTokenLocations = function() {
+	for (var j = 0; j < flcToy.model.platformRegistry.platformCount; j++) {
+		var platformIndex = 'platform' + j; 
+		var platformName = flcToy.model.platformRegistry[platformIndex].name;
+		var roster = [];
+		for (var k = 0; k < flcToy.model.tokenRegistry.tokenCount; k++) {
+			var tokenIndex = 'token' + k; // jshint ignore:line
+			if (flcToy.model.tokenRegistry[tokenIndex].location.name === platformName) {
+				roster.push(tokenIndex);
+			}
+		}
+		flcToy.controller.walkTokensToPlatform(roster, flcToy.model.platformRegistry[platformIndex], false, true);
+	}
+};
 
 flcToy.controller.incrementTokenGrade = function(tokenImage) {
 	var tokenIndex = tokenImage.index;
@@ -290,18 +304,7 @@ flcToy.controller.advanceCycle = function() {
 	}
 
 	// move tokens to their new locations
-	for (var j = 0; j < flcToy.model.platformRegistry.platformCount; j++) {
-		var platformIndex = 'platform' + j; 
-		var platformName = flcToy.model.platformRegistry[platformIndex].name;
-		var roster = [];
-		for (var k = 0; k < flcToy.model.tokenRegistry.tokenCount; k++) {
-			var tokenIndex = 'token' + k; // jshint ignore:line
-			if (flcToy.model.tokenRegistry[tokenIndex].location.name === platformName) {
-				roster.push(tokenIndex);
-			}
-		}
-		flcToy.controller.walkTokensToPlatform(roster, flcToy.model.platformRegistry[platformIndex], false, true);
-	}
+	flcToy.controller.updateAllTokenLocations();
 };
 
 flcToy.controller.reverseCycle = function() {
@@ -313,6 +316,8 @@ flcToy.controller.reverseCycle = function() {
 	} catch (error) {
 		console.err("Cannot restore board state from history.");
 	}
+
+	flcToy.controller.updateAllTokenLocations();
 
 };
 

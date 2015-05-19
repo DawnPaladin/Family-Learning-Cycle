@@ -139,13 +139,14 @@ var story = {
 		var oldPage = story.pages[story.currentPage];
 		var currentPage = story.pages[--story.currentPage];
 		story.box.text(currentPage.text);
-		if (Array.isArray(oldPage.token) || false) { // if pages has an associated token, orphan it
-			var tokenName = oldPage.token[0];
-			var tokenIndex = story.tokenRegistry[tokenName];
-			flcToy.controller.orphan(tokenIndex);
+		if (Array.isArray(oldPage.tokens) || false) { // if pages has an associated token, orphan it
+			oldPage.tokens.forEach(function(token, index, array){
+				var tokenIndex = story.tokenRegistry[token.name];
+				flcToy.controller.orphan(tokenIndex);
+			});
 		}
 		if (oldPage.advance || false) {
-			// TODO
+			flcToy.controller.reverseCycle();
 		}
 	},
 };
