@@ -30,7 +30,7 @@
 	});
 
 	flcToy.view.setupPlatform = function(image) {
-		flcToy.view.canvas.add(image); 
+		flcToy.view.canvas.add(image);
 		flcToy.view.canvas.sendToBack(image);
 		var platform = flcToy.controller.lookupPlatformByURL(image._element.src);
 
@@ -120,6 +120,7 @@
 			hasControls: false,
 			index: tokenIndex,
 		});
+		token.base = base;
 		gradeLine1.setColor("#ffffff");
 		gradeLine2.setColor("#ffffff");
 		if (gradeObj.line2Size === "large") {
@@ -134,12 +135,15 @@
 
 	flcToy.view.dropToken = function(options){
 		var draggedToken = options.target;
+		draggedToken.setCoords();
+		draggedToken.base.setCoords();
+		console.log(draggedToken.base.intersectsWithObject);
 		if (draggedToken.index.indexOf("token") > -1) { // if this is a token
 			var foundADock = false; // more predictable behavior if a token overlaps two platforms
 			for (var i = 0; i < flcToy.model.platformRegistry.platformCount; i++) {
 				var platformIndex = "platform" + i;
 				flcToy.model.platformRegistry[platformIndex].residents.remove(draggedToken.index); // remove token from residence in each platform
-				if (!foundADock && draggedToken.intersectsWithObject(flcToy.model.platformRegistry[platformIndex].imageObject)) { // adapted from http://fabricjs.com/intersection/
+				if (!foundADock && flcToy.model.platformRegistry[platformIndex].imageObject.intersectsWithObject(draggedToken.base)) { // adapted from http://fabricjs.com/intersection/
 					flcToy.model.platformRegistry[platformIndex].imageObject.dock(draggedToken);
 					foundADock = true;
 				}
