@@ -126,6 +126,53 @@
 		if (gradeObj.line2Size === "large") {
 			gradeLine2.setFontSize(36);
 		}
+		token.itemInGroupIntersectsWithObject = function(other) {
+			// extracts coords
+			function getCoords(oCoords) {
+				return {
+					tl: new fabric.Point(oCoords.tl.x, oCoords.tl.y),
+					tr: new fabric.Point(oCoords.tr.x, oCoords.tr.y),
+					bl: new fabric.Point(oCoords.bl.x, oCoords.bl.y),
+					br: new fabric.Point(oCoords.br.x, oCoords.br.y)
+				};
+			}
+			function getBaseCoords(oCoords, base) {
+				var height = oCoords.bl.y - oCoords.tl.y;
+				var baseHeightOffset =  height - base.getPointByOrigin("center", "top").y;
+				console.log(height, baseHeightOffset);
+				return {
+					tl: new fabric.Point(oCoords.tl.x, oCoords.tl.y + baseHeightOffset),
+					tr: new fabric.Point(oCoords.tr.x, oCoords.tr.y + baseHeightOffset),
+					bl: new fabric.Point(oCoords.bl.x, oCoords.bl.y),
+					br: new fabric.Point(oCoords.br.x, oCoords.br.y)
+				};
+			}
+			var thisCoords = getBaseCoords(this.oCoords, token.base),
+			//var thisCoords = getCoords(this.oCoords),
+					otherCoords = getCoords(other.oCoords),
+					intersection = fabric.Intersection.intersectPolygonPolygon(
+						[thisCoords.tl, thisCoords.tr, thisCoords.br, thisCoords.bl],
+						[otherCoords.tl, otherCoords.tr, otherCoords.br, otherCoords.bl]
+					);
+			//console.log(thisCoords.tl, thisCoords.br, otherCoords.tl, otherCoords.br);
+			/*var intersectionViz = [];
+			intersection.points.forEach(function(element) {
+				var viz = new fabric.Circle({
+					left: element.x,
+					top: element.y,
+					radius: 2,
+					fill: "red"
+				});
+				flcToy.view.canvas.add(viz);
+				intersectionViz.push(viz);
+			});*/
+			flcToy.view.canvas.add(new fabric.Polygon(
+				[thisCoords.tl, thisCoords.tr, thisCoords.br, thisCoords.bl],
+				{fill: "red"}
+			));
+
+			return intersection.status === 'Intersection';
+		};
 		flcToy.view.canvas.add(token);
 		return token;
 	};
@@ -135,15 +182,12 @@
 
 	flcToy.view.dropToken = function(options){
 		var draggedToken = options.target;
-		draggedToken.setCoords();
-		draggedToken.base.setCoords();
-		console.log(draggedToken.base.intersectsWithObject);
 		if (draggedToken.index.indexOf("token") > -1) { // if this is a token
 			var foundADock = false; // more predictable behavior if a token overlaps two platforms
 			for (var i = 0; i < flcToy.model.platformRegistry.platformCount; i++) {
 				var platformIndex = "platform" + i;
 				flcToy.model.platformRegistry[platformIndex].residents.remove(draggedToken.index); // remove token from residence in each platform
-				if (!foundADock && flcToy.model.platformRegistry[platformIndex].imageObject.intersectsWithObject(draggedToken.base)) { // adapted from http://fabricjs.com/intersection/
+				if (!foundADock && draggedToken.itemInGroupIntersectsWithObject(flcToy.model.platformRegistry[platformIndex].imageObject)) { // adapted from http://fabricjs.com/intersection/
 					flcToy.model.platformRegistry[platformIndex].imageObject.dock(draggedToken);
 					foundADock = true;
 				}
