@@ -127,7 +127,6 @@
 			gradeLine2.setFontSize(36);
 		}
 		token.itemInGroupIntersectsWithObject = function(other) {
-			// extracts coords
 			function getCoords(oCoords) {
 				return {
 					tl: new fabric.Point(oCoords.tl.x, oCoords.tl.y),
@@ -139,7 +138,6 @@
 			function getBaseCoords(oCoords, base) {
 				var height = oCoords.bl.y - oCoords.tl.y;
 				var baseHeightOffset =  height - base.getPointByOrigin("center", "top").y;
-				console.log(height, baseHeightOffset);
 				return {
 					tl: new fabric.Point(oCoords.tl.x, oCoords.tl.y + baseHeightOffset),
 					tr: new fabric.Point(oCoords.tr.x, oCoords.tr.y + baseHeightOffset),
@@ -148,29 +146,11 @@
 				};
 			}
 			var thisCoords = getBaseCoords(this.oCoords, token.base),
-			//var thisCoords = getCoords(this.oCoords),
-					otherCoords = getCoords(other.oCoords),
-					intersection = fabric.Intersection.intersectPolygonPolygon(
-						[thisCoords.tl, thisCoords.tr, thisCoords.br, thisCoords.bl],
-						[otherCoords.tl, otherCoords.tr, otherCoords.br, otherCoords.bl]
-					);
-			//console.log(thisCoords.tl, thisCoords.br, otherCoords.tl, otherCoords.br);
-			/*var intersectionViz = [];
-			intersection.points.forEach(function(element) {
-				var viz = new fabric.Circle({
-					left: element.x,
-					top: element.y,
-					radius: 2,
-					fill: "red"
-				});
-				flcToy.view.canvas.add(viz);
-				intersectionViz.push(viz);
-			});*/
-			flcToy.view.canvas.add(new fabric.Polygon(
-				[thisCoords.tl, thisCoords.tr, thisCoords.br, thisCoords.bl],
-				{fill: "red"}
-			));
-
+				otherCoords = getCoords(other.oCoords),
+				intersection = fabric.Intersection.intersectPolygonPolygon(
+					[thisCoords.tl, thisCoords.tr, thisCoords.br, thisCoords.bl],
+					[otherCoords.tl, otherCoords.tr, otherCoords.br, otherCoords.bl]
+				);
 			return intersection.status === 'Intersection';
 		};
 		flcToy.view.canvas.add(token);
