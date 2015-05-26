@@ -244,6 +244,11 @@ document.getElementById('addChildBtn').addEventListener('click', function(){
 	var height = Number(document.getElementById('heightSlider').value);
 	var color = document.querySelector('input[name = "chooseColor"]:checked').value;
 	flcToy.controller.newToken(name, grade, height, color);
+	document.getElementById('nameField').value = "";
+	document.getElementById('gradeSelect').value = "0";
+	document.getElementById('heightSlider').value = 45;
+	document.querySelector('input[name = "chooseColor"]:checked').checked = false;
+	document.querySelector('input[value = "#dd5b5a"]').checked = true;
 });
 
 flcToy.controller.advanceCycle = function() {
