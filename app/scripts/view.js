@@ -2,6 +2,8 @@
 
 	flcToy.view.canvas = new fabric.Canvas('FamilyLearningCycleToy');
 
+	flcToy.view.canvas.selection = false;
+
 	var PERSON_WIDTH = 50;
 	var HEAD_RADIUS = PERSON_WIDTH / 2;
 	var PLATFORM_ELBOW_ROOM = 20;
