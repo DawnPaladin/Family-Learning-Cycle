@@ -204,9 +204,8 @@ flcToy.controller.incrementTokenGrade = function(tokenImage) {
 	var tokenIndex = tokenImage.index;
 	var oldGradeIndex = Number(flcToy.model.tokenRegistry[tokenIndex].grade.index);
 	var newGradeIndex = oldGradeIndex + 1;
-	if (newGradeIndex > 14) {
-		console.warn('Attempted to increment a grade past 12.');
-		newGradeIndex = 14;
+	if (newGradeIndex > 15) {
+		newGradeIndex = 15;
 	}
 	flcToy.model.tokenRegistry[tokenIndex].grade = flcToy.model.processGrade(newGradeIndex);
 

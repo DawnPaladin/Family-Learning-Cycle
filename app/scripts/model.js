@@ -104,7 +104,7 @@ flcToy.model.LinearCounter = function(initial) {
 
 flcToy.model.processGrade = function(gradeIndex) {
 	// process value from Grade dropdown
-	var gradeLevels = ["Preschool", "Pre-K", "Kindergarten", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
+	var gradeLevels = ["Preschool", "Pre-K", "Kindergarten", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", ""];
 	var gradeText = gradeLevels[gradeIndex];
 	var gradeObj = { 
 		index: gradeIndex, 
@@ -124,6 +124,10 @@ flcToy.model.processGrade = function(gradeIndex) {
 			gradeObj.line1 = "Kinder-";
 			gradeObj.line2 = "garten";
 			gradeObj.line2Size = "small";
+			break;
+		case "":
+			gradeObj.line1 = "Grad";
+			gradeObj.line2 = " ";
 			break;
 		default:
 			gradeObj.line1 = "Grade";
