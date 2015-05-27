@@ -331,24 +331,30 @@ flcToy.view.canvas.on('mouse:down', function(options){
 	}
 });
 
-flcToy.controller.newPlatform( 50, 200, 'Preschool', 'images/Preschool.png');
-flcToy.controller.newPlatform(200, 250, 'Pre-K', 'images/Pre-K.png');
-flcToy.controller.newPlatform(350, 200, 'Kindergarten', 'images/Kindergarten.png');
-flcToy.controller.newPlatform(500, 250, 'LGS', 'images/LGS.png');
-flcToy.controller.newPlatform(650, 200, 'ADV', 'images/USH.png'); // 'ADV.png' gets hit by AdBlock
+(function() {
+	var DiscoverBaseX = 90;
+	var DiscoverBaseY = 200;
+	flcToy.controller.newPlatform(DiscoverBaseX +  0, DiscoverBaseY +  0, 'Preschool', 'images/Preschool.png');
+	flcToy.controller.newPlatform(DiscoverBaseX + 150, DiscoverBaseY + 50, 'Pre-K', 'images/Pre-K.png');
+	flcToy.controller.newPlatform(DiscoverBaseX + 300, DiscoverBaseY +  0, 'Kindergarten', 'images/Kindergarten.png');
+	flcToy.controller.newPlatform(DiscoverBaseX + 450, DiscoverBaseY + 50, 'LGS', 'images/LGS.png');
+	flcToy.controller.newPlatform(DiscoverBaseX + 600, DiscoverBaseY +  0, 'ADV', 'images/USH.png'); // 'ADV.png' gets hit by AdBlock
 
-flcToy.controller.newPlatform(325,  500, 'ECC', 'images/ECC.png');
-flcToy.controller.newPlatform(600,  800, 'CTG', 'images/CTG.png');
-flcToy.controller.newPlatform(550, 1100, 'RTR', 'images/RTR.png');
-flcToy.controller.newPlatform(100, 1100, 'EXP', 'images/EXP.png');
-flcToy.controller.newPlatform( 50,  800, 'MOD', 'images/MOD.png');
+	var InvestigateBase = DiscoverBaseY + 300;
+	flcToy.controller.newPlatform(325, InvestigateBase +   0, 'ECC', 'images/ECC.png');
+	flcToy.controller.newPlatform(600, InvestigateBase + 250, 'CTG', 'images/CTG.png');
+	flcToy.controller.newPlatform(550, InvestigateBase + 500, 'RTR', 'images/RTR.png');
+	flcToy.controller.newPlatform(100, InvestigateBase + 500, 'EXP', 'images/EXP.png');
+	flcToy.controller.newPlatform( 50, InvestigateBase + 250, 'MOD', 'images/MOD.png');
 
-flcToy.controller.newPlatform( 50, 1400, 'AHL', 'images/AHL.png');
-flcToy.controller.newPlatform(275, 1425, 'WHL', 'images/WHL.png');
-flcToy.controller.newPlatform(500, 1400, 'US1', 'images/US1.png');
-flcToy.controller.newPlatform(725, 1425, 'US2', 'images/US2.png');
+	var DeclareBase = InvestigateBase + 850;
+	flcToy.controller.newPlatform( 50, DeclareBase +  0, 'AHL', 'images/AHL.png');
+	flcToy.controller.newPlatform(275, DeclareBase + 25, 'WHL', 'images/WHL.png');
+	flcToy.controller.newPlatform(500, DeclareBase +  0, 'US1', 'images/US1.png');
+	flcToy.controller.newPlatform(725, DeclareBase + 25, 'US2', 'images/US2.png');
 
-flcToy.controller.newPlatform(25, 1525, 'college', 'images/college.png');
+	flcToy.controller.newPlatform( 25, 1600, 'college', 'images/college.png');
+}());
 
 /*window.setTimeout(function(){ // Generate some default tokens for testing purposes
 	newToken('Inkie', '1', 30, '#5377a6');

@@ -4,6 +4,83 @@
 
 	flcToy.view.canvas.selection = false;
 
+	var CANVAS_WIDTH = 972;
+	var CANVAS_HEIGHT = 1800;
+
+	(function(){ // draw background
+
+		var DiscoverHeight = 320;
+		var InvestigateHeight = 800;
+		var DeclareHeight = 320;
+
+		var DiscoverRect = new fabric.Rect({
+			left: 0,
+			top: 0,
+			fill: "#fffcfa",
+			width: CANVAS_WIDTH,
+			height: DiscoverHeight,
+			selectable: false,
+		});
+		flcToy.view.canvas.add(DiscoverRect);
+
+		fabric.Image.fromURL(
+			"images/Discover.png", // path to image
+			function(image) { // callback after loading image
+				flcToy.view.canvas.add(image);
+			},
+			{ // options to pass to new image object
+				left: 200, 
+				top: 50, 
+				selectable: false, 
+			}
+		);
+
+		var InvestigateRect = new fabric.Rect({
+			left: 0,
+			top: DiscoverHeight,
+			fill: "#fbfdff",
+			width: CANVAS_WIDTH,
+			height: InvestigateHeight,
+			selectable: false,
+		});
+		flcToy.view.canvas.add(InvestigateRect);
+
+		fabric.Image.fromURL(
+			"images/Investigate.png", // path to image
+			function(image) { // callback after loading image
+				flcToy.view.canvas.add(image);
+			},
+			{ // options to pass to new image object
+				left: 125,
+				top: 850,
+				selectable: false,
+			}
+		);
+
+		var DeclareRect = new fabric.Rect({
+			left: 0,
+			top: DiscoverHeight + InvestigateHeight,
+			fill: "#fcfff8",
+			width: CANVAS_WIDTH,
+			height: DeclareHeight,
+			selectable: false,
+		});
+		flcToy.view.canvas.add(DeclareRect);
+
+		fabric.Image.fromURL(
+			"images/Declare.png", // path to image
+			function(image) { // callback after loading image
+				flcToy.view.canvas.add(image);
+			},
+			{ // options to pass to new image object
+				left: 225,
+				top: 1200,
+				selectable: false,
+			}
+		);
+
+	})();
+
 	var PERSON_WIDTH = 50;
 	var HEAD_RADIUS = PERSON_WIDTH / 2;
 	var PLATFORM_ELBOW_ROOM = 20;
@@ -22,7 +99,7 @@
 	}, {
 		selectable: true,
 		left: 400,
-		top: 750,
+		top: 700,
 		hoverCursor: "pointer",
 		hasControls: false,
 		hasBorders: false,
@@ -33,7 +110,6 @@
 
 	flcToy.view.setupPlatform = function(image) {
 		flcToy.view.canvas.add(image);
-		flcToy.view.canvas.sendToBack(image);
 		var platform = flcToy.controller.lookupPlatformByURL(image._element.src);
 
 		image.dock = function(token) {
