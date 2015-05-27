@@ -156,4 +156,4 @@ jQuery('#storyNextBtn').click(story.turnPageForward);
 setTimeout(function(){
 	story.pages = story.library.Carpenters;
 	story.turnPageForward();
-}, 100);
+}, 500);

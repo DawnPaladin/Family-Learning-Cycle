@@ -53,7 +53,7 @@ canvas {
   position: fixed;
   bottom: 1em;
   margin-left: -.75em;
-  width: 50%;
+  max-width: 486px;
   background-color: white;
   border: 1px solid silver;
   box-shadow: .5em .5em .5em #F0F0F0;
