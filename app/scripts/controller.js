@@ -20,7 +20,17 @@ flcToy.controller.newToken = function (name, gradeIndex, height, color) {
 flcToy.controller.orphan = function(tokenIndex) {
 	console.log('Removing ' + tokenIndex);
 	flcToy.view.eraseTokenImage(flcToy.model.tokenRegistry[tokenIndex].canvasGroup);
-	flcToy.model.tokenRegistry[tokenIndex] = {};
+	flcToy.model.tokenRegistry[tokenIndex] = { orphaned: true };
+};
+flcToy.controller.forEachToken = function(func) { // call thusly: flcToy.controller.forEachToken(function(tokenData){ ... });
+	for (var i = 0; i < flcToy.model.tokenRegistry.tokenCount; i++) {
+		var tokenIndex = "token" + i;
+		if (typeof flcToy.model.tokenRegistry[tokenIndex].orphaned === "boolean" && flcToy.model.tokenRegistry[tokenIndex].orphaned === true) {
+			console.log("Skipping orphaned token");
+		} else {
+			func(flcToy.model.tokenRegistry[tokenIndex]);
+		}
+	}
 };
 flcToy.controller.newPlatform = function(x, y, name, url) {
 	var thePlatform = new flcToy.model.Platform(x, y, name, url);
@@ -91,12 +101,11 @@ flcToy.controller.clearResidentsFromPlatforms = function() {
 
 flcToy.controller.tokensInFLC = function() {
 	var foundFLCPlatform = false;
-	for (var i = 0; i < flcToy.model.tokenRegistry.tokenCount; i++) {
-		var tokenIndex = 'token' + i;
-		if (flcToy.model.tokenRegistry[tokenIndex].location.section === 'Investigate') {
+	flcToy.controller.forEachToken(function(tokenData){
+		if (tokenData.location.section === "Investigate") {
 			foundFLCPlatform = true;
 		}
-	}
+	});
 	return foundFLCPlatform;
 };
 function clone(obj) { // from http://stackoverflow.com/a/728694/1805453
