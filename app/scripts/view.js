@@ -49,6 +49,8 @@
 			"images/FLC-circle.png", // path to image
 			function(image) { // callback after loading image
 				flcToy.view.canvas.add(image);
+				image.sendToBack();
+				image.bringForward(true);
 			},
 			{ // options to pass to new object
 				left: 145,
