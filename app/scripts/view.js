@@ -46,13 +46,25 @@
 		flcToy.view.canvas.add(InvestigateRect);
 
 		fabric.Image.fromURL(
+			"images/FLC-circle.png", // path to image
+			function(image) { // callback after loading image
+				flcToy.view.canvas.add(image);
+			},
+			{ // options to pass to new object
+				left: 145,
+				top: 520,
+				selectable: false,
+			}
+		);
+
+		fabric.Image.fromURL(
 			"images/Investigate.png", // path to image
 			function(image) { // callback after loading image
 				flcToy.view.canvas.add(image);
 			},
 			{ // options to pass to new image object
 				left: 125,
-				top: 850,
+				top: 570,
 				selectable: false,
 			}
 		);
