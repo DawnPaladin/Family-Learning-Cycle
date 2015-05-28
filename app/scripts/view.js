@@ -10,7 +10,7 @@
 	(function(){ // draw background
 
 		var DiscoverHeight = 320;
-		var InvestigateHeight = 800;
+		var InvestigateHeight = 820;
 		var DeclareHeight = 320;
 
 		var DiscoverRect = new fabric.Rect({

@@ -53,11 +53,22 @@ canvas {
   position: fixed;
   bottom: 1em;
   margin-left: -.75em;
-  max-width: 486px;
+  width: 486px;
   background-color: white;
   border: 1px solid silver;
   box-shadow: .5em .5em .5em #F0F0F0;
   padding: .5em;
+}
+@media (max-width: 1020px) {
+  .storyHoverBox {
+    margin-left: 0;
+  }
+}
+@media (max-width: 525px) {
+  .storyHoverBox {
+    width: 100%;
+    box-sizing: border-box;
+  }
 }
 .storyControls {
   float: right;

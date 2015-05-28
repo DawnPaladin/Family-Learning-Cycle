@@ -353,7 +353,7 @@ flcToy.view.canvas.on('mouse:down', function(options){
 	flcToy.controller.newPlatform(500, DeclareBase +  0, 'US1', 'images/US1.png');
 	flcToy.controller.newPlatform(725, DeclareBase + 25, 'US2', 'images/US2.png');
 
-	flcToy.controller.newPlatform( 25, 1600, 'college', 'images/college.png');
+	flcToy.controller.newPlatform( 25, 1490, 'college', 'images/college.png');
 }());
 
 /*window.setTimeout(function(){ // Generate some default tokens for testing purposes
