@@ -106,7 +106,7 @@ var story = {
 				text: "Matthew and Amanda each enter High School as they hit 9th grade.",
 				advance: true
 			}, {
-				text: "Having successfully educated five children preschool through 12th grade, Mrs. Carpenter retires to a beach in Hawaii.",
+				text: "Having successfully educated four children preschool through 12th grade, Mrs. Carpenter retires to a beach in Hawaii.",
 				advance: true
 			}
 		]
