@@ -41,7 +41,7 @@ var story = {
 					}
 				]
 			}, {
-				text: "At the end of the year, Molly advances to Exploring Countries and Cultures while Daniel moves into Pre-K.",
+				text: "At the end of the year, Molly advances to <i>Exploring Countries and Cultures</i> while Daniel moves into Pre-K.",
 				advance: true
 			}, {
 				text: "The Carpenter family is blessed with two more children, one after another: Matthew and Alicia.",
@@ -54,7 +54,7 @@ var story = {
 					}
 				]
 			}, {
-				text: "Adventures in US History is only used for students who don't have older siblings in the Family Learning Cycle. [grey it out] When Daniel finishes first grade, instead of doing Adventures, he joins Molly in the Family Learning Cycle. Mrs. Carpenter will teach Exploration to 1850 to both children, giving each child material appropriate for their age level as spelled out in the Teacher's Manual.",
+				text: "<i>Adventures in US History</i> is only used for students who don't have older siblings in the Family Learning Cycle. [arrow pointing at greyed-out platform] When Daniel finishes first grade, instead of doing <i>Adventures</i>, he joins Molly in the Family Learning Cycle. Mrs. Carpenter will teach <i>Exploration to 1850</i> to both children, giving each child material appropriate for their age level as spelled out in the Teacher's Manual.",
 				advance: true,
 				tokens: [
 					{
@@ -118,7 +118,7 @@ var story = {
 	turnPageForward: function(){
 		var currentPage = story.pages[++story.currentPage];
 
-		story.box.text(currentPage.text);
+		story.box.html(currentPage.text);
 
 		if (currentPage.advance || false) {
 			flcToy.controller.advanceCycle();
@@ -138,7 +138,7 @@ var story = {
 	turnPageBackward: function(){
 		var oldPage = story.pages[story.currentPage];
 		var currentPage = story.pages[--story.currentPage];
-		story.box.text(currentPage.text);
+		story.box.html(currentPage.text);
 		if (Array.isArray(oldPage.tokens) || false) { // if pages has an associated token, orphan it
 			oldPage.tokens.forEach(function(token, index, array){
 				var tokenIndex = story.tokenRegistry[token.name];
