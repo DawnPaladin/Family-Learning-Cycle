@@ -22,13 +22,13 @@ flcToy.controller.orphan = function(tokenIndex) {
 	flcToy.view.eraseTokenImage(flcToy.model.tokenRegistry[tokenIndex].canvasGroup);
 	flcToy.model.tokenRegistry[tokenIndex] = { orphaned: true };
 };
-flcToy.controller.forEachToken = function(func) { // call thusly: flcToy.controller.forEachToken(function(tokenData){ ... });
+flcToy.controller.forEachToken = function(func) { // call thusly: flcToy.controller.forEachToken(function(tokenIndex, tokenData){ ... });
 	for (var i = 0; i < flcToy.model.tokenRegistry.tokenCount; i++) {
 		var tokenIndex = "token" + i;
 		if (typeof flcToy.model.tokenRegistry[tokenIndex].orphaned === "boolean" && flcToy.model.tokenRegistry[tokenIndex].orphaned === true) {
 			console.log("Skipping orphaned token");
 		} else {
-			func(flcToy.model.tokenRegistry[tokenIndex]);
+			func(tokenIndex, flcToy.model.tokenRegistry[tokenIndex]);
 		}
 	}
 };
@@ -101,7 +101,7 @@ flcToy.controller.clearResidentsFromPlatforms = function() {
 
 flcToy.controller.tokensInFLC = function() {
 	var foundFLCPlatform = false;
-	flcToy.controller.forEachToken(function(tokenData){
+	flcToy.controller.forEachToken(function(tokenIndex, tokenData){
 		if (tokenData.location.section === "Investigate") {
 			foundFLCPlatform = true;
 		}
@@ -199,12 +199,11 @@ flcToy.controller.updateAllTokenLocations = function() {
 		var platformIndex = 'platform' + j; 
 		var platformName = flcToy.model.platformRegistry[platformIndex].name;
 		var roster = [];
-		for (var k = 0; k < flcToy.model.tokenRegistry.tokenCount; k++) {
-			var tokenIndex = 'token' + k; // jshint ignore:line
-			if (flcToy.model.tokenRegistry[tokenIndex].location.name === platformName) {
+		flcToy.controller.forEachToken(function(tokenIndex, tokenData){ // https://jslinterrors.com/dont-make-functions-within-a-loop
+			if (tokenData.location.name === platformName) {
 				roster.push(tokenIndex);
 			}
-		}
+		}); // jshint ignore:line 
 		flcToy.controller.walkTokensToPlatform(roster, flcToy.model.platformRegistry[platformIndex], false, true);
 	}
 };
@@ -276,8 +275,7 @@ flcToy.controller.advanceCycle = function() {
 	}
 
 	// determine changed token locations
-	for (var i = 0; i < flcToy.model.tokenRegistry.tokenCount; i++) {
-		var tokenIndex = 'token' + i;
+	flcToy.controller.forEachToken(function(tokenIndex, tokenData) {
 		flcToy.controller.incrementTokenGrade(flcToy.model.tokenRegistry[tokenIndex].canvasGroup);
 		var tokenLocation = flcToy.model.tokenRegistry[tokenIndex].location;
 		if (tokenLocation.section === 'Discover') {
@@ -306,7 +304,7 @@ flcToy.controller.advanceCycle = function() {
 				flcToy.model.tokenRegistry[tokenIndex].location = tokenLocation.next;
 			}
 		}
-	}
+	});
 
 	// special case handling: A token enters ADV when the FLC was just activated
 	if (flcToy.controller.tokensInFLC() && flcToy.model.platformRegistry.platform4.residents.list.length > 0) {
