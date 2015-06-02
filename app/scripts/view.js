@@ -221,10 +221,10 @@
 		token.itemInGroupIntersectsWithObject = function(other) {
 			function aContainsB(rectA, rectB) {
 				// sample rect: [thisCoords.tl, thisCoords.tr, thisCoords.br, thisCoords.bl]
-				logRound( rectA[0].x, rectB[0].x, rectB[1].x, rectA[1].x, between(rectA[0].x, rectB[0].x, rectB[1].x, rectA[1].x));
-				logRound( rectA[3].x, rectB[3].x, rectB[2].x, rectA[2].x, between(rectA[3].x, rectB[3].x, rectB[2].x, rectA[2].x));
-				logRound( rectA[0].y, rectB[0].y, rectB[3].y, rectA[3].y, between(rectA[0].y, rectB[0].y, rectB[3].y, rectA[3].y));
-				logRound( rectA[1].y, rectB[1].y, rectB[2].y, rectA[2].y, between(rectA[1].y, rectB[1].y, rectB[2].y, rectA[2].y));
+				//logRound( rectA[0].x, rectB[0].x, rectB[1].x, rectA[1].x, between(rectA[0].x, rectB[0].x, rectB[1].x, rectA[1].x));
+				//logRound( rectA[3].x, rectB[3].x, rectB[2].x, rectA[2].x, between(rectA[3].x, rectB[3].x, rectB[2].x, rectA[2].x));
+				//logRound( rectA[0].y, rectB[0].y, rectB[3].y, rectA[3].y, between(rectA[0].y, rectB[0].y, rectB[3].y, rectA[3].y));
+				//logRound( rectA[1].y, rectB[1].y, rectB[2].y, rectA[2].y, between(rectA[1].y, rectB[1].y, rectB[2].y, rectA[2].y));
 				return (
 					between(rectA[0].x, rectB[0].x, rectB[1].x, rectA[1].x) && // rectA.tl < rectB.tl < rectB.tr < rectA.tr
 					between(rectA[3].x, rectB[3].x, rectB[2].x, rectA[2].x) && // rectA.bl < rectB.bl < rectB.bl < rectA.br
@@ -232,14 +232,14 @@
 					between(rectA[1].y, rectB[1].y, rectB[2].y, rectA[2].y)    // rectA.bl < rectB.bl < rectB.bl < rectA.br
 					);
 			}
-			function logRound() {
+			/*function logRound() {
 				var args = Array.prototype.slice.call(arguments);
 				var output = "";
 				args.forEach(function(x){
 					output += Math.round(x) + " ";
 				});
 				console.log(output);
-			}
+			}*/
 			function between(a, b, c, d) {
 				return (a <= b && b <= c && c <= d);
 			}
@@ -278,12 +278,10 @@
 			);
 
 			var intersects = intersection.status === 'Intersection';
-			//console.log(platformRect.points, tokenBaseRect.points);
 			var contains = aContainsB(platformRect.points, tokenBaseRect.points);
 			//tokenBaseRect.setColor(intersects || contains) ? "green" : "red");
-
-			flcToy.view.canvas.add(tokenBaseRect, platformRect);
-			console.log(intersection.status, contains);
+			//flcToy.view.canvas.add(tokenBaseRect, platformRect);
+			//console.log(intersection.status, contains);
 
 			return intersects || contains;
 		};
