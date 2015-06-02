@@ -188,6 +188,16 @@
 			left: HEAD_RADIUS,
 			originX: "center",
 		});
+		var nameplatePadding = 5;
+		var nameplateBG = new fabric.Rect({
+			width: nameplate.width + nameplatePadding * 2,
+			height: nameplate.height - nameplatePadding,
+			top: -17,
+			left: nameplate.left,
+			originX: "center",
+			originY: "center",
+			opacity: 0.5
+		});
 		var gradeLine1 = new fabric.Text(gradeObj.line1, {
 			fontFamily: "Source Sans Pro",
 			fontSize: 12,
@@ -202,7 +212,7 @@
 			left: HEAD_RADIUS,
 			originX: "center",
 		});
-		var token = new fabric.Group([head, shoulders, torso, base, nameplate, gradeLine1, gradeLine2], {
+		var token = new fabric.Group([head, shoulders, torso, base, nameplateBG, nameplate, gradeLine1, gradeLine2], {
 			left: x,
 			top: y,
 			fill: color,
@@ -213,6 +223,7 @@
 			index: tokenIndex,
 		});
 		token.base = base;
+		nameplateBG.setColor("#ffffff");
 		gradeLine1.setColor("#ffffff");
 		gradeLine2.setColor("#ffffff");
 		if (gradeObj.line2Size === "large") {
