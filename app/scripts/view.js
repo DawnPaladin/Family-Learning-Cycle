@@ -238,11 +238,25 @@
 				};
 			}
 			var thisCoords = getBaseCoords(this.oCoords, token.base),
+			//var thisCoords = getCoords(this.oCoords),
 				otherCoords = getCoords(other.oCoords),
 				intersection = fabric.Intersection.intersectPolygonPolygon(
 					[thisCoords.tl, thisCoords.tr, thisCoords.br, thisCoords.bl],
 					[otherCoords.tl, otherCoords.tr, otherCoords.br, otherCoords.bl]
 				);
+			var troubleshootingPlatformRect = new fabric.Polygon(
+				[otherCoords.tl, otherCoords.tr, otherCoords.br, otherCoords.bl],
+				{fill: "blue"}
+				);
+			var troubleshootingRect = new fabric.Polygon(
+				[thisCoords.tl, thisCoords.tr, thisCoords.br, thisCoords.bl],
+				{fill: "red"}
+			);
+			troubleshootingRect.setColor(intersection.status === 'Intersection' ? "green" : "red");
+
+			flcToy.view.canvas.add(troubleshootingRect, troubleshootingPlatformRect);
+			console.log(intersection);
+
 			return intersection.status === 'Intersection';
 		};
 		flcToy.view.canvas.add(token);
