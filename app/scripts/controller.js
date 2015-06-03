@@ -216,8 +216,22 @@ flcToy.controller.incrementTokenGrade = function(tokenImage) {
 		newGradeIndex = 15;
 	}
 	flcToy.model.tokenRegistry[tokenIndex].grade = flcToy.model.processGrade(newGradeIndex);
+	flcToy.controller.updateTokenGrade(tokenIndex);
+};
 
-	// update canvas object
+flcToy.controller.decrementTokenGrade = function(tokenImage) {
+	var tokenIndex = tokenImage.index;
+	var oldGradeIndex = Number(flcToy.model.tokenRegistry[tokenIndex].grade.index);
+	var newGradeIndex = oldGradeIndex - 1;
+	if (newGradeIndex < 0) {
+		newGradeIndex = 0;
+	}
+	flcToy.model.tokenRegistry[tokenIndex].grade = flcToy.model.processGrade(newGradeIndex);
+	flcToy.controller.updateTokenGrade(tokenIndex);
+};
+
+flcToy.controller.updateTokenGrade = function(tokenIndex) {
+	var tokenImage = flcToy.model.tokenRegistry[tokenIndex].canvasGroup;
 	var gradeObj = flcToy.model.tokenRegistry[tokenIndex].grade;
 	tokenImage._objects[6].text = gradeObj.line1;
 	tokenImage._objects[7].text = gradeObj.line2;
@@ -328,6 +342,9 @@ flcToy.controller.reverseCycle = function() {
 		console.err("Cannot restore board state from history.");
 	}
 
+	flcToy.controller.forEachToken(function(tokenIndex, tokenData){
+		flcToy.controller.updateTokenGrade(tokenIndex);
+	});
 	flcToy.controller.updateAllTokenLocations();
 
 };
