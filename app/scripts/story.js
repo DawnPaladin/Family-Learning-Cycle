@@ -117,6 +117,7 @@ var story = {
 	tokenRegistry: {},
 	turnPageForward: function(){
 		var currentPage = story.pages[++story.currentPage];
+		console.log(story.currentPage);
 
 		story.box.html(currentPage.text);
 
@@ -134,6 +135,10 @@ var story = {
 				flcToy.controller.moveTokenToPlatform(tokenData, platformData);
 			}
 		}
+		// if we're on the first page of the story, disable the Back button
+		if (story.currentPage > 0) {
+			jQuery('#storyPrevBtn').prop("disabled", false);
+		}
 	},
 	turnPageBackward: function(){
 		var oldPage = story.pages[story.currentPage];
@@ -147,6 +152,11 @@ var story = {
 		}
 		if (oldPage.advance || false) {
 			flcToy.controller.reverseCycle();
+		}
+
+		// if we're on the first page of the story, disable the Back button
+		if (story.currentPage < 1) {
+			jQuery('#storyPrevBtn').prop("disabled", true);
 		}
 	},
 };
