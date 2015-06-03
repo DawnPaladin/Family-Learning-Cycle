@@ -331,7 +331,6 @@ flcToy.controller.advanceCycle = function() {
 	}
 
 	// move tokens to their new locations
-	console.log(flcToy.cycleYear.name);
 	flcToy.controller.updateAllTokenLocations();
 };
 
@@ -342,7 +341,6 @@ flcToy.controller.reverseCycle = function() {
 		flcToy.model.tokenRegistry = flcToy.model.tokenRegistry.prev;
 		flcToy.model.platformRegistry = flcToy.model.platformRegistry.prev;
 		flcToy.cycleYear = flcToy.model.Locations[flcToy.cycleYearHistory.pop()];
-		console.log(flcToy.cycleYear.name);
 	} catch (error) {
 		console.warn("Cannot restore board state from history.", error);
 	}

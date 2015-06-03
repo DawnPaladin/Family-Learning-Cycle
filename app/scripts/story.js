@@ -117,7 +117,6 @@ var story = {
 	tokenRegistry: {},
 	turnPageForward: function(){
 		var currentPage = story.pages[++story.currentPage];
-		console.log(story.currentPage);
 
 		story.box.html(currentPage.text);
 
