@@ -219,13 +219,13 @@ flcToy.controller.incrementTokenGrade = function(tokenImage) {
 
 	// update canvas object
 	var gradeObj = flcToy.model.tokenRegistry[tokenIndex].grade;
-	tokenImage._objects[5].text = gradeObj.line1;
-	tokenImage._objects[6].text = gradeObj.line2;
+	tokenImage._objects[6].text = gradeObj.line1;
+	tokenImage._objects[7].text = gradeObj.line2;
 	if (gradeObj.line2Size === 'large') {
-		tokenImage._objects[6].fontSize = 36;
+		tokenImage._objects[7].fontSize = 36;
 	}
 	else {
-		tokenImage._objects[6].fontSize = 12;
+		tokenImage._objects[7].fontSize = 12;
 	}
 	flcToy.view.canvas.renderAll();
 };
