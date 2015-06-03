@@ -258,6 +258,7 @@ flcToy.controller.enablePlatform = function(platform) {
 /* === initialization === */
 
 flcToy.cycleYear = flcToy.model.Locations.ECC;
+flcToy.cycleYearHistory = [flcToy.cycleYear.name];
 
 document.getElementById('addChildBtn').addEventListener('click', function(){ 
 	var name = document.getElementById('nameField').value;
@@ -277,6 +278,7 @@ flcToy.controller.advanceCycle = function() {
 	// save current state to history
 	flcToy.model.tokenRegistry.prev = clone(flcToy.model.tokenRegistry);
 	flcToy.model.platformRegistry.prev = clone(flcToy.model.platformRegistry);
+	flcToy.cycleYearHistory.push(flcToy.cycleYear.name);
 
 	// enable/disable ADV depending on whether the FLC is active
 	if (flcToy.controller.tokensInFLC()) {
@@ -329,6 +331,7 @@ flcToy.controller.advanceCycle = function() {
 	}
 
 	// move tokens to their new locations
+	console.log(flcToy.cycleYear.name);
 	flcToy.controller.updateAllTokenLocations();
 };
 
@@ -338,8 +341,10 @@ flcToy.controller.reverseCycle = function() {
 	try {
 		flcToy.model.tokenRegistry = flcToy.model.tokenRegistry.prev;
 		flcToy.model.platformRegistry = flcToy.model.platformRegistry.prev;
+		flcToy.cycleYear = flcToy.model.Locations[flcToy.cycleYearHistory.pop()];
+		console.log(flcToy.cycleYear.name);
 	} catch (error) {
-		console.err("Cannot restore board state from history.");
+		console.warn("Cannot restore board state from history.", error);
 	}
 
 	flcToy.controller.forEachToken(function(tokenIndex, tokenData){
