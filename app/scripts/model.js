@@ -23,28 +23,48 @@ flcToy.model.Platform = function(x, y, name, url) {
 	this.url = url;
 	this.location = flcToy.model.Locations[name];
 	this.index = "platform" + flcToy.model.platformRegistry.platformCount++;
-	this.residents = { list: [] };
 	this.imageObject = null;
 	this.disabled = false;
-	var residentRegistry = this.residents;
 	var platformName = this.name;
-	residentRegistry.add = function(tokenIndex) {
-		//console.log("Adding", tokenIndex, "to", platformName, "registry, called by", arguments.callee.caller.toString());
-		residentRegistry.list.push(tokenIndex);
+	var residentsList = [];
+	this.residents = {};
+	var ThisResidents = this.residents;
+	this.residents.list = function(index) {
+		if (typeof index !== "undefined") {
+			return residentsList[index];
+		} else {
+			return residentsList;
+		}
 	};
-	residentRegistry.find = function(tokenIndex) {
-		for (var i = 0; i < residentRegistry.list.length; i++) {
-			if (residentRegistry.list[i].indexOf(tokenIndex) > -1) {
+	this.residents.length = 0;
+	this.residents.add = function(tokenIndex) {
+		if (true) {
+			console.log("Adding", tokenIndex, "to", platformName, "registry");
+		}
+		residentsList.push(tokenIndex);
+		ThisResidents.length = residentsList.length;
+	};
+	this.residents.find = function(tokenIndex) {
+		for (var i = 0; i < ThisResidents.length; i++) {
+			if (residentsList[i].indexOf(tokenIndex) > -1) {
 				return i;
 			}
 		}
 		return -1;
 	};
-	residentRegistry.remove = function(tokenIndex) {
-		var arrayIndex = residentRegistry.find(tokenIndex);
+	this.residents.remove = function(tokenIndex) {
+		//console.log("Removing", tokenIndex, "from", platformName, "registry, called by", arguments.callee.caller.toString());
+		var arrayIndex = ThisResidents.find(tokenIndex);
 		if (arrayIndex > -1) {
-			residentRegistry.list.splice(arrayIndex, 1);
+			residentsList.splice(arrayIndex, 1);
+			ThisResidents.length = residentsList.length;
+			if (platformName === "Preschool") {
+				console.log("Removing", tokenIndex, "from", platformName, "registry. New resident registry contents:", residentsList);
+			}
 		}
+	};
+	this.residents.erase = function() {
+		residentsList = [];
 	};
 };
 

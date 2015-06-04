@@ -131,7 +131,7 @@
 			token.top = image.getCenterPoint().y;
 			platform.residents.add(token.index);
 			flcToy.model.tokenRegistry[token.index].location = platform.location;
-			flcToy.view.distributeCrowd(image, platform.residents.list);
+			flcToy.view.distributeCrowd(image, platform.residents.list());
 			token.setCoords();
 		};
 		platform.imageObject = image;

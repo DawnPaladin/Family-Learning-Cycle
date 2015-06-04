@@ -22,8 +22,8 @@ flcToy.controller.orphan = function(tokenIndex) {
 	flcToy.view.eraseTokenImage(flcToy.model.tokenRegistry[tokenIndex].canvasGroup);
 	flcToy.model.tokenRegistry[tokenIndex] = { orphaned: true };
 };
-flcToy.controller.hospitalize = function(tokenIndex) { //(tokenRoster, platform, incrementGrade, updateRosters)
-	flcToy.controller.walkTokensToPlatform([tokenIndex], flcToy.model.platformRegistry.platform15, false, true);
+flcToy.controller.hospitalize = function(tokenIndex) {
+	flcToy.controller.walkTokensToPlatform([tokenIndex], flcToy.model.platformRegistry.hospital, false, true);
 };
 flcToy.controller.forEachToken = function(func) { // call thusly: flcToy.controller.forEachToken(function(tokenIndex, tokenData){ ... });
 	for (var i = 0; i < flcToy.model.tokenRegistry.tokenCount; i++) {
@@ -91,7 +91,7 @@ flcToy.controller.deregisterTokenFromAllPlatforms = function(tokenData, redistri
 		var platformIndex = 'platform' + i;
 		flcToy.model.platformRegistry[platformIndex].residents.remove(tokenData.canvasGroup.index); // remove token from residence in each platform
 		if (redistribute) {
-			flcToy.view.distributeCrowd(flcToy.model.platformRegistry[platformIndex].imageObject, flcToy.model.platformRegistry[platformIndex].residents.list);
+			flcToy.view.distributeCrowd(flcToy.model.platformRegistry[platformIndex].imageObject, flcToy.model.platformRegistry[platformIndex].residents.list());
 		}
 	}
 };
@@ -99,7 +99,7 @@ flcToy.controller.deregisterTokenFromAllPlatforms = function(tokenData, redistri
 flcToy.controller.clearResidentsFromPlatforms = function() {
 	for (var i = 0; i < flcToy.model.platformRegistry.platformCount; i++) {
 		var platformIndex = 'platform' + i;
-		flcToy.model.platformRegistry[platformIndex].residents.list = [];
+		flcToy.model.platformRegistry[platformIndex].residents.erase();
 	}
 };
 
@@ -189,14 +189,18 @@ flcToy.controller.walkTokensToPlatform = function(tokenRoster, platform, increme
 			flcToy.controller.incrementTokenGrade(tokenFormation[i].canvasGroup);
 		}
 		if (updateRosters) {
-			// update platform information about tokens
-			flcToy.controller.deregisterTokenFromAllPlatforms(tokenFormation[i], false);
-			platform.residents.add(tokenRoster[i]);
-			// update token information about platforms
-			tokenFormation[i].location = platform.location;
+			flcToy.controller.assignTokenToPlatform(tokenFormation[i], platform);
 		}
 		tokenFormation[i].canvasGroup.setCoords();
 	}
+};
+flcToy.controller.assignTokenToPlatform = function(tokenData, platformData) {
+	//console.log(tokenData, platformData);
+	// update platform information about tokens
+	flcToy.controller.deregisterTokenFromAllPlatforms(tokenData, false);
+	platformData.residents.add(tokenData.canvasGroup.index);
+	// update token information about platforms
+	tokenData.location = platformData.location;
 };
 flcToy.controller.updateAllTokenLocations = function() {
 	for (var j = 0; j < flcToy.model.platformRegistry.platformCount; j++) {
@@ -327,9 +331,9 @@ flcToy.controller.advanceCycle = function() {
 	});
 
 	// special case handling: A token enters ADV when the FLC was just activated
-	if (flcToy.controller.tokensInFLC() && flcToy.model.platformRegistry.platform4.residents.list.length > 0) {
-		for (var l = 0; l < flcToy.model.platformRegistry.platform4.residents.list.length; l++) {
-			flcToy.model.platformRegistry.platform4.residents.list[l].location = flcToy.cycleYear;
+	if (flcToy.controller.tokensInFLC() && flcToy.model.platformRegistry.platform4.residents.length > 0) {
+		for (var l = 0; l < flcToy.model.platformRegistry.platform4.residents.length; l++) {
+			flcToy.model.platformRegistry.platform4.residents.list(l).location = flcToy.cycleYear;
 		}
 		flcToy.controller.disablePlatform(flcToy.model.platformRegistry.platform4);
 	}

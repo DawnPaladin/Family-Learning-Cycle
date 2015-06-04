@@ -133,7 +133,7 @@ var story = {
 				var platformData = flcToy.model.platformRegistry[currentToken.platform];
 				flcToy.controller.moveTokenToPlatform(tokenData, platformData);
 				if (platformData.name === "hospital") { // animate tokens from Hospital to Preschool platform
-					flcToy.model.tokenRegistry[tokenIndex].location = flcToy.model.Locations.Preschool;
+					flcToy.controller.assignTokenToPlatform(tokenData, flcToy.model.platformRegistry.Preschool);
 				}
 			}
 			flcToy.controller.updateAllTokenLocations();
@@ -142,6 +142,7 @@ var story = {
 		if (story.currentPage > 0) {
 			jQuery('#storyPrevBtn').prop("disabled", false);
 		}
+		console.log(flcToy.model.platformRegistry.platform0.residents.list());
 	},
 	turnPageBackward: function(){
 		var oldPage = story.pages[story.currentPage];
@@ -161,6 +162,7 @@ var story = {
 		if (story.currentPage < 1) {
 			jQuery('#storyPrevBtn').prop("disabled", true);
 		}
+		console.log(flcToy.model.platformRegistry.platform0.residents.list());
 	},
 };
 
