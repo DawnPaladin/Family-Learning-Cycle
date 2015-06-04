@@ -7,7 +7,7 @@ var story = {
 					{ //format: string name, string gradeIndex, int height (20-70), string color
 						name: "Robert",
 						init: ["Robert", "0", 50, "#dd5b5a"],
-						platform: "platform0"
+						platform: "hospital"
 					}
 				]
 			},
@@ -33,7 +33,7 @@ var story = {
 					{ //format: string name, string gradeIndex, int height (20-70), string color
 						name: "Daniel",
 						init: ["Daniel", "0", 55, "#ffa544"],
-						platform: "platform0"
+						platform: "hospital"
 					}, {
 						name: "Molly",
 						init: ["Molly", "4", 70, "#f9b5d1"],
@@ -50,7 +50,7 @@ var story = {
 					{
 						name: "Matthew",
 						init: ["Matthew", "0", 45, "#5377a6"],
-						platform: "platform0"
+						platform: "hospital"
 					}
 				]
 			}, {
@@ -60,7 +60,7 @@ var story = {
 					{
 						name: "Alicia",
 						init: ["Alicia", "0", 35, "#b66de2"],
-						platform: "platform0"
+						platform: "hospital"
 					}
 				]
 			}, {
@@ -132,7 +132,11 @@ var story = {
 				var tokenData = flcToy.model.tokenRegistry[tokenIndex];
 				var platformData = flcToy.model.platformRegistry[currentToken.platform];
 				flcToy.controller.moveTokenToPlatform(tokenData, platformData);
+				if (platformData.name === "hospital") { // animate tokens from Hospital to Preschool platform
+					flcToy.model.tokenRegistry[tokenIndex].location = flcToy.model.Locations.Preschool;
+				}
 			}
+			flcToy.controller.updateAllTokenLocations();
 		}
 		// if we're on the first page of the story, disable the Back button
 		if (story.currentPage > 0) {
