@@ -22,6 +22,9 @@ flcToy.controller.orphan = function(tokenIndex) {
 	flcToy.view.eraseTokenImage(flcToy.model.tokenRegistry[tokenIndex].canvasGroup);
 	flcToy.model.tokenRegistry[tokenIndex] = { orphaned: true };
 };
+flcToy.controller.hospitalize = function(tokenIndex) { //(tokenRoster, platform, incrementGrade, updateRosters)
+	flcToy.controller.walkTokensToPlatform([tokenIndex], flcToy.model.platformRegistry.platform15, false, true);
+};
 flcToy.controller.forEachToken = function(func) { // call thusly: flcToy.controller.forEachToken(function(tokenIndex, tokenData){ ... });
 	for (var i = 0; i < flcToy.model.tokenRegistry.tokenCount; i++) {
 		var tokenIndex = "token" + i;
@@ -381,6 +384,7 @@ flcToy.view.canvas.on('mouse:down', function(options){
 	flcToy.controller.newPlatform(725, DeclareBase + 25, 'US2', 'images/US2.png');
 
 	flcToy.controller.newPlatform( 25, 1490, 'college', 'images/college.png');
+	flcToy.controller.newPlatform(DiscoverBaseX - 500, DiscoverBaseY, 'hospital', 'images/hospital.png');
 }());
 
 /*window.setTimeout(function(){ // Generate some default tokens for testing purposes

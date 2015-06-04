@@ -143,10 +143,10 @@ var story = {
 		var oldPage = story.pages[story.currentPage];
 		var currentPage = story.pages[--story.currentPage];
 		story.box.html(currentPage.text);
-		if (Array.isArray(oldPage.tokens) || false) { // if pages has an associated token, orphan it
+		if (Array.isArray(oldPage.tokens) || false) { // if pages has an associated token, hospitalize it
 			oldPage.tokens.forEach(function(token, index, array){
 				var tokenIndex = story.tokenRegistry[token.name];
-				flcToy.controller.orphan(tokenIndex);
+				flcToy.controller.hospitalize(tokenIndex);
 			});
 		}
 		if (oldPage.advance || false) {

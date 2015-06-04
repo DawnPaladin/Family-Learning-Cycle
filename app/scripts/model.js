@@ -78,6 +78,7 @@ flcToy.model.Locations.add(["ECC", "CTG", "RTR", "EXP", "MOD"], "Investigate", "
 flcToy.model.Locations.add(["AHL", "WHL", "US1", "US2"], "Declare");
 flcToy.model.Locations.college = List.makeNode("college", "other");
 flcToy.model.Locations.orphanage = List.makeNode("orphanage", "other");
+flcToy.model.Locations.hospital = List.makeNode("hospital", "other");
 
 flcToy.model.CyclicCounter = function(initial, minimum, maximum) {
 	this.counter = initial;
