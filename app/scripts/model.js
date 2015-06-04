@@ -38,10 +38,14 @@ flcToy.model.Platform = function(x, y, name, url) {
 	};
 	this.residents.length = 0;
 	this.residents.add = function(tokenIndex) {
-		if (true) {
-			console.log("Adding", tokenIndex, "to", platformName, "registry");
+		if (residentsList.indexOf(tokenIndex) > -1) {
+			console.warn(tokenIndex, "is already in", platformName, "residents list.");
+		} else {
+			residentsList.push(tokenIndex);
 		}
-		residentsList.push(tokenIndex);
+		if (platformName === "Preschool") {
+			console.log("Adding", tokenIndex, "to", platformName, "registry, which now reads:", residentsList);
+		}
 		ThisResidents.length = residentsList.length;
 	};
 	this.residents.find = function(tokenIndex) {
@@ -59,7 +63,7 @@ flcToy.model.Platform = function(x, y, name, url) {
 			residentsList.splice(arrayIndex, 1);
 			ThisResidents.length = residentsList.length;
 			if (platformName === "Preschool") {
-				console.log("Removing", tokenIndex, "from", platformName, "registry. New resident registry contents:", residentsList);
+				console.log("Removing", tokenIndex, "from", platformName, "registry, which now reads:", residentsList);
 			}
 		}
 	};
