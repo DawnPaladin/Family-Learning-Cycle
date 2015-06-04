@@ -38,7 +38,8 @@ flcToy.controller.forEachToken = function(func) { // call thusly: flcToy.control
 flcToy.controller.newPlatform = function(x, y, name, url) {
 	var thePlatform = new flcToy.model.Platform(x, y, name, url);
 	var platformIndex = thePlatform.index;
-	flcToy.model.platformRegistry[platformIndex] = thePlatform;
+	flcToy.model.platformRegistry[platformIndex] = thePlatform;	// register platform by serial number...
+	flcToy.model.platformRegistry[name] = thePlatform; 			// ... and by name
 	fabric.Image.fromURL(
 		flcToy.model.platformRegistry[platformIndex].url, // path to image
 		flcToy.view.setupPlatform, // callback after loading image
