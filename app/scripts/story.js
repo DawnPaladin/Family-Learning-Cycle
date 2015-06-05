@@ -115,6 +115,7 @@ var story = {
 	pages: null,
 	currentPage: -1,
 	tokenRegistry: {},
+	historyDepth: 0,
 	turnPageForward: function(){
 		var currentPage = story.pages[++story.currentPage];
 
@@ -136,6 +137,7 @@ var story = {
 					flcToy.controller.assignTokenToPlatform(tokenData, flcToy.model.platformRegistry.Preschool);
 				}
 			}
+			currentPage.tokens = undefined; // remove tokens from page to prevent them from being re-created if/when we return to this page
 			flcToy.controller.updateAllTokenLocations();
 		}
 		// if we're on the first page of the story, disable the Back button
@@ -148,9 +150,8 @@ var story = {
 		var oldPage = story.pages[story.currentPage];
 		var currentPage = story.pages[--story.currentPage];
 		story.box.html(currentPage.text);
-		if (Array.isArray(oldPage.tokens) || false) { // if pages has an associated token, hospitalize it
-			oldPage.tokens.forEach(function(token, index, array){
-				var tokenIndex = story.tokenRegistry[token.name];
+		if (flcToy.model.platformRegistry.platform0.residents.length() > 0) { // hospitalize residents of platform0
+			flcToy.model.platformRegistry.platform0.residents.list().forEach(function(tokenIndex, index, array){
 				flcToy.controller.hospitalize(tokenIndex);
 			});
 		}

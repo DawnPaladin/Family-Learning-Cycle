@@ -18,11 +18,13 @@ flcToy.controller.newToken = function (name, gradeIndex, height, color) {
 	return tokenIndex;
 }; //newToken('Twilight Sparkle', '1', 50, '#662D8A');
 flcToy.controller.orphan = function(tokenIndex) {
+	console.assert((typeof tokenIndex === "string"), "This is not a tokenIndex:", tokenIndex);
 	console.log('Removing ' + tokenIndex);
 	flcToy.view.eraseTokenImage(flcToy.model.tokenRegistry[tokenIndex].canvasGroup);
 	flcToy.model.tokenRegistry[tokenIndex] = { orphaned: true };
 };
 flcToy.controller.hospitalize = function(tokenIndex) {
+	console.assert((typeof tokenIndex === "string"), "This is not a tokenIndex:", tokenIndex);
 	flcToy.controller.walkTokensToPlatform([tokenIndex], flcToy.model.platformRegistry.hospital, false, true);
 };
 flcToy.controller.forEachToken = function(func) { // call thusly: flcToy.controller.forEachToken(function(tokenIndex, tokenData){ ... });
