@@ -79,6 +79,7 @@ flcToy.controller.lookupPlatformByURL = function(url) {
 };
 
 flcToy.controller.musterTokens = function(tokenRoster) { // convert an array of token names to an array of tokens
+	console.assert(Array.isArray(tokenRoster), "This is not a tokenRoster:", tokenRoster);
 	var formation = [];
 	for (var i = 0; i < tokenRoster.length; i++) {
 		formation.push(flcToy.model.tokenRegistry[tokenRoster[i]]);
@@ -87,6 +88,7 @@ flcToy.controller.musterTokens = function(tokenRoster) { // convert an array of 
 };
 
 flcToy.controller.deregisterTokenFromAllPlatforms = function(tokenData, redistribute) {
+	console.assert((typeof tokenData === "object" && typeof tokenData.name === "string"), "This is not a tokenData:", tokenData);
 	for (var i = 0; i < flcToy.model.platformRegistry.platformCount; i++) { // remove token from all previous platforms
 		var platformIndex = 'platform' + i;
 		flcToy.model.platformRegistry[platformIndex].residents.remove(tokenData.canvasGroup.index); // remove token from residence in each platform
@@ -159,20 +161,24 @@ function clone(obj) { // from http://stackoverflow.com/a/728694/1805453
 }
 
 /* === movement === */
-flcToy.controller.moveTokenToPlatform = function(tokenData, platform) {
+flcToy.controller.moveTokenToPlatform = function(tokenData, platformData) {
+	console.assert((typeof tokenData === "object" && typeof tokenData.name === "string"), "This is not a tokenData:", tokenData);
+	console.assert((typeof platformData === "object" && typeof platformData.imageObject === "object" && typeof platformData.name === "string"), "This is not a platformData:", platformData);
 	//deregisterTokenFromAllPlatforms(tokenData, true);
-	platform.imageObject.dock(tokenData.canvasGroup);
+	platformData.imageObject.dock(tokenData.canvasGroup);
 	flcToy.view.canvas.renderAll();
 };
-flcToy.controller.moveTokensToPlatform = function(tokenFormation, platform, increment) {
+flcToy.controller.moveTokensToPlatform = function(tokenFormation, platformData, increment) {
+	console.assert((typeof platformData === "object" && typeof platformData.imageObject === "object" && typeof platformData.name === "string"), "This is not a platformData:", platformData);
 	for (var i = 0; i < tokenFormation.length; i++) {
-		flcToy.controller.moveTokenToPlatform(tokenFormation[i], platform);
+		flcToy.controller.moveTokenToPlatform(tokenFormation[i], platformData);
 		if (increment) {
 			flcToy.controller.incrementTokenGrade(tokenFormation[i].canvasGroup);
 		}
 	}
 };
 flcToy.controller.walkToken = function(tokenData, coords) {
+	console.assert((typeof tokenData === "object" && typeof tokenData.name === "string"), "This is not a tokenData:", tokenData);
 	//console.log('Walk ', tokenData, ' to ', coords);
 	tokenData.canvasGroup.animate(coords, {
 		duration: 750,
@@ -180,8 +186,10 @@ flcToy.controller.walkToken = function(tokenData, coords) {
 		onChange: flcToy.view.canvas.renderAll.bind(flcToy.view.canvas),
 	});
 };
-flcToy.controller.walkTokensToPlatform = function(tokenRoster, platform, incrementGrade, updateRosters) {
-	var formation = flcToy.view.crowdDistribution(platform.imageObject, tokenRoster.length);
+flcToy.controller.walkTokensToPlatform = function(tokenRoster, platformData, incrementGrade, updateRosters) {
+	console.assert(Array.isArray(tokenRoster), "This is not a tokenRoster:", tokenRoster);
+	console.assert((typeof platformData === "object" && typeof platformData.imageObject === "object" && typeof platformData.name === "string"), "This is not a platformData:", platformData);
+	var formation = flcToy.view.crowdDistribution(platformData.imageObject, tokenRoster.length);
 	var tokenFormation = flcToy.controller.musterTokens(tokenRoster);
 	for (var i = 0; i < tokenRoster.length; i++) {
 		flcToy.controller.walkToken(tokenFormation[i], formation[i]);
@@ -189,12 +197,14 @@ flcToy.controller.walkTokensToPlatform = function(tokenRoster, platform, increme
 			flcToy.controller.incrementTokenGrade(tokenFormation[i].canvasGroup);
 		}
 		if (updateRosters) {
-			flcToy.controller.assignTokenToPlatform(tokenFormation[i], platform);
+			flcToy.controller.assignTokenToPlatform(tokenFormation[i], platformData);
 		}
 		tokenFormation[i].canvasGroup.setCoords();
 	}
 };
 flcToy.controller.assignTokenToPlatform = function(tokenData, platformData) {
+	console.assert((typeof tokenData === "object" && typeof tokenData.name === "string"), "This is not a tokenData:", tokenData);
+	console.assert((typeof platformData === "object" && typeof platformData.name === "string"), "This is not a platformData:", platformData);
 	//console.log(tokenData, platformData);
 	// update platform information about tokens
 	flcToy.controller.deregisterTokenFromAllPlatforms(tokenData, false);
@@ -217,6 +227,7 @@ flcToy.controller.updateAllTokenLocations = function() {
 };
 
 flcToy.controller.incrementTokenGrade = function(tokenImage) {
+	console.assert((typeof tokenImage === "object" && typeof tokenImage.canvas === "object" && typeof tokenImage.fill === "string"), "This is not a tokenImage:", tokenImage);
 	var tokenIndex = tokenImage.index;
 	var oldGradeIndex = Number(flcToy.model.tokenRegistry[tokenIndex].grade.index);
 	var newGradeIndex = oldGradeIndex + 1;
@@ -228,6 +239,7 @@ flcToy.controller.incrementTokenGrade = function(tokenImage) {
 };
 
 flcToy.controller.decrementTokenGrade = function(tokenImage) {
+	console.assert((typeof tokenImage === "object" && typeof tokenImage.canvas === "object" && typeof tokenImage.fill === "string"), "This is not a tokenImage:", tokenImage);
 	var tokenIndex = tokenImage.index;
 	var oldGradeIndex = Number(flcToy.model.tokenRegistry[tokenIndex].grade.index);
 	var newGradeIndex = oldGradeIndex - 1;
@@ -239,6 +251,7 @@ flcToy.controller.decrementTokenGrade = function(tokenImage) {
 };
 
 flcToy.controller.updateTokenGrade = function(tokenIndex) {
+	console.assert((typeof tokenIndex === "string"), "This is not a tokenIndex:", tokenIndex);
 	var tokenImage = flcToy.model.tokenRegistry[tokenIndex].canvasGroup;
 	var gradeObj = flcToy.model.tokenRegistry[tokenIndex].grade;
 	tokenImage._objects[6].text = gradeObj.line1;
@@ -253,11 +266,13 @@ flcToy.controller.updateTokenGrade = function(tokenIndex) {
 };
 
 flcToy.controller.disablePlatform = function(platform) {
+	console.assert((typeof platform === "object" && typeof platform.imageObject === "object" && typeof platform.name === "string"), "This is not a platformData:", platform);
 	platform.disabled = true;
 	platform.imageObject.opacity = 0.5;
 	flcToy.view.canvas.renderAll();
 };
 flcToy.controller.enablePlatform = function(platform) {
+	console.assert((typeof platform === "object" && typeof platform.imageObject === "object" && typeof platform.name === "string"), "This is not a platformData:", platform);
 	platform.disabled = false;
 	platform.imageObject.opacity = 1;
 	flcToy.view.canvas.renderAll();
