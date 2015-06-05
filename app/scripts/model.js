@@ -31,9 +31,9 @@ flcToy.model.Platform = function(x, y, name, url) {
 	var ThisResidents = this.residents;
 	this.residents.list = function(index) {
 		if (typeof index !== "undefined") {
-			return residentsList[index];
+			return residentsList[index].slice();
 		} else {
-			return residentsList;
+			return residentsList.slice();
 		}
 	};
 	this.residents.length = 0;
