@@ -349,7 +349,7 @@ flcToy.controller.advanceCycle = function() {
 	if (flcToy.controller.tokensInFLC() && flcToy.model.platformRegistry.platform4.residents.length() > 0) {
 		for (var l = 0; l < flcToy.model.platformRegistry.platform4.residents.length(); l++) {
 			flcToy.controller.assignTokenToPlatform(
-				flcToy.model.platformRegistry.platform4.residents.list(l), // tokenData
+				flcToy.model.tokenRegistry[flcToy.model.platformRegistry.platform4.residents.list(l)], // tokenData
 				flcToy.model.platformRegistry[flcToy.cycleYear.platformIndex] // platformData
 			);
 		}
