@@ -331,9 +331,12 @@ flcToy.controller.advanceCycle = function() {
 	});
 
 	// special case handling: A token enters ADV when the FLC was just activated
-	if (flcToy.controller.tokensInFLC() && flcToy.model.platformRegistry.platform4.residents.length > 0) {
-		for (var l = 0; l < flcToy.model.platformRegistry.platform4.residents.length; l++) {
-			flcToy.model.platformRegistry.platform4.residents.list(l).location = flcToy.cycleYear;
+	if (flcToy.controller.tokensInFLC() && flcToy.model.platformRegistry.platform4.residents.length() > 0) {
+		for (var l = 0; l < flcToy.model.platformRegistry.platform4.residents.length(); l++) {
+			flcToy.controller.assignTokenToPlatform(
+				flcToy.model.platformRegistry.platform4.residents.list(l), // tokenData
+				flcToy.model.platformRegistry[flcToy.cycleYear.platformIndex] // platformData
+			);
 		}
 		flcToy.controller.disablePlatform(flcToy.model.platformRegistry.platform4);
 	}

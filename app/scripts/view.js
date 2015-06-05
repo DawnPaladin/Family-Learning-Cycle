@@ -315,7 +315,7 @@
 					foundADock = true;
 				}
 				else {
-					flcToy.view.distributeCrowd(flcToy.model.platformRegistry[platformIndex].imageObject, flcToy.model.platformRegistry[platformIndex].residents.list); // arrange tokens on the platform the token left
+					flcToy.view.distributeCrowd(flcToy.model.platformRegistry[platformIndex].imageObject, flcToy.model.platformRegistry[platformIndex].residents.list()); // arrange tokens on the platform the token left
 				}
 			}
 			draggedToken.setCoords();
