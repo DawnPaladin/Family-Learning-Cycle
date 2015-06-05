@@ -70,7 +70,7 @@ flcToy.model.Platform = function(x, y, name, url) {
 	};
 };
 flcToy.model.overview = function() {
-	var platforms = "Platform populations: ";
+	var platforms = "Current page: " + story.currentPage + " Platform populations: "; /* jshint ignore:line */
 	for (var i = 0; i < flcToy.model.platformRegistry.platformCount - 1; i++) {
 		var platformIndex = "platform" + i;
 		platforms += flcToy.model.platformRegistry[platformIndex].residents.length() + " ";

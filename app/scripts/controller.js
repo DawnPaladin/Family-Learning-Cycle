@@ -298,13 +298,7 @@ document.getElementById('addChildBtn').addEventListener('click', function(){
 	document.querySelector('input[value = "#dd5b5a"]').checked = true;
 });
 
-flcToy.controller.advanceCycle = function() {
-
-	// save current state to history
-	flcToy.model.tokenRegistry.prev = clone(flcToy.model.tokenRegistry);
-	flcToy.model.platformRegistry.prev = clone(flcToy.model.platformRegistry);
-	flcToy.cycleYearHistory.push(flcToy.cycleYear.name);
-
+flcToy.controller.checkAndSetADVDisabledState = function() {
 	// enable/disable ADV depending on whether the FLC is active
 	if (flcToy.controller.tokensInFLC()) {
 		flcToy.cycleYear = flcToy.cycleYear.next;
@@ -314,6 +308,16 @@ flcToy.controller.advanceCycle = function() {
 		flcToy.cycleYear = flcToy.model.Locations.ECC;
 		flcToy.controller.enablePlatform(flcToy.model.platformRegistry.platform4);
 	}
+};
+
+flcToy.controller.advanceCycle = function() {
+
+	// save current state to history
+	flcToy.model.tokenRegistry.prev = clone(flcToy.model.tokenRegistry);
+	flcToy.model.platformRegistry.prev = clone(flcToy.model.platformRegistry);
+	flcToy.cycleYearHistory.push(flcToy.cycleYear.name);
+
+	flcToy.controller.checkAndSetADVDisabledState();
 
 	// determine changed token locations
 	flcToy.controller.forEachToken(function(tokenIndex, tokenData) {
@@ -366,9 +370,16 @@ flcToy.controller.reverseCycle = function() {
 
 	// restore previous state from history
 	try {
+		// save current state to futureHistory
+		var tokenFutureHistory = clone(flcToy.model.tokenRegistry);
+		var platformFutureHistory = clone(flcToy.model.platformRegistry);
+
 		flcToy.model.tokenRegistry = flcToy.model.tokenRegistry.prev;
 		flcToy.model.platformRegistry = flcToy.model.platformRegistry.prev;
-		flcToy.cycleYear = flcToy.model.Locations[flcToy.cycleYearHistory.pop()];
+		flcToy.cycleYear = flcToy.model.Locations[flcToy.cycleYearHistory[story.currentPage]]; // jshint ignore:line
+
+ 		flcToy.model.tokenRegistry.next = tokenFutureHistory;
+ 		flcToy.model.platformRegistry.next = platformFutureHistory;
 	} catch (error) {
 		console.warn("Cannot restore board state from history.", error);
 	}
