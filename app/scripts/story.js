@@ -142,7 +142,7 @@ var story = {
 		if (story.currentPage > 0) {
 			jQuery('#storyPrevBtn').prop("disabled", false);
 		}
-		console.log(flcToy.model.platformRegistry.platform0.residents.list());
+		flcToy.model.overview();
 	},
 	turnPageBackward: function(){
 		var oldPage = story.pages[story.currentPage];
@@ -162,7 +162,7 @@ var story = {
 		if (story.currentPage < 1) {
 			jQuery('#storyPrevBtn').prop("disabled", true);
 		}
-		console.log(flcToy.model.platformRegistry.platform0.residents.list());
+		flcToy.model.overview();
 	},
 };
 

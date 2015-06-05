@@ -18,6 +18,7 @@ flcToy.model.Token = function(name, grade, height, color) { // class definition
 };
 
 flcToy.model.Platform = function(x, y, name, url) {
+	var This = this;
 	this.coords = {x: x, y: y};
 	this.name = name;
 	this.url = url;
@@ -28,28 +29,26 @@ flcToy.model.Platform = function(x, y, name, url) {
 	var platformName = this.name;
 	var residentsList = [];
 	this.residents = {};
-	var ThisResidents = this.residents;
 	this.residents.list = function(index) {
 		if (typeof index !== "undefined") {
 			return residentsList[index].slice();
 		} else {
-			return residentsList.slice();
+			return residentsList.slice(); // slice: return a copy instead of the original (by value instead of by reference)
 		}
 	};
-	this.residents.length = 0;
+	this.residents.length = function() { return residentsList.length; };
 	this.residents.add = function(tokenIndex) {
 		if (residentsList.indexOf(tokenIndex) > -1) {
 			console.warn(tokenIndex, "is already in", platformName, "residents list.");
 		} else {
 			residentsList.push(tokenIndex);
 		}
-		if (platformName === "Preschool") {
+		/*if (platformName === "Preschool") {
 			console.log("Adding", tokenIndex, "to", platformName, "registry, which now reads:", residentsList);
-		}
-		ThisResidents.length = residentsList.length;
+		}*/
 	};
 	this.residents.find = function(tokenIndex) {
-		for (var i = 0; i < ThisResidents.length; i++) {
+		for (var i = 0; i < residentsList.length; i++) {
 			if (residentsList[i].indexOf(tokenIndex) > -1) {
 				return i;
 			}
@@ -58,18 +57,26 @@ flcToy.model.Platform = function(x, y, name, url) {
 	};
 	this.residents.remove = function(tokenIndex) {
 		//console.log("Removing", tokenIndex, "from", platformName, "registry, called by", arguments.callee.caller.toString());
-		var arrayIndex = ThisResidents.find(tokenIndex);
+		var arrayIndex = This.residents.find(tokenIndex);
 		if (arrayIndex > -1) {
 			residentsList.splice(arrayIndex, 1);
-			ThisResidents.length = residentsList.length;
-			if (platformName === "Preschool") {
+			/*if (platformName === "Preschool") {
 				console.log("Removing", tokenIndex, "from", platformName, "registry, which now reads:", residentsList);
-			}
+			}*/
 		}
 	};
 	this.residents.erase = function() {
 		residentsList = [];
 	};
+};
+flcToy.model.overview = function() {
+	var platforms = "Platform populations: ";
+	for (var i = 0; i < flcToy.model.platformRegistry.platformCount - 1; i++) {
+		var platformIndex = "platform" + i;
+		platforms += flcToy.model.platformRegistry[platformIndex].residents.length() + " ";
+	}
+	platforms += "hospital: " + flcToy.model.platformRegistry.hospital.residents.length();
+	console.log(platforms);
 };
 
 var List = function(){
