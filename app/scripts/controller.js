@@ -317,6 +317,15 @@ flcToy.controller.checkAndSetADVDisabledState = function() {
 	}
 };
 
+flcToy.controller.forgeBirthCertificate = function(tokenIndex, tokenData) {
+	if (typeof flcToy.model.tokenRegistry.prev === "object") { // if the board has a previous state
+		flcToy.model.tokenRegistry.prev[tokenIndex] = clone(tokenData);
+		flcToy.model.tokenRegistry.prev[tokenIndex].location = flcToy.model.Locations.hospital;
+		flcToy.model.platformRegistry.prev.hospital.residents.add(tokenIndex);
+		console.log("Forged birth certificate:", flcToy.model.platformRegistry.prev.hospital.residents.list());
+	}
+};
+
 flcToy.controller.advanceCycle = function() {
 
 	// save current state to history
