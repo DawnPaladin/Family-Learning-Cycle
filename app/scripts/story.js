@@ -135,6 +135,7 @@ var story = {
 				flcToy.controller.moveTokenToPlatform(tokenData, platformData);
 				if (platformData.name === "hospital") { // animate tokens from Hospital to Preschool platform
 					flcToy.controller.assignTokenToPlatform(tokenData, flcToy.model.platformRegistry.Preschool);
+					flcToy.controller.forgeBirthCertificate(tokenIndex, tokenData);
 				}
 			}
 			currentPage.tokens = undefined; // remove tokens from page to prevent them from being re-created if/when we return to this page
