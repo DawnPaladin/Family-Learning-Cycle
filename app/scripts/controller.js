@@ -214,6 +214,13 @@ flcToy.controller.assignTokenToPlatform = function(tokenData, platformData) {
 	// update token information about platforms
 	tokenData.location = platformData.location;
 };
+flcToy.controller.verifyTokenData = function() {
+	flcToy.controller.forEachToken(function(tokenIndex, tokenData) {
+		var platformIndex = tokenData.location.platformIndex;
+		var platformResidents = flcToy.model.platformRegistry[platformIndex].residents.list();
+		console.assert(platformResidents.indexOf(tokenIndex) > -1, platformIndex + " rejects " + tokenIndex + "'s claim of residence.");
+	});
+};
 flcToy.controller.updateAllTokenLocations = function() {
 	for (var j = 0; j < flcToy.model.platformRegistry.platformCount; j++) {
 		var platformIndex = 'platform' + j; 
