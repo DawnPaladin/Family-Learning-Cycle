@@ -145,16 +145,17 @@ var story = {
 			jQuery('#storyPrevBtn').prop("disabled", false);
 		}
 		christmasGhosts("token2"); // jshint ignore:line
+		flcToy.controller.verifyTokenData();
 	},
 	turnPageBackward: function(){
 		var oldPage = story.pages[story.currentPage];
 		var currentPage = story.pages[--story.currentPage];
 		story.box.html(currentPage.text);
-		if (flcToy.model.platformRegistry.platform0.residents.length() > 0) { // hospitalize residents of platform0
+		/*if (flcToy.model.platformRegistry.platform0.residents.length() > 0) { // hospitalize residents of platform0
 			flcToy.model.platformRegistry.platform0.residents.list().forEach(function(tokenIndex, index, array){
 				flcToy.controller.hospitalize(tokenIndex);
 			});
-		}
+		}*/
 		if (oldPage.advance || false) {
 			flcToy.controller.reverseCycle();
 		}
@@ -164,6 +165,7 @@ var story = {
 			jQuery('#storyPrevBtn').prop("disabled", true);
 		}
 		christmasGhosts("token2"); // jshint ignore:line
+		flcToy.controller.verifyTokenData();
 	},
 };
 

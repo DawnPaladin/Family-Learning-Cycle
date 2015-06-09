@@ -214,10 +214,11 @@ flcToy.controller.assignTokenToPlatform = function(tokenData, platformData) {
 	// update token information about platforms
 	tokenData.location = platformData.location;
 };
-flcToy.controller.verifyTokenData = function() {
+flcToy.controller.verifyTokenData = function(log) {
 	flcToy.controller.forEachToken(function(tokenIndex, tokenData) {
 		var platformIndex = tokenData.location.platformIndex;
 		var platformResidents = flcToy.model.platformRegistry[platformIndex].residents.list();
+		if (log) { console.log(tokenIndex, "platform:", platformIndex, "; residents:", platformResidents); }
 		console.assert(platformResidents.indexOf(tokenIndex) > -1, platformIndex + " rejects " + tokenIndex + "'s claim of residence.");
 	});
 };
@@ -446,14 +447,3 @@ function christmasGhosts(tokenIndex) {
 	flcToy.controller.newPlatform( 25, 1490, 'college', 'images/college.png');
 	flcToy.controller.newPlatform(DiscoverBaseX - 500, DiscoverBaseY, 'hospital', 'images/hospital.png');
 }());
-
-/*window.setTimeout(function(){ // Generate some default tokens for testing purposes
-	newToken('Inkie', '1', 30, '#5377a6');
-	newToken('Blinkie', '2', 45, '#dd5b5a');
-	newToken('Pinkie', '3', 60, '#f9b5d1');
-	newToken('Clyde', '4', 70, '#ffa544');
-	for (var i = 0; i < flcToy.model.tokenRegistry.tokenCount; i++) {
-		moveTokenToPlatform(flcToy.model.tokenRegistry['token' + i], flcToy.model.platformRegistry.platform0);
-	}
-}, 500);
-*/
