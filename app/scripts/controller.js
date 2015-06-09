@@ -11,7 +11,7 @@
 /* === creation and destruction === */
 flcToy.controller.newToken = function (name, gradeIndex, height, color) {
 	var gradeObj = flcToy.model.processGrade(gradeIndex);
-	var tokenIndex = 'token' + flcToy.model.tokenRegistry.tokenCount++;
+	var tokenIndex = 'token' + flcToy.model.tokenCount++;
 	var tokenData = new flcToy.model.Token(name, gradeObj, height, color);
 	flcToy.model.tokenRegistry[tokenIndex] = tokenData;
 	flcToy.model.tokenRegistry[tokenIndex].canvasGroup = flcToy.view.drawNewToken(100, 500, name, gradeObj, height, color, tokenIndex);
@@ -28,7 +28,7 @@ flcToy.controller.hospitalize = function(tokenIndex) {
 	flcToy.controller.walkTokensToPlatform([tokenIndex], flcToy.model.platformRegistry.hospital, false, true);
 };
 flcToy.controller.forEachToken = function(func) { // call thusly: flcToy.controller.forEachToken(function(tokenIndex, tokenData){ ... });
-	for (var i = 0; i < flcToy.model.tokenRegistry.tokenCount; i++) {
+	for (var i = 0; i < flcToy.model.tokenCount; i++) {
 		var tokenIndex = "token" + i;
 		if (typeof flcToy.model.tokenRegistry[tokenIndex].orphaned === "boolean" && flcToy.model.tokenRegistry[tokenIndex].orphaned === true) {
 			console.log("Skipping orphaned token");
@@ -69,7 +69,7 @@ flcToy.controller.lookupCanvasObjectByURL = function(url) {
 	}
 };
 flcToy.controller.lookupPlatformByURL = function(url) {
-	for (var i = 0; i < flcToy.model.platformRegistry.platformCount; i++) {
+	for (var i = 0; i < flcToy.model.platformCount; i++) {
 		var platformIndex = 'platform' + i;
 		var platformURL = flcToy.model.platformRegistry[platformIndex].url;
 		var endOfPlatformURL = platformURL.substr(platformURL.length - 7);
@@ -91,7 +91,7 @@ flcToy.controller.musterTokens = function(tokenRoster) { // convert an array of 
 
 flcToy.controller.deregisterTokenFromAllPlatforms = function(tokenData, redistribute) {
 	console.assert((typeof tokenData === "object" && typeof tokenData.name === "string"), "This is not a tokenData:", tokenData);
-	for (var i = 0; i < flcToy.model.platformRegistry.platformCount; i++) { // remove token from all previous platforms
+	for (var i = 0; i < flcToy.model.platformCount; i++) { // remove token from all previous platforms
 		var platformIndex = 'platform' + i;
 		flcToy.model.platformRegistry[platformIndex].residents.remove(tokenData.canvasGroup.index); // remove token from residence in each platform
 		if (redistribute) {
@@ -101,7 +101,7 @@ flcToy.controller.deregisterTokenFromAllPlatforms = function(tokenData, redistri
 };
 
 flcToy.controller.clearResidentsFromPlatforms = function() {
-	for (var i = 0; i < flcToy.model.platformRegistry.platformCount; i++) {
+	for (var i = 0; i < flcToy.model.platformCount; i++) {
 		var platformIndex = 'platform' + i;
 		flcToy.model.platformRegistry[platformIndex].residents.erase();
 	}
@@ -222,7 +222,7 @@ flcToy.controller.verifyTokenData = function() {
 	});
 };
 flcToy.controller.updateAllTokenLocations = function() {
-	for (var j = 0; j < flcToy.model.platformRegistry.platformCount; j++) {
+	for (var j = 0; j < flcToy.model.platformCount; j++) {
 		var platformIndex = 'platform' + j; 
 		var platformName = flcToy.model.platformRegistry[platformIndex].name;
 		var roster = [];

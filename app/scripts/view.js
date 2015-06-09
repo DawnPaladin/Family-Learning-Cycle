@@ -307,7 +307,7 @@
 		var draggedToken = options.target;
 		if (draggedToken.index.indexOf("token") > -1) { // if this is a token
 			var foundADock = false; // more predictable behavior if a token overlaps two platforms
-			for (var i = 0; i < flcToy.model.platformRegistry.platformCount; i++) {
+			for (var i = 0; i < flcToy.model.platformCount; i++) {
 				var platformIndex = "platform" + i;
 				flcToy.model.platformRegistry[platformIndex].residents.remove(draggedToken.index); // remove token from residence in each platform
 				if (!foundADock && draggedToken.itemInGroupIntersectsWithObject(flcToy.model.platformRegistry[platformIndex].imageObject)) { // adapted from http://fabricjs.com/intersection/

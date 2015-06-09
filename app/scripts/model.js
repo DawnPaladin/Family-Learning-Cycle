@@ -4,8 +4,10 @@ var flcToy = {
 	controller: {},
 };
 
-flcToy.model.tokenRegistry = { tokenCount: 0 };
-flcToy.model.platformRegistry = { platformCount: 0 };
+flcToy.model.tokenCount = 0;
+flcToy.model.platformCount = 0;
+flcToy.model.tokenRegistry = {};
+flcToy.model.platformRegistry = {};
 
 flcToy.model.Token = function(name, grade, height, color) { // class definition
 	this.name = name;
@@ -23,7 +25,7 @@ flcToy.model.Platform = function(x, y, name, url) {
 	this.name = name;
 	this.url = url;
 	this.location = flcToy.model.Locations[name];
-	this.index = "platform" + flcToy.model.platformRegistry.platformCount++;
+	this.index = "platform" + flcToy.model.platformCount++;
 	this.imageObject = null;
 	this.disabled = false;
 	var platformName = this.name;
@@ -71,7 +73,7 @@ flcToy.model.Platform = function(x, y, name, url) {
 };
 flcToy.model.overview = function() {
 	var platforms = "Current page: " + story.currentPage + " Platform populations: "; /* jshint ignore:line */
-	for (var i = 0; i < flcToy.model.platformRegistry.platformCount - 1; i++) {
+	for (var i = 0; i < flcToy.model.platformCount - 1; i++) {
 		var platformIndex = "platform" + i;
 		platforms += flcToy.model.platformRegistry[platformIndex].residents.length() + " ";
 	}
