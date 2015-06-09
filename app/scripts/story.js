@@ -144,7 +144,7 @@ var story = {
 		if (story.currentPage > 0) {
 			jQuery('#storyPrevBtn').prop("disabled", false);
 		}
-		flcToy.model.overview();
+		christmasGhosts("token2"); // jshint ignore:line
 	},
 	turnPageBackward: function(){
 		var oldPage = story.pages[story.currentPage];
@@ -163,7 +163,7 @@ var story = {
 		if (story.currentPage < 1) {
 			jQuery('#storyPrevBtn').prop("disabled", true);
 		}
-		flcToy.model.overview();
+		christmasGhosts("token2"); // jshint ignore:line
 	},
 };
 

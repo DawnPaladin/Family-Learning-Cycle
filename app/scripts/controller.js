@@ -397,6 +397,14 @@ flcToy.view.canvas.on('mouse:down', function(options){
 	}
 });
 
+function christmasGhosts(tokenIndex) {
+	var past = "null", present = "null", future = "null";
+	try { past = flcToy.model.tokenRegistry.prev[tokenIndex].location.name; } catch (e) {}
+	try { present = flcToy.model.tokenRegistry[tokenIndex].location.name; } catch (e) {}
+	try { future = flcToy.model.tokenRegistry.next[tokenIndex].location.name; } catch (e) {}
+	console.log(past, present, future);
+}
+
 (function() {
 	var DiscoverBaseX = 90;
 	var DiscoverBaseY = 200;
