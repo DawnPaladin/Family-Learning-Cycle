@@ -30,10 +30,12 @@ flcToy.controller.hospitalize = function(tokenIndex) {
 flcToy.controller.forEachToken = function(func) { // call thusly: flcToy.controller.forEachToken(function(tokenIndex, tokenData){ ... });
 	for (var i = 0; i < flcToy.model.tokenCount; i++) {
 		var tokenIndex = "token" + i;
-		if (typeof flcToy.model.tokenRegistry[tokenIndex].orphaned === "boolean" && flcToy.model.tokenRegistry[tokenIndex].orphaned === true) {
-			console.log("Skipping orphaned token");
-		} else {
-			func(tokenIndex, flcToy.model.tokenRegistry[tokenIndex]);
+		if (typeof flcToy.model.tokenRegistry[tokenIndex] === "object") {
+			if (typeof flcToy.model.tokenRegistry[tokenIndex].orphaned === "boolean" && flcToy.model.tokenRegistry[tokenIndex].orphaned === true) {
+				console.log("Skipping orphaned token");
+			} else {
+				func(tokenIndex, flcToy.model.tokenRegistry[tokenIndex]);
+			}
 		}
 	}
 };
