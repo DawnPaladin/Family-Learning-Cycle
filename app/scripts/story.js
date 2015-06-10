@@ -114,33 +114,47 @@ var story = {
 	box: jQuery('#storyText'),
 	pages: null,
 	currentPage: -1,
+	maxProgress: -1,
 	tokenRegistry: {},
 	historyDepth: 0,
 	turnPageForward: function(){
 		var currentPage = story.pages[++story.currentPage];
+		if (story.currentPage > story.maxProgress) { // if we are turning a page for the first time
+			story.maxProgress = story.currentPage;
 
-		story.box.html(currentPage.text);
+			story.box.html(currentPage.text);
 
-		if (currentPage.advance || false) {
-			flcToy.controller.advanceCycle();
-		}
-		// if page has associated tokens, create them
-		if (Array.isArray(currentPage.tokens) || false) {
-			for (var i = 0; i < currentPage.tokens.length; i++) {
-				var currentToken = currentPage.tokens[i];
-				var tokenIndex = flcToy.controller.newToken.apply(null, currentToken.init);
-				story.tokenRegistry[currentToken.name] = tokenIndex;
-				var tokenData = flcToy.model.tokenRegistry[tokenIndex];
-				var platformData = flcToy.model.platformRegistry[currentToken.platform];
-				flcToy.controller.moveTokenToPlatform(tokenData, platformData);
-				if (platformData.name === "hospital") { // animate tokens from Hospital to Preschool platform
-					flcToy.controller.assignTokenToPlatform(tokenData, flcToy.model.platformRegistry.Preschool);
-					flcToy.controller.forgeBirthCertificate(tokenIndex, tokenData);
-				}
+			if (currentPage.advance || false) {
+				flcToy.controller.advanceCycle();
 			}
-			currentPage.tokens = undefined; // remove tokens from page to prevent them from being re-created if/when we return to this page
+			// if page has associated tokens, create them
+			if (Array.isArray(currentPage.tokens) || false) {
+				for (var i = 0; i < currentPage.tokens.length; i++) {
+					var currentToken = currentPage.tokens[i];
+					var tokenIndex = flcToy.controller.newToken.apply(null, currentToken.init);
+					story.tokenRegistry[currentToken.name] = tokenIndex;
+					var tokenData = flcToy.model.tokenRegistry[tokenIndex];
+					var platformData = flcToy.model.platformRegistry[currentToken.platform];
+					flcToy.controller.moveTokenToPlatform(tokenData, platformData);
+					if (platformData.name === "hospital") { // animate tokens from Hospital to Preschool platform
+						flcToy.controller.assignTokenToPlatform(tokenData, flcToy.model.platformRegistry.Preschool);
+						flcToy.controller.forgeBirthCertificate(tokenIndex, tokenData);
+					}
+				}
+				currentPage.tokens = undefined; // remove tokens from page to prevent them from being re-created if/when we return to this page
+												// now that we're using maxProgress, this is probably unnecessary
+				flcToy.controller.updateAllTokenLocations();
+			}
+		} else { // advancing, but not for the first time
+			story.box.html(currentPage.text);
+
+			if (currentPage.advance || false) {
+				flcToy.controller.unReverseCycle();
+			}
+
 			flcToy.controller.updateAllTokenLocations();
 		}
+
 		// if we're on the first page of the story, disable the Back button
 		if (story.currentPage > 0) {
 			jQuery('#storyPrevBtn').prop("disabled", false);

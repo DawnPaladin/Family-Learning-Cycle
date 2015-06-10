@@ -410,6 +410,22 @@ flcToy.controller.reverseCycle = function() {
 
 };
 
+flcToy.controller.unReverseCycle = function() {
+	// restore previous state from history
+	try {
+		flcToy.model.tokenRegistry = flcToy.model.tokenRegistry.next;
+		flcToy.model.platformRegistry = flcToy.model.platformRegistry.next;
+		flcToy.cycleYear = flcToy.model.Locations[flcToy.cycleYearHistory[story.currentPage]]; // jshint ignore:line
+	} catch (error) {
+		console.warn("Cannot restore board state from future-history.", error);
+	}
+
+	flcToy.controller.forEachToken(function(tokenIndex, tokenData){
+		flcToy.controller.updateTokenGrade(tokenIndex);
+	});
+	flcToy.controller.updateAllTokenLocations();
+};
+
 flcToy.view.canvas.on('mouse:down', function(options){
 	if (typeof options.target === 'object' && options.target.name === 'cycle-btn') {
 		flcToy.controller.advanceCycle();
