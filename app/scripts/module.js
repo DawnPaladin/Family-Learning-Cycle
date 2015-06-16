@@ -1,3 +1,5 @@
+/* jshint latedef: false */
+
 var flcToy = {
 	model: {},
 	view: {},
