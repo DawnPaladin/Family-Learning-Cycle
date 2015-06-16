@@ -1,6 +1,7 @@
 <html>
 <head>
 	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="styles/main.css">
 	<style>
 	body {
 		width: 972px;
@@ -51,27 +52,41 @@
 </div>
 
 <p>Let's see how this works with an example:</p>
-<ul>
-	<li>Let's imagine a family with one child named Robert. Robert's parents start him out in Preschool.</li>
-	<li>Over the next few years, Robert advances to Kindergarten, then 1st grade, then 2nd grade.</li>
-	<li>Starting in 3rd grade, Robert moves from Discover to Investigate and begins the Family Learning Cycle. He'll continue this cycle until he's ready to begin 9th grade.</li>
-	<li>At this point, Robert has experienced each year of the Family Learning Cycle, but he's not yet ready to move on to high school. This is normal! Simply continue the cycle. Robert will take Exploring Countries and Cultures again, this time learning in far greater depth and detail than he did when he first experienced the content in 3rd grade.</li>
-	<li>In 9th grade, Robert exits the Family Learning Cycle and begins high school.</li>
-	<li>Robert graduates from high school and is ready to begin a career or leave for college.</li>
-</ul>
+
+<div class="flc-toy-wrapper">
+	<canvas id="FamilyLearningCycleToy" width="972" height="1800">Your browser is out-of-date. To display the Family Learning Cycle, you'll need to update it.</canvas>
+	<div class="storyHoverBox">
+		<span id="storyText"></span>
+		<div class="storyControls">
+			<button id="storyPrevBtn" disabled="true">&lt;</button>
+			<button id="storyNextBtn">Next &gt;</button>
+		</div>
+	</div>
+</div>
+<!-- build:js(.) scripts/vendor.js -->
+<!-- bower:js -->
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/fabric/dist/fabric.min.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
+
+<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+<script>
+	(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+	function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+	e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+	e.src='//www.google-analytics.com/analytics.js';
+	r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+	ga('create','UA-XXXXX-X');ga('send','pageview');
+</script>
+
+<!-- build:js({app,.tmp}) scripts/main.js -->
+<script src="scripts/proseToys.js"></script>
+<!-- endbuild -->
 
 <p>Not too complicated. Let's see how this works for a larger family. Meet the Carpenters, who have just decided to try homeschooling their children.</p> <!-- http://dresdenfiles.wikia.com/wiki/Carpenter_family -->
-<ul>
-	<li>Daniel is starting preschool at the same time Molly is transferring in from 2nd grade in a public school.</li>
-	<li>At the end of the year, Molly advances to Exploring Countries and Cultures while Daniel moves into Pre-K.</li>
-	<li>The Carpenter family is blessed with three more children in rapid succession: Matthew, Alicia, and Amanda.</li>
-	<li>Adventures in US History is only used for students who don't have older siblings in the Family Learning Cycle. [grey it out] When Daniel finishes first grade, instead of doing Adventures, he joins Molly in the Family Learning Cycle. Mrs. Carpenter will teach Exploration to 1850 to both children, giving each child material appropriate for their age level as spelled out in the Teacher's Manual.</li>
-	<li>As each child finishes the Discover section, they join the rest of the family in the Family Learning Cycle, whatever year they happen to be on.</li>
-	<li>When Molly hits 9th grade, she's finished the cycle and moves on to Declare. Her younger siblings continue the cycle without her.</li>
-	<li>Molly graduates from high school just as Daniel is preparing to enter it.</li>
-	<li>Matthew, Alicia, and Amanda each enter High School as they hit 9th grade.</li>
-	<li>Having successfully educated five children preschool through 12th grade, Mrs. Carpenter retires to a beach in Hawaii.</li>
-</ul>
+
+[Carpenter toy]
 
 </body>
 </html>

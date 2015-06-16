@@ -1,4 +1,23 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+var flcToy = require('./module.js');
+
+var RobertOptions = {
+	story: "Robert",
+	fwdBtn: jQuery('#storyNextBtn'),
+	backBtn: jQuery('#storyPrevBtn')
+};
+
+jQuery(function(){
+	window.setTimeout(function() {
+		flcToy.setup(RobertOptions);
+	}, 1000);
+});
+
+
+
+
+
+},{"./module.js":2}],2:[function(require,module,exports){
 /* jshint latedef: false */
 
 var flcToy = {
@@ -667,7 +686,6 @@ var story = {
 		if (story.currentPage > 0) {
 			jQuery('#storyPrevBtn').prop("disabled", false);
 		}
-		christmasGhosts("token2"); // jshint ignore:line
 		flcToy.controller.verifyTokenData();
 	},
 	turnPageBackward: function(){
@@ -687,7 +705,6 @@ var story = {
 		if (story.currentPage < 1) {
 			jQuery('#storyPrevBtn').prop("disabled", true);
 		}
-		christmasGhosts("token2"); // jshint ignore:line
 		flcToy.controller.verifyTokenData();
 	},
 };
@@ -991,18 +1008,29 @@ flcToy.controller.enablePlatform = function(platform) {
 flcToy.cycleYear = flcToy.model.Locations.ECC;
 flcToy.cycleYearHistory = [flcToy.cycleYear.name];
 
-document.getElementById('addChildBtn').addEventListener('click', function(){ 
-	var name = document.getElementById('nameField').value;
-	var grade = document.getElementById('gradeSelect').value;
-	var height = Number(document.getElementById('heightSlider').value);
-	var color = document.querySelector('input[name = "chooseColor"]:checked').value;
-	flcToy.controller.newToken(name, grade, height, color);
-	document.getElementById('nameField').value = "";
-	document.getElementById('gradeSelect').value = "0";
-	document.getElementById('heightSlider').value = 45;
-	document.querySelector('input[name = "chooseColor"]:checked').checked = false;
-	document.querySelector('input[value = "#dd5b5a"]').checked = true;
-});
+flcToy.setup = function(options) {
+	if (options.story === "manual") {
+		var addChildBtn = options.addChildBtn;
+		addChildBtn.click(function(){
+			var name = options.nameField.val();
+			var grade = options.gradeSelect.val();
+			var height = Number(options.heightSlider.val());
+			var color = document.querySelector('input[name = "' + options.colorBoxes + '"]:checked').val();
+			flcToy.controller.newToken(name, grade, height, color);
+			options.nameField.val("");
+			options.gradeSelect.val("0");
+			options.heightSlider.val(45);
+			document.querySelector('input[name = "' + options.colorBoxes + '"]:checked').checked = false;
+			document.querySelector('input[value = "#dd5b5a"]').checked = true;
+		});
+	} else {
+		options.fwdBtn.click(flcToy.story.turnPageForward);
+		options.backBtn.click(flcToy.story.turnPageBackward);
+		var storyName = options.story;
+		story.pages = story.library[storyName];
+		story.turnPageForward();
+	}
+};
 
 flcToy.controller.checkAndSetADVDisabledState = function() {
 	// enable/disable ADV depending on whether the FLC is active
@@ -1162,13 +1190,6 @@ function christmasGhosts(tokenIndex) {
 	flcToy.controller.newPlatform(DiscoverBaseX - 500, DiscoverBaseY, 'hospital', 'images/hospital.png');
 }());
 
-
-jQuery('#storyPrevBtn').click(story.turnPageBackward);
-jQuery('#storyNextBtn').click(story.turnPageForward);
-setTimeout(function(){
-	story.pages = story.library.Carpenters;
-	story.turnPageForward();
-}, 500);
 
 module.exports = exports = flcToy;
 exports.story = story;

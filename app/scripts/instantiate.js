@@ -1,8 +1,17 @@
-var toy1 = require('flcToy');
+var flcToy = require('./module.js');
 
-jQuery('#storyPrevBtn').click(toy1.story.turnPageBackward);
-jQuery('#storyNextBtn').click(toy1.story.turnPageForward);
-setTimeout(function(){
-	toy1.story.pages = toy1.story.library.Carpenters;
-	toy1.story.turnPageForward();
-}, 500);
+var RobertOptions = {
+	story: "Robert",
+	fwdBtn: jQuery('#storyNextBtn'),
+	backBtn: jQuery('#storyPrevBtn')
+};
+
+jQuery(function(){
+	window.setTimeout(function() {
+		flcToy.setup(RobertOptions);
+	}, 1000);
+});
+
+
+
+
