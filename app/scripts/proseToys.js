@@ -2,14 +2,21 @@
 var flcToy = require('./module.js');
 
 var RobertOptions = {
-	canvas: "FamilyLearningCycleToy1",
+	canvas: "Robert-toy",
 	story: "Robert",
 	fwdBtn: jQuery('#storyNextBtn'),
 	backBtn: jQuery('#storyPrevBtn')
 };
 
+var CarpenterOptions = {
+	canvas: "Carpenter-toy",
+	story: "Carpenters",
+	fwdBtn: jQuery('#storyNextBtn2'),
+	backBtn: jQuery('#storyPrevBtn2')
+};
+
 var manualOptions = {
-	canvas: "FamilyLearningCycleToy1",
+	canvas: "manual-toy",
 	nameField: jQuery('#nameField'),
 	gradeSelect: jQuery('#gradeSelect'),
 	heightSlider: jQuery('#heightSlider'),
@@ -19,6 +26,7 @@ var manualOptions = {
 
 jQuery(function(){
 	flcToy.setup(RobertOptions);
+	flcToy.setup(CarpenterOptions);
 });
 
 
