@@ -300,7 +300,6 @@ function toyFactory() {
 
 
 		flcToy.view.setupPlatform = function(image, deferred) {
-			console.log("Adding",image._element.src);
 			flcToy.view.canvas.add(image);
 			var platform = flcToy.controller.lookupPlatformByURL(image._element.src);
 
@@ -629,7 +628,7 @@ function toyFactory() {
 				}
 			]
 		},
-		box: jQuery('#storyText'),
+		box: null,
 		pages: null,
 		currentPage: -1,
 		maxProgress: -1,
@@ -1049,6 +1048,7 @@ function toyFactory() {
 				options.backBtn.click(flcToy.story.turnPageBackward);
 				var storyName = options.story;
 				flcToy.story.pages = flcToy.story.library[storyName];
+				flcToy.story.box = options.textField;
 				flcToy.story.turnPageForward();
 			}
 		});
@@ -1071,7 +1071,6 @@ function toyFactory() {
 			flcToy.model.tokenRegistry.prev[tokenIndex] = clone(tokenData);
 			flcToy.model.tokenRegistry.prev[tokenIndex].location = flcToy.model.Locations.hospital;
 			flcToy.model.platformRegistry.prev.hospital.residents.add(tokenIndex);
-			console.log("Forged birth certificate:", flcToy.model.platformRegistry.prev.hospital.residents.list());
 		}
 	};
 
@@ -1186,15 +1185,17 @@ function toyFactory() {
 var RobertOptions = {
 	canvas: "Robert-toy",
 	story: "Robert",
-	fwdBtn: jQuery('#storyNextBtn'),
-	backBtn: jQuery('#storyPrevBtn')
+	fwdBtn: jQuery('#Robert-toy-wrapper .storyNextBtn'),
+	backBtn: jQuery('#Robert-toy-wrapper .storyPrevBtn'),
+	textField: jQuery('#Robert-toy-wrapper .storyText'),
 };
 
 var CarpenterOptions = {
 	canvas: "Carpenter-toy",
 	story: "Carpenters",
-	fwdBtn: jQuery('#storyNextBtn2'),
-	backBtn: jQuery('#storyPrevBtn2')
+	fwdBtn: jQuery('#Carpenter-toy-wrapper .storyNextBtn'),
+	backBtn: jQuery('#Carpenter-toy-wrapper .storyPrevBtn'),
+	textField: jQuery('#Carpenter-toy-wrapper .storyText'),
 };
 
 var manualOptions = {

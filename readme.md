@@ -10,7 +10,7 @@ Instantiate a Family Learning Cycle object with flcToy.setup(options). Options i
 
 - **story**: Name of story to be used for the guided tour, or `manual` for manual mode. 
 
-- If you pick a story, you need to set **backBtn** and **fwdBtn** so we can shuttle through the story. Each of these should be a jQuery object pointing to a button on the page.
+- If you pick a story, you need to set **backBtn**, **fwdBtn**, and **storyTextField** so we can shuttle through the story. Each of these should be a jQuery object pointing to an element on the page.
 
 - If you set manual mode, an Advance button will appear and handle advancement, but you need to set up controls for creating tokens. Each of these properties needs a jQuery object corresponding to an element on the page:
   * **nameField** (`<input id="nameField" value="Guy">`)
