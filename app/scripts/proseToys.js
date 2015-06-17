@@ -2,19 +2,24 @@
 var flcToy = require('./module.js');
 
 var RobertOptions = {
+	canvas: "FamilyLearningCycleToy1",
 	story: "Robert",
 	fwdBtn: jQuery('#storyNextBtn'),
 	backBtn: jQuery('#storyPrevBtn')
 };
 
+var manualOptions = {
+	canvas: "FamilyLearningCycleToy1",
+	nameField: jQuery('#nameField'),
+	gradeSelect: jQuery('#gradeSelect'),
+	heightSlider: jQuery('#heightSlider'),
+	colorBoxes: "chooseColor",
+	addChildBtn: jQuery('addChildBtn')
+};
+
 jQuery(function(){
-	window.setTimeout(function() {
-		flcToy.setup(RobertOptions);
-	}, 1000);
+	flcToy.setup(RobertOptions);
 });
-
-
-
 
 
 },{"./module.js":2}],2:[function(require,module,exports){
@@ -195,14 +200,15 @@ flcToy.model.processGrade = function(gradeIndex) {
 
 // VIEW
 
-flcToy.view.canvas = new fabric.Canvas('FamilyLearningCycleToy');
+flcToy.view.setup = function(canvasID) {
+	flcToy.view.canvas = new fabric.Canvas(canvasID);
 
-flcToy.view.canvas.selection = false;
+	flcToy.view.canvas.selection = false;
 
-var CANVAS_WIDTH = 972;
-var CANVAS_HEIGHT = 1800;
+	var CANVAS_WIDTH = 972;
+	var CANVAS_HEIGHT = 1800;
 
-(function(){ // draw background
+	// draw background
 
 	var DiscoverHeight = 320;
 	var InvestigateHeight = 820;
@@ -288,240 +294,248 @@ var CANVAS_HEIGHT = 1800;
 		}
 	);
 
-})();
+	var PERSON_WIDTH = 50;
+	var HEAD_RADIUS = PERSON_WIDTH / 2;
+	var PLATFORM_ELBOW_ROOM = 20;
 
-var PERSON_WIDTH = 50;
-var HEAD_RADIUS = PERSON_WIDTH / 2;
-var PLATFORM_ELBOW_ROOM = 20;
-
-flcToy.view.orphanage = new fabric.Rect({
-	width: 972,
-	height: 100,
-	left: 0,
-	top: 1700,
-	fill: "#F2F2F2",
-	selectable: false,
-});
-flcToy.view.canvas.add(flcToy.view.orphanage);
-fabric.Image.fromURL('images/cycle-btn.png', function(loadedImage) {
-	flcToy.view.canvas.add(loadedImage);
-}, {
-	selectable: true,
-	left: 400,
-	top: 700,
-	hoverCursor: "pointer",
-	hasControls: false,
-	hasBorders: false,
-	lockMovementX: true,
-	lockMovementY: true,
-	name: "cycle-btn",
-});
-
-flcToy.view.setupPlatform = function(image) {
-	flcToy.view.canvas.add(image);
-	var platform = flcToy.controller.lookupPlatformByURL(image._element.src);
-
-	image.dock = function(token) {
-		//console.log("Docking " + token + " into " + image);
-		token.top = image.getCenterPoint().y;
-		platform.residents.add(token.index);
-		flcToy.model.tokenRegistry[token.index].location = platform.location;
-		flcToy.view.distributeCrowd(image, platform.residents.list());
-		token.setCoords();
-	};
-	platform.imageObject = image;
-};
-
-flcToy.view.distributeCrowd = function(platformImage, residentsList) { // distribute crowd of tokens across the platform
-	var crowdWidth = (residentsList.length - 1) * PERSON_WIDTH + (residentsList.length - 1) * PLATFORM_ELBOW_ROOM; // distance between first and last midpoints
-	var crowdLeftEdge = -crowdWidth / 2;
-	for (var i = 0; i < residentsList.length; i++) {
-		var offsetFromCenter = crowdLeftEdge + (PERSON_WIDTH + PLATFORM_ELBOW_ROOM) * i;
-		flcToy.model.tokenRegistry[residentsList[i]].canvasGroup.left = platformImage.getCenterPoint().x + offsetFromCenter;
-		flcToy.model.tokenRegistry[residentsList[i]].canvasGroup.setCoords();
-	}
-};
-
-flcToy.view.crowdDistribution = function(originImageObject, memberCount) {
-	var crowdWidth = (memberCount - 1) * PERSON_WIDTH + (memberCount - 1) * PLATFORM_ELBOW_ROOM;
-	var crowdLeftEdge = -crowdWidth / 2;
-	var memberLocations = [];
-	var y = originImageObject.getCenterPoint().y;
-	for (var i = 0; i < memberCount; i++) {
-		var offsetFromCenter = crowdLeftEdge + (PERSON_WIDTH + PLATFORM_ELBOW_ROOM) * i;
-		var x = originImageObject.getCenterPoint().x + offsetFromCenter;
-		memberLocations.push({left: x, top:y});
-	}
-	return memberLocations;
-};
-
-flcToy.view.drawNewToken = function(x, y, name, gradeObj, height, color, tokenIndex) {
-	var head = new fabric.Circle({
-		radius: HEAD_RADIUS,
-		left: 0.5, // half-pixel offset to prevent fuzzy antialiasing
+	flcToy.view.orphanage = new fabric.Rect({
+		width: 972,
+		height: 100,
+		left: 0,
+		top: 1700,
+		fill: "#F2F2F2",
+		selectable: false,
 	});
-	var shoulders = new fabric.Circle({
-		radius: HEAD_RADIUS,
-		top: HEAD_RADIUS*2.5,
-		left: 0.5,
-	});
-	var torso = new fabric.Rect({
-		width: PERSON_WIDTH,
-		height: height,
-		top: HEAD_RADIUS*3.5,
-		left: 0.5,
-	});
-	var base = new fabric.Circle({
-		radius: HEAD_RADIUS,
-		top: HEAD_RADIUS*2.5 + height,
-		left: 0.5,
-	});
-	var nameplate = new fabric.Text(name, {
-		fontFamily: "Source Sans Pro",
-		fontSize: 20,
-		top: -28,
-		left: HEAD_RADIUS,
-		originX: "center",
-	});
-	var nameplatePadding = 5;
-	var nameplateBG = new fabric.Rect({
-		width: nameplate.width + nameplatePadding * 2,
-		height: nameplate.height - nameplatePadding,
-		top: -17,
-		left: nameplate.left,
-		originX: "center",
-		originY: "center",
-		opacity: 0.5
-	});
-	var gradeLine1 = new fabric.Text(gradeObj.line1, {
-		fontFamily: "Source Sans Pro",
-		fontSize: 12,
-		top: HEAD_RADIUS*3.5,
-		left: HEAD_RADIUS,
-		originX: "center",
-	});
-	var gradeLine2 = new fabric.Text(gradeObj.line2, {
-		fontFamily: "Source Sans Pro",
-		fontSize: 12,
-		top: HEAD_RADIUS*4,
-		left: HEAD_RADIUS,
-		originX: "center",
-	});
-	var token = new fabric.Group([head, shoulders, torso, base, nameplateBG, nameplate, gradeLine1, gradeLine2], {
-		left: x,
-		top: y,
-		fill: color,
-		originX: "center",
-		originY: "bottom",
-		hasBorders: false,
+	flcToy.view.canvas.add(flcToy.view.orphanage);
+	fabric.Image.fromURL('images/cycle-btn.png', function(loadedImage) {
+		flcToy.view.canvas.add(loadedImage);
+	}, {
+		selectable: true,
+		left: 400,
+		top: 700,
+		hoverCursor: "pointer",
 		hasControls: false,
-		index: tokenIndex,
+		hasBorders: false,
+		lockMovementX: true,
+		lockMovementY: true,
+		name: "cycle-btn",
 	});
-	token.base = base;
-	nameplateBG.setColor("#ffffff");
-	gradeLine1.setColor("#ffffff");
-	gradeLine2.setColor("#ffffff");
-	if (gradeObj.line2Size === "large") {
-		gradeLine2.setFontSize(36);
-	}
-	token.itemInGroupIntersectsWithObject = function(other) {
-		function aContainsB(rectA, rectB) {
-			// sample rect: [thisCoords.tl, thisCoords.tr, thisCoords.br, thisCoords.bl]
-			//logRound( rectA[0].x, rectB[0].x, rectB[1].x, rectA[1].x, between(rectA[0].x, rectB[0].x, rectB[1].x, rectA[1].x));
-			//logRound( rectA[3].x, rectB[3].x, rectB[2].x, rectA[2].x, between(rectA[3].x, rectB[3].x, rectB[2].x, rectA[2].x));
-			//logRound( rectA[0].y, rectB[0].y, rectB[3].y, rectA[3].y, between(rectA[0].y, rectB[0].y, rectB[3].y, rectA[3].y));
-			//logRound( rectA[1].y, rectB[1].y, rectB[2].y, rectA[2].y, between(rectA[1].y, rectB[1].y, rectB[2].y, rectA[2].y));
-			return (
-				between(rectA[0].x, rectB[0].x, rectB[1].x, rectA[1].x) && // rectA.tl < rectB.tl < rectB.tr < rectA.tr
-				between(rectA[3].x, rectB[3].x, rectB[2].x, rectA[2].x) && // rectA.bl < rectB.bl < rectB.bl < rectA.br
-				between(rectA[0].y, rectB[0].y, rectB[3].y, rectA[3].y) && // rectA.tl < rectB.tl < rectB.tr < rectA.tr
-				between(rectA[1].y, rectB[1].y, rectB[2].y, rectA[2].y)    // rectA.bl < rectB.bl < rectB.bl < rectA.br
-				);
-		}
-		/*function logRound() {
-			var args = Array.prototype.slice.call(arguments);
-			var output = "";
-			args.forEach(function(x){
-				output += Math.round(x) + " ";
-			});
-			console.log(output);
-		}*/
-		function between(a, b, c, d) {
-			return (a <= b && b <= c && c <= d);
-		}
-		function getCoords(oCoords) {
-			return {
-				tl: new fabric.Point(oCoords.tl.x, oCoords.tl.y),
-				tr: new fabric.Point(oCoords.tr.x, oCoords.tr.y),
-				bl: new fabric.Point(oCoords.bl.x, oCoords.bl.y),
-				br: new fabric.Point(oCoords.br.x, oCoords.br.y)
-			};
-		}
-		function getBaseCoords(oCoords, base) {
-			var height = oCoords.bl.y - oCoords.tl.y;
-			var baseHeightOffset =  height - base.getPointByOrigin("center", "top").y;
-			return {
-				tl: new fabric.Point(oCoords.tl.x, oCoords.tl.y + baseHeightOffset),
-				tr: new fabric.Point(oCoords.tr.x, oCoords.tr.y + baseHeightOffset),
-				bl: new fabric.Point(oCoords.bl.x, oCoords.bl.y),
-				br: new fabric.Point(oCoords.br.x, oCoords.br.y)
-			};
-		}
-		var thisCoords = getBaseCoords(this.oCoords, token.base),
-		//var thisCoords = getCoords(this.oCoords),
-			otherCoords = getCoords(other.oCoords),
-			intersection = fabric.Intersection.intersectPolygonPolygon(
-				[thisCoords.tl, thisCoords.tr, thisCoords.br, thisCoords.bl],
-				[otherCoords.tl, otherCoords.tr, otherCoords.br, otherCoords.bl]
-			);
-		var platformRect = new fabric.Polygon(
-			[otherCoords.tl, otherCoords.tr, otherCoords.br, otherCoords.bl],
-			{fill: "blue"}
-			);
-		var tokenBaseRect = new fabric.Polygon(
-			[thisCoords.tl, thisCoords.tr, thisCoords.br, thisCoords.bl],
-			{fill: "red"}
-		);
 
-		var intersects = intersection.status === 'Intersection';
-		var contains = aContainsB(platformRect.points, tokenBaseRect.points);
-		//tokenBaseRect.setColor(intersects || contains) ? "green" : "red");
-		//flcToy.view.canvas.add(tokenBaseRect, platformRect);
-		//console.log(intersection.status, contains);
 
-		return intersects || contains;
+	flcToy.view.setupPlatform = function(image, deferred) {
+		console.log("Adding",image._element.src);
+		flcToy.view.canvas.add(image);
+		var platform = flcToy.controller.lookupPlatformByURL(image._element.src);
+
+		image.dock = function(token) {
+			//console.log("Docking " + token + " into " + image);
+			token.top = image.getCenterPoint().y;
+			platform.residents.add(token.index);
+			flcToy.model.tokenRegistry[token.index].location = platform.location;
+			flcToy.view.distributeCrowd(image, platform.residents.list());
+			token.setCoords();
+		};
+		platform.imageObject = image;
+		deferred.resolve("Platform is all set up");
 	};
-	flcToy.view.canvas.add(token);
-	return token;
-};
 
-flcToy.view.dropToken = function(options){
-	var draggedToken = options.target;
-	if (draggedToken.index.indexOf("token") > -1) { // if this is a token
-		var foundADock = false; // more predictable behavior if a token overlaps two platforms
-		for (var i = 0; i < flcToy.model.platformCount; i++) {
-			var platformIndex = "platform" + i;
-			flcToy.model.platformRegistry[platformIndex].residents.remove(draggedToken.index); // remove token from residence in each platform
-			if (!foundADock && draggedToken.itemInGroupIntersectsWithObject(flcToy.model.platformRegistry[platformIndex].imageObject)) { // adapted from http://fabricjs.com/intersection/
-				flcToy.model.platformRegistry[platformIndex].imageObject.dock(draggedToken);
+	flcToy.view.distributeCrowd = function(platformImage, residentsList) { // distribute crowd of tokens across the platform
+		var crowdWidth = (residentsList.length - 1) * PERSON_WIDTH + (residentsList.length - 1) * PLATFORM_ELBOW_ROOM; // distance between first and last midpoints
+		var crowdLeftEdge = -crowdWidth / 2;
+		for (var i = 0; i < residentsList.length; i++) {
+			var offsetFromCenter = crowdLeftEdge + (PERSON_WIDTH + PLATFORM_ELBOW_ROOM) * i;
+			flcToy.model.tokenRegistry[residentsList[i]].canvasGroup.left = platformImage.getCenterPoint().x + offsetFromCenter;
+			flcToy.model.tokenRegistry[residentsList[i]].canvasGroup.setCoords();
+		}
+	};
+
+	flcToy.view.crowdDistribution = function(originImageObject, memberCount) {
+		var crowdWidth = (memberCount - 1) * PERSON_WIDTH + (memberCount - 1) * PLATFORM_ELBOW_ROOM;
+		var crowdLeftEdge = -crowdWidth / 2;
+		var memberLocations = [];
+		var y = originImageObject.getCenterPoint().y;
+		for (var i = 0; i < memberCount; i++) {
+			var offsetFromCenter = crowdLeftEdge + (PERSON_WIDTH + PLATFORM_ELBOW_ROOM) * i;
+			var x = originImageObject.getCenterPoint().x + offsetFromCenter;
+			memberLocations.push({left: x, top:y});
+		}
+		return memberLocations;
+	};
+
+	flcToy.view.drawNewToken = function(x, y, name, gradeObj, height, color, tokenIndex) {
+		var head = new fabric.Circle({
+			radius: HEAD_RADIUS,
+			left: 0.5, // half-pixel offset to prevent fuzzy antialiasing
+		});
+		var shoulders = new fabric.Circle({
+			radius: HEAD_RADIUS,
+			top: HEAD_RADIUS*2.5,
+			left: 0.5,
+		});
+		var torso = new fabric.Rect({
+			width: PERSON_WIDTH,
+			height: height,
+			top: HEAD_RADIUS*3.5,
+			left: 0.5,
+		});
+		var base = new fabric.Circle({
+			radius: HEAD_RADIUS,
+			top: HEAD_RADIUS*2.5 + height,
+			left: 0.5,
+		});
+		var nameplate = new fabric.Text(name, {
+			fontFamily: "Source Sans Pro",
+			fontSize: 20,
+			top: -28,
+			left: HEAD_RADIUS,
+			originX: "center",
+		});
+		var nameplatePadding = 5;
+		var nameplateBG = new fabric.Rect({
+			width: nameplate.width + nameplatePadding * 2,
+			height: nameplate.height - nameplatePadding,
+			top: -17,
+			left: nameplate.left,
+			originX: "center",
+			originY: "center",
+			opacity: 0.5
+		});
+		var gradeLine1 = new fabric.Text(gradeObj.line1, {
+			fontFamily: "Source Sans Pro",
+			fontSize: 12,
+			top: HEAD_RADIUS*3.5,
+			left: HEAD_RADIUS,
+			originX: "center",
+		});
+		var gradeLine2 = new fabric.Text(gradeObj.line2, {
+			fontFamily: "Source Sans Pro",
+			fontSize: 12,
+			top: HEAD_RADIUS*4,
+			left: HEAD_RADIUS,
+			originX: "center",
+		});
+		var token = new fabric.Group([head, shoulders, torso, base, nameplateBG, nameplate, gradeLine1, gradeLine2], {
+			left: x,
+			top: y,
+			fill: color,
+			originX: "center",
+			originY: "bottom",
+			hasBorders: false,
+			hasControls: false,
+			index: tokenIndex,
+		});
+		token.base = base;
+		nameplateBG.setColor("#ffffff");
+		gradeLine1.setColor("#ffffff");
+		gradeLine2.setColor("#ffffff");
+		if (gradeObj.line2Size === "large") {
+			gradeLine2.setFontSize(36);
+		}
+		token.itemInGroupIntersectsWithObject = function(other) {
+			function aContainsB(rectA, rectB) {
+				// sample rect: [thisCoords.tl, thisCoords.tr, thisCoords.br, thisCoords.bl]
+				//logRound( rectA[0].x, rectB[0].x, rectB[1].x, rectA[1].x, between(rectA[0].x, rectB[0].x, rectB[1].x, rectA[1].x));
+				//logRound( rectA[3].x, rectB[3].x, rectB[2].x, rectA[2].x, between(rectA[3].x, rectB[3].x, rectB[2].x, rectA[2].x));
+				//logRound( rectA[0].y, rectB[0].y, rectB[3].y, rectA[3].y, between(rectA[0].y, rectB[0].y, rectB[3].y, rectA[3].y));
+				//logRound( rectA[1].y, rectB[1].y, rectB[2].y, rectA[2].y, between(rectA[1].y, rectB[1].y, rectB[2].y, rectA[2].y));
+				return (
+					between(rectA[0].x, rectB[0].x, rectB[1].x, rectA[1].x) && // rectA.tl < rectB.tl < rectB.tr < rectA.tr
+					between(rectA[3].x, rectB[3].x, rectB[2].x, rectA[2].x) && // rectA.bl < rectB.bl < rectB.bl < rectA.br
+					between(rectA[0].y, rectB[0].y, rectB[3].y, rectA[3].y) && // rectA.tl < rectB.tl < rectB.tr < rectA.tr
+					between(rectA[1].y, rectB[1].y, rectB[2].y, rectA[2].y)    // rectA.bl < rectB.bl < rectB.bl < rectA.br
+					);
+			}
+			/*function logRound() {
+				var args = Array.prototype.slice.call(arguments);
+				var output = "";
+				args.forEach(function(x){
+					output += Math.round(x) + " ";
+				});
+				console.log(output);
+			}*/
+			function between(a, b, c, d) {
+				return (a <= b && b <= c && c <= d);
+			}
+			function getCoords(oCoords) {
+				return {
+					tl: new fabric.Point(oCoords.tl.x, oCoords.tl.y),
+					tr: new fabric.Point(oCoords.tr.x, oCoords.tr.y),
+					bl: new fabric.Point(oCoords.bl.x, oCoords.bl.y),
+					br: new fabric.Point(oCoords.br.x, oCoords.br.y)
+				};
+			}
+			function getBaseCoords(oCoords, base) {
+				var height = oCoords.bl.y - oCoords.tl.y;
+				var baseHeightOffset =  height - base.getPointByOrigin("center", "top").y;
+				return {
+					tl: new fabric.Point(oCoords.tl.x, oCoords.tl.y + baseHeightOffset),
+					tr: new fabric.Point(oCoords.tr.x, oCoords.tr.y + baseHeightOffset),
+					bl: new fabric.Point(oCoords.bl.x, oCoords.bl.y),
+					br: new fabric.Point(oCoords.br.x, oCoords.br.y)
+				};
+			}
+			var thisCoords = getBaseCoords(this.oCoords, token.base),
+			//var thisCoords = getCoords(this.oCoords),
+				otherCoords = getCoords(other.oCoords),
+				intersection = fabric.Intersection.intersectPolygonPolygon(
+					[thisCoords.tl, thisCoords.tr, thisCoords.br, thisCoords.bl],
+					[otherCoords.tl, otherCoords.tr, otherCoords.br, otherCoords.bl]
+				);
+			var platformRect = new fabric.Polygon(
+				[otherCoords.tl, otherCoords.tr, otherCoords.br, otherCoords.bl],
+				{fill: "blue"}
+				);
+			var tokenBaseRect = new fabric.Polygon(
+				[thisCoords.tl, thisCoords.tr, thisCoords.br, thisCoords.bl],
+				{fill: "red"}
+			);
+
+			var intersects = intersection.status === 'Intersection';
+			var contains = aContainsB(platformRect.points, tokenBaseRect.points);
+			//tokenBaseRect.setColor(intersects || contains) ? "green" : "red");
+			//flcToy.view.canvas.add(tokenBaseRect, platformRect);
+			//console.log(intersection.status, contains);
+
+			return intersects || contains;
+		};
+		flcToy.view.canvas.add(token);
+		return token;
+	};
+
+	flcToy.view.dropToken = function(options){
+		var draggedToken = options.target;
+		if (draggedToken.index.indexOf("token") > -1) { // if this is a token
+			var foundADock = false; // more predictable behavior if a token overlaps two platforms
+			for (var i = 0; i < flcToy.model.platformCount; i++) {
+				var platformIndex = "platform" + i;
+				flcToy.model.platformRegistry[platformIndex].residents.remove(draggedToken.index); // remove token from residence in each platform
+				if (!foundADock && draggedToken.itemInGroupIntersectsWithObject(flcToy.model.platformRegistry[platformIndex].imageObject)) { // adapted from http://fabricjs.com/intersection/
+					flcToy.model.platformRegistry[platformIndex].imageObject.dock(draggedToken);
+					foundADock = true;
+				}
+				else {
+					flcToy.view.distributeCrowd(flcToy.model.platformRegistry[platformIndex].imageObject, flcToy.model.platformRegistry[platformIndex].residents.list()); // arrange tokens on the platform the token left
+				}
+			}
+			draggedToken.setCoords();
+			if (!foundADock && draggedToken.intersectsWithObject(flcToy.view.orphanage)) {
+				flcToy.controller.orphan(draggedToken.index);
 				foundADock = true;
 			}
-			else {
-				flcToy.view.distributeCrowd(flcToy.model.platformRegistry[platformIndex].imageObject, flcToy.model.platformRegistry[platformIndex].residents.list()); // arrange tokens on the platform the token left
-			}
 		}
-		draggedToken.setCoords();
-		if (!foundADock && draggedToken.intersectsWithObject(flcToy.view.orphanage)) {
-			flcToy.controller.orphan(draggedToken.index);
-			foundADock = true;
+	};
+	flcToy.view.canvas.on('object:modified', flcToy.view.dropToken);
+	flcToy.view.canvas.on('mouse:down', function(options){
+		if (typeof options.target === 'object' && options.target.name === 'cycle-btn') {
+			flcToy.controller.advanceCycle();
 		}
-	}
-};
-flcToy.view.canvas.on('object:modified', flcToy.view.dropToken);
+	});
 
-flcToy.view.eraseTokenImage = function(tokenImage) {
-	flcToy.view.canvas.remove(tokenImage);
-};
+	flcToy.view.eraseTokenImage = function(tokenImage) {
+		flcToy.view.canvas.remove(tokenImage);
+	};
+
+}; // end view setup function
 
 // STORY
 
@@ -753,13 +767,14 @@ flcToy.controller.forEachToken = function(func) { // call thusly: flcToy.control
 	}
 };
 flcToy.controller.newPlatform = function(x, y, name, url) {
+	var deferred = jQuery.Deferred();
 	var thePlatform = new flcToy.model.Platform(x, y, name, url);
 	var platformIndex = thePlatform.index;
 	flcToy.model.platformRegistry[platformIndex] = thePlatform;	// register platform by serial number...
 	flcToy.model.platformRegistry[name] = thePlatform; 			// ... and by name
 	fabric.Image.fromURL(
 		flcToy.model.platformRegistry[platformIndex].url, // path to image
-		flcToy.view.setupPlatform, // callback after loading image
+		function(image){ flcToy.view.setupPlatform(image, deferred); }, // callback after loading image
 		{ // options to pass to new image object
 			left: flcToy.model.platformRegistry[platformIndex].coords.x, 
 			top: flcToy.model.platformRegistry[platformIndex].coords.y, 
@@ -767,7 +782,7 @@ flcToy.controller.newPlatform = function(x, y, name, url) {
 		}
 	);
 	flcToy.model.Locations[name].platformIndex = platformIndex;
-	return flcToy.model.platformRegistry[platformIndex];
+	return deferred.promise();
 };
 
 /* === utility === */
@@ -1009,27 +1024,57 @@ flcToy.cycleYear = flcToy.model.Locations.ECC;
 flcToy.cycleYearHistory = [flcToy.cycleYear.name];
 
 flcToy.setup = function(options) {
-	if (options.story === "manual") {
-		var addChildBtn = options.addChildBtn;
-		addChildBtn.click(function(){
-			var name = options.nameField.val();
-			var grade = options.gradeSelect.val();
-			var height = Number(options.heightSlider.val());
-			var color = document.querySelector('input[name = "' + options.colorBoxes + '"]:checked').val();
-			flcToy.controller.newToken(name, grade, height, color);
-			options.nameField.val("");
-			options.gradeSelect.val("0");
-			options.heightSlider.val(45);
-			document.querySelector('input[name = "' + options.colorBoxes + '"]:checked').checked = false;
-			document.querySelector('input[value = "#dd5b5a"]').checked = true;
-		});
-	} else {
-		options.fwdBtn.click(flcToy.story.turnPageForward);
-		options.backBtn.click(flcToy.story.turnPageBackward);
-		var storyName = options.story;
-		story.pages = story.library[storyName];
-		story.turnPageForward();
-	}
+	flcToy.view.setup(options.canvas);
+
+	var platformPromises = [];
+
+	var DiscoverBaseX = 90;
+	var DiscoverBaseY = 200;
+	platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX +  0, DiscoverBaseY +  0, 'Preschool', 'images/Preschool.png'));
+	platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX + 150, DiscoverBaseY + 50, 'Pre-K', 'images/Pre-K.png'));
+	platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX + 300, DiscoverBaseY +  0, 'Kindergarten', 'images/Kindergarten.png'));
+	platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX + 450, DiscoverBaseY + 50, 'LGS', 'images/LGS.png'));
+	platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX + 600, DiscoverBaseY +  0, 'ADV', 'images/USH.png')); // 'ADV.png' gets hit by AdBlock
+
+	var InvestigateBase = DiscoverBaseY + 300;
+	platformPromises.push(flcToy.controller.newPlatform(325, InvestigateBase +   0, 'ECC', 'images/ECC.png'));
+	platformPromises.push(flcToy.controller.newPlatform(600, InvestigateBase + 250, 'CTG', 'images/CTG.png'));
+	platformPromises.push(flcToy.controller.newPlatform(550, InvestigateBase + 500, 'RTR', 'images/RTR.png'));
+	platformPromises.push(flcToy.controller.newPlatform(100, InvestigateBase + 500, 'EXP', 'images/EXP.png'));
+	platformPromises.push(flcToy.controller.newPlatform( 50, InvestigateBase + 250, 'MOD', 'images/MOD.png'));
+
+	var DeclareBase = InvestigateBase + 850;
+	platformPromises.push(flcToy.controller.newPlatform( 50, DeclareBase +  0, 'AHL', 'images/AHL.png'));
+	platformPromises.push(flcToy.controller.newPlatform(275, DeclareBase + 25, 'WHL', 'images/WHL.png'));
+	platformPromises.push(flcToy.controller.newPlatform(500, DeclareBase +  0, 'US1', 'images/US1.png'));
+	platformPromises.push(flcToy.controller.newPlatform(725, DeclareBase + 25, 'US2', 'images/US2.png'));
+
+	platformPromises.push(flcToy.controller.newPlatform( 25, 1490, 'college', 'images/college.png'));
+	platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX - 500, DiscoverBaseY, 'hospital', 'images/hospital.png'));
+
+	jQuery.when.apply(jQuery, platformPromises).then(function(){ // when all promises in platformPromises are fulfilled (see http://stackoverflow.com/a/5627301/1805453)
+		if (options.story === "manual") {
+			var addChildBtn = options.addChildBtn;
+			addChildBtn.click(function(){
+				var name = options.nameField.val();
+				var grade = options.gradeSelect.val();
+				var height = Number(options.heightSlider.val());
+				var color = document.querySelector('input[name = "' + options.colorBoxes + '"]:checked').val();
+				flcToy.controller.newToken(name, grade, height, color);
+				options.nameField.val("");
+				options.gradeSelect.val("0");
+				options.heightSlider.val(45);
+				document.querySelector('input[name = "' + options.colorBoxes + '"]:checked').checked = false;
+				document.querySelector('input[value = "#dd5b5a"]').checked = true;
+			});
+		} else {
+			options.fwdBtn.click(flcToy.story.turnPageForward);
+			options.backBtn.click(flcToy.story.turnPageBackward);
+			var storyName = options.story;
+			story.pages = story.library[storyName];
+			story.turnPageForward();
+		}
+	});
 };
 
 flcToy.controller.checkAndSetADVDisabledState = function() {
@@ -1150,12 +1195,6 @@ flcToy.controller.unReverseCycle = function() {
 	flcToy.controller.updateAllTokenLocations();
 };
 
-flcToy.view.canvas.on('mouse:down', function(options){
-	if (typeof options.target === 'object' && options.target.name === 'cycle-btn') {
-		flcToy.controller.advanceCycle();
-	}
-});
-
 function christmasGhosts(tokenIndex) {
 	var past = "null", present = "null", future = "null";
 	try { past = flcToy.model.tokenRegistry.prev[tokenIndex].location.name; } catch (e) {}
@@ -1163,33 +1202,6 @@ function christmasGhosts(tokenIndex) {
 	try { future = flcToy.model.tokenRegistry.next[tokenIndex].location.name; } catch (e) {}
 	console.log(past, present, future);
 }
-
-(function() {
-	var DiscoverBaseX = 90;
-	var DiscoverBaseY = 200;
-	flcToy.controller.newPlatform(DiscoverBaseX +  0, DiscoverBaseY +  0, 'Preschool', 'images/Preschool.png');
-	flcToy.controller.newPlatform(DiscoverBaseX + 150, DiscoverBaseY + 50, 'Pre-K', 'images/Pre-K.png');
-	flcToy.controller.newPlatform(DiscoverBaseX + 300, DiscoverBaseY +  0, 'Kindergarten', 'images/Kindergarten.png');
-	flcToy.controller.newPlatform(DiscoverBaseX + 450, DiscoverBaseY + 50, 'LGS', 'images/LGS.png');
-	flcToy.controller.newPlatform(DiscoverBaseX + 600, DiscoverBaseY +  0, 'ADV', 'images/USH.png'); // 'ADV.png' gets hit by AdBlock
-
-	var InvestigateBase = DiscoverBaseY + 300;
-	flcToy.controller.newPlatform(325, InvestigateBase +   0, 'ECC', 'images/ECC.png');
-	flcToy.controller.newPlatform(600, InvestigateBase + 250, 'CTG', 'images/CTG.png');
-	flcToy.controller.newPlatform(550, InvestigateBase + 500, 'RTR', 'images/RTR.png');
-	flcToy.controller.newPlatform(100, InvestigateBase + 500, 'EXP', 'images/EXP.png');
-	flcToy.controller.newPlatform( 50, InvestigateBase + 250, 'MOD', 'images/MOD.png');
-
-	var DeclareBase = InvestigateBase + 850;
-	flcToy.controller.newPlatform( 50, DeclareBase +  0, 'AHL', 'images/AHL.png');
-	flcToy.controller.newPlatform(275, DeclareBase + 25, 'WHL', 'images/WHL.png');
-	flcToy.controller.newPlatform(500, DeclareBase +  0, 'US1', 'images/US1.png');
-	flcToy.controller.newPlatform(725, DeclareBase + 25, 'US2', 'images/US2.png');
-
-	flcToy.controller.newPlatform( 25, 1490, 'college', 'images/college.png');
-	flcToy.controller.newPlatform(DiscoverBaseX - 500, DiscoverBaseY, 'hospital', 'images/hospital.png');
-}());
-
 
 module.exports = exports = flcToy;
 exports.story = story;
