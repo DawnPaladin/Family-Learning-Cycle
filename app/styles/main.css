@@ -49,10 +49,12 @@ select, button {
 canvas {
   -webkit-tap-highlight-color:rgba(0,0,0,0); /* prevent canvas from being highlighted on taps */
 }
-.storyHoverBox {
-  /* position: fixed; */
+.storyShuttleBox.hover {
+  position: fixed;
   bottom: 1em;
   margin-left: -.75em;
+}
+.storyShuttleBox {
   width: 486px;
   background-color: white;
   border: 1px solid silver;
@@ -60,12 +62,12 @@ canvas {
   padding: .5em;
 }
 @media (max-width: 1020px) {
-  .storyHoverBox {
+  .storyShuttleBox.hover {
     margin-left: 0;
   }
 }
 @media (max-width: 525px) {
-  .storyHoverBox {
+  .storyShuttleBox.hover {
     width: 100%;
     box-sizing: border-box;
   }

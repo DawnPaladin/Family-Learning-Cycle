@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
 	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
@@ -53,10 +54,10 @@
 
 <p>Let's see how this works with an example:</p>
 
-<div class="flc-toy-wrapper">
+<div class="flc-toy-wrapper" id="Robert-toy-wrapper">
 	<canvas id="Robert-toy" width="972" height="1800">Your browser is out-of-date. To display the Family Learning Cycle, you'll need to update it.</canvas>
-	<div class="storyHoverBox">
-		<span id="storyText"></span>
+	<div class="storyShuttleBox">
+		<span class="storyText"></span>
 		<div class="storyControls">
 			<button id="storyPrevBtn" disabled="true">&lt;</button>
 			<button id="storyNextBtn">Next &gt;</button>
@@ -66,10 +67,10 @@
 
 <p>Not too complicated. Let's see how this works for a larger family. Meet the Carpenters, who have just decided to try homeschooling their children.</p> <!-- http://dresdenfiles.wikia.com/wiki/Carpenter_family -->
 
-<div class="flc-toy-wrapper">
+<div class="flc-toy-wrapper" id="Carpenter-toy-wrapper">
 	<canvas id="Carpenter-toy" width="972" height="1800">Your browser is out-of-date. To display the Family Learning Cycle, you'll need to update it.</canvas>
-	<div class="storyHoverBox">
-		<span id="storyText"></span>
+	<div class="storyShuttleBox">
+		<span class="storyText"></span>
 		<div class="storyControls">
 			<button id="storyPrevBtn2" disabled="true">&lt;</button>
 			<button id="storyNextBtn2">Next &gt;</button>
@@ -96,6 +97,7 @@
 
 <!-- build:js({app,.tmp}) scripts/main.js -->
 <script src="scripts/flcToy.js"></script>
+<script src="scripts/floatingControl.js"></script>
 <!-- endbuild -->
 
 </body>
