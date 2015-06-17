@@ -50,7 +50,7 @@ canvas {
   -webkit-tap-highlight-color:rgba(0,0,0,0); /* prevent canvas from being highlighted on taps */
 }
 .storyHoverBox {
-  position: fixed;
+  /* position: fixed; */
   bottom: 1em;
   margin-left: -.75em;
   width: 486px;
