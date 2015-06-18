@@ -672,10 +672,14 @@ function toyFactory() {
 				flcToy.controller.updateAllTokenLocations();
 			}
 
-			// if we're on the first page of the story, disable the Back button
+			// enable/disable forward/back controls as appropriate
 			if (flcToy.story.currentPage > 0) {
-				jQuery('#storyPrevBtn').prop("disabled", false);
+				flcToy.story.prevBtn.prop("disabled", false);
 			}
+			if (flcToy.story.currentPage === flcToy.story.pages.length - 1) {
+				flcToy.story.nextBtn.prop("disabled", true);
+			}
+
 			flcToy.controller.verifyTokenData();
 		},
 		turnPageBackward: function(){
@@ -693,7 +697,10 @@ function toyFactory() {
 
 			// if we're on the first page of the story, disable the Back button
 			if (flcToy.story.currentPage < 1) {
-				jQuery('#storyPrevBtn').prop("disabled", true);
+				flcToy.story.prevBtn.prop("disabled", true);
+			}
+			if (flcToy.story.currentPage < flcToy.story.pages.length) {
+				flcToy.story.nextBtn.prop("disabled", false);
 			}
 			flcToy.controller.verifyTokenData();
 		},
@@ -1044,11 +1051,13 @@ function toyFactory() {
 					document.querySelector('input[value = "#dd5b5a"]').checked = true;
 				});
 			} else {
-				options.fwdBtn.click(flcToy.story.turnPageForward);
-				options.backBtn.click(flcToy.story.turnPageBackward);
+				options.nextBtn.click(flcToy.story.turnPageForward);
+				options.prevBtn.click(flcToy.story.turnPageBackward);
 				var storyName = options.story;
 				flcToy.story.pages = flcToy.story.library[storyName];
 				flcToy.story.box = options.textField;
+				flcToy.story.nextBtn = options.nextBtn;
+				flcToy.story.prevBtn = options.prevBtn;
 				flcToy.story.turnPageForward();
 			}
 		});
@@ -1140,7 +1149,7 @@ function toyFactory() {
 
 			flcToy.model.tokenRegistry = flcToy.model.tokenRegistry.prev;
 			flcToy.model.platformRegistry = flcToy.model.platformRegistry.prev;
-			flcToy.cycleYear = flcToy.model.Locations[flcToy.cycleYearHistory[story.currentPage]]; // jshint ignore:line
+			flcToy.cycleYear = flcToy.model.Locations[flcToy.cycleYearHistory[flcToy.story.currentPage]];
 
 	 		flcToy.model.tokenRegistry.next = tokenFutureHistory;
 	 		flcToy.model.platformRegistry.next = platformFutureHistory;
@@ -1160,7 +1169,7 @@ function toyFactory() {
 		try {
 			flcToy.model.tokenRegistry = flcToy.model.tokenRegistry.next;
 			flcToy.model.platformRegistry = flcToy.model.platformRegistry.next;
-			flcToy.cycleYear = flcToy.model.Locations[flcToy.cycleYearHistory[story.currentPage]]; // jshint ignore:line
+			flcToy.cycleYear = flcToy.model.Locations[flcToy.cycleYearHistory[flcToy.story.currentPage]];
 		} catch (error) {
 			console.warn("Cannot restore board state from future-history.", error);
 		}
@@ -1185,16 +1194,16 @@ function toyFactory() {
 var RobertOptions = {
 	canvas: "Robert-toy",
 	story: "Robert",
-	fwdBtn: jQuery('#Robert-toy-wrapper .storyNextBtn'),
-	backBtn: jQuery('#Robert-toy-wrapper .storyPrevBtn'),
+	nextBtn: jQuery('#Robert-toy-wrapper .storyNextBtn'),
+	prevBtn: jQuery('#Robert-toy-wrapper .storyPrevBtn'),
 	textField: jQuery('#Robert-toy-wrapper .storyText'),
 };
 
 var CarpenterOptions = {
 	canvas: "Carpenter-toy",
 	story: "Carpenters",
-	fwdBtn: jQuery('#Carpenter-toy-wrapper .storyNextBtn'),
-	backBtn: jQuery('#Carpenter-toy-wrapper .storyPrevBtn'),
+	nextBtn: jQuery('#Carpenter-toy-wrapper .storyNextBtn'),
+	prevBtn: jQuery('#Carpenter-toy-wrapper .storyPrevBtn'),
 	textField: jQuery('#Carpenter-toy-wrapper .storyText'),
 };
 
