@@ -193,7 +193,7 @@ function toyFactory() {
 		flcToy.view.canvas.on('mouse:up', enableScroll);
 
 		var CANVAS_WIDTH = 972;
-		var CANVAS_HEIGHT = 1800;
+		var CANVAS_HEIGHT = 1660;
 
 		// draw background
 
@@ -285,16 +285,30 @@ function toyFactory() {
 		var HEAD_RADIUS = PERSON_WIDTH / 2;
 		var PLATFORM_ELBOW_ROOM = 20;
 
+		function showOrphanage() {
+			flcToy.view.orphanage.visible = true;
+		}
+		function hideOrphanage() {
+			flcToy.view.orphanage.visible = false;
+		}
+
 		if (manual === true) {
-			flcToy.view.orphanage = new fabric.Rect({
-				width: 972,
-				height: 100,
-				left: 0,
-				top: 1700,
-				fill: "#F2F2F2",
+			fabric.Image.fromURL('images/trashcan.png', function(loadedImage) {
+				flcToy.view.canvas.add(loadedImage);
+				flcToy.view.orphanage = loadedImage;
+			}, {
 				selectable: false,
+				left: 972 - 200 - 25,
+				top: DiscoverHeight + 25,
+				hasControls: false,
+				hasBorders: false,
+				lockMovementX: true,
+				lockMovementY: true,
+				visible: false,
+				name: "orphanage",
 			});
-			flcToy.view.canvas.add(flcToy.view.orphanage);
+			flcToy.view.canvas.on("object:moving", showOrphanage);
+			flcToy.view.canvas.on("object:modified", hideOrphanage);
 			fabric.Image.fromURL('images/cycle-btn.png', function(loadedImage) {
 				flcToy.view.canvas.add(loadedImage);
 			}, {
