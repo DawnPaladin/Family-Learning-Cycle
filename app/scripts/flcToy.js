@@ -349,7 +349,7 @@ function toyFactory() {
 			return memberLocations;
 		};
 
-		flcToy.view.drawNewToken = function(x, y, name, gradeObj, height, color, tokenIndex) {
+		flcToy.view.drawNewToken = function(x, y, name, gradeObj, height, color, tokenIndex, lockMovement) {
 			var head = new fabric.Circle({
 				radius: HEAD_RADIUS,
 				left: 0.5, // half-pixel offset to prevent fuzzy antialiasing
@@ -409,6 +409,9 @@ function toyFactory() {
 				originY: "bottom",
 				hasBorders: false,
 				hasControls: false,
+				lockMovementX: lockMovement,
+				lockMovementY: lockMovement,
+				hoverCursor: lockMovement ? "default" : "move",
 				index: tokenIndex,
 			});
 			token.base = base;
@@ -534,7 +537,7 @@ function toyFactory() {
 					tokens: [
 						{ //format: string name, string gradeIndex, int height (20-70), string color
 							name: "Robert",
-							init: ["Robert", "0", 50, "#dd5b5a"],
+							init: ["Robert", "0", 50, "#dd5b5a", true],
 							platform: "hospital"
 						}
 					]
@@ -560,11 +563,11 @@ function toyFactory() {
 					tokens: [
 						{ //format: string name, string gradeIndex, int height (20-70), string color
 							name: "Daniel",
-							init: ["Daniel", "0", 55, "#ffa544"],
+							init: ["Daniel", "0", 55, "#ffa544", true],
 							platform: "hospital"
 						}, {
 							name: "Molly",
-							init: ["Molly", "4", 70, "#f9b5d1"],
+							init: ["Molly", "4", 70, "#f9b5d1", true],
 							platform: "platform4"
 						}
 					]
@@ -577,7 +580,7 @@ function toyFactory() {
 					tokens: [
 						{
 							name: "Matthew",
-							init: ["Matthew", "0", 45, "#5377a6"],
+							init: ["Matthew", "0", 45, "#5377a6", true],
 							platform: "hospital"
 						}
 					]
@@ -587,7 +590,7 @@ function toyFactory() {
 					tokens: [
 						{
 							name: "Alicia",
-							init: ["Alicia", "0", 35, "#b66de2"],
+							init: ["Alicia", "0", 35, "#b66de2", true],
 							platform: "hospital"
 						}
 					]
@@ -742,12 +745,12 @@ function toyFactory() {
 		document.querySelector('input[name = "' + options.colorBoxes + '"]:checked').checked = false;
 		document.querySelector('input[value = "#dd5b5a"]').checked = true;
 	};
-	flcToy.controller.newToken = function (name, gradeIndex, height, color) {
+	flcToy.controller.newToken = function (name, gradeIndex, height, color, lockMovement) {
 		var gradeObj = flcToy.model.processGrade(gradeIndex);
 		var tokenIndex = 'token' + flcToy.model.tokenCount++;
-		var tokenData = new flcToy.model.Token(name, gradeObj, height, color);
+		var tokenData = new flcToy.model.Token(name, gradeObj, height, color, lockMovement);
 		flcToy.model.tokenRegistry[tokenIndex] = tokenData;
-		flcToy.model.tokenRegistry[tokenIndex].canvasGroup = flcToy.view.drawNewToken(100, 500, name, gradeObj, height, color, tokenIndex);
+		flcToy.model.tokenRegistry[tokenIndex].canvasGroup = flcToy.view.drawNewToken(100, 500, name, gradeObj, height, color, tokenIndex, lockMovement);
 		return tokenIndex;
 	}; //newToken('Twilight Sparkle', '1', 50, '#662D8A');
 	flcToy.controller.orphan = function(tokenIndex) {
