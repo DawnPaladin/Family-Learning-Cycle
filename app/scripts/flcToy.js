@@ -1199,12 +1199,12 @@ var CarpenterOptions = {
 };
 
 var manualOptions = {
-	canvas: "manual-toy",
+	canvas: "sandbox-toy",
 	nameField: jQuery('#nameField'),
 	gradeSelect: jQuery('#gradeSelect'),
 	heightSlider: jQuery('#heightSlider'),
 	colorBoxes: "chooseColor",
-	addChildBtn: jQuery('addChildBtn')
+	addChildBtn: jQuery('#addChildBtn')
 };
 
 jQuery(function(){
@@ -1212,4 +1212,6 @@ jQuery(function(){
 	toy1.setup(RobertOptions);
 	var toy2 = toyFactory();
 	toy2.setup(CarpenterOptions);
+	var toy3 = toyFactory();
+	toy3.setup(manualOptions);
 });

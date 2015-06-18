@@ -78,6 +78,63 @@
 	</div>
 </div>
 
+<p>See how this would work for your family! Use the controls below to create a token for each of your children. Then drag each of them onto the platform that represents their current grade, and start clicking the Advance button to see how they move through the Family Learning Cycle.</p>
+
+<div class="toyControls">
+	<span class="toyControl">
+		<label for="nameField">Name</label> 
+		<input id="nameField" value="Guy">
+	</span>
+	<span class="toyControl">
+		<label for="gradeSelect">Grade</label> 
+		<select id="gradeSelect">
+			<option value="0">Preschool</option>
+			<option value="1">Pre-K</option>
+			<option value="2">Kindergarten</option>
+			<option value="3">1st grade</option>
+			<option value="4">2nd grade</option>
+			<option value="5">3rd grade</option>
+			<option value="6">4th grade</option>
+			<option value="7">5th grade</option>
+			<option value="8">6th grade</option>
+			<option value="9">7th grade</option>
+			<option value="10">8th grade</option>
+			<option value="11">9th grade</option>
+			<option value="12">10th grade</option>
+			<option value="13">11th grade</option>
+			<option value="14">12th grade</option>
+		</select>
+	</span>
+	<span class="toyControl">
+		<label for="heightSlider">Height</label>
+		<input type="range" id="heightSlider" min="20" max="70" step="5">
+	</span>
+	<span class="toyControl">
+		<label>Color</label>
+		<style>
+			.colorBox:nth-of-type(1)::before { background-color: #dd5b5a; }
+			.colorBox:nth-of-type(2)::before { background-color: #ffa544; }
+			.colorBox:nth-of-type(3)::before { background-color: #f9b5d1; }
+			.colorBox:nth-of-type(4)::before { background-color: #b66de2; }
+			.colorBox:nth-of-type(5)::before { background-color: #5377a6; }
+			.colorBox:nth-of-type(6)::before { background-color: #90d823; }
+		</style>
+		<input type="radio" name="chooseColor" class="colorBox" value="#dd5b5a" checked>
+		<input type="radio" name="chooseColor" class="colorBox" value="#ffa544">
+		<input type="radio" name="chooseColor" class="colorBox" value="#f9b5d1">
+		<input type="radio" name="chooseColor" class="colorBox" value="#b66de2">
+		<input type="radio" name="chooseColor" class="colorBox" value="#5377a6">
+		<input type="radio" name="chooseColor" class="colorBox" value="#90d823">
+	</span>
+	<button id="addChildBtn" class="toyControl">Add child</button>
+	<!-- <button id="testBtn" class="toyControl"></button> -->
+</div>
+
+<div class="flc-toy-wrapper" id="sandbox-toy-wrapper">
+	<canvas id="sandbox-toy" width="972" height="1800">Your browser is out-of-date. To display the Family Learning Cycle, you'll need to update it.</canvas>
+</div>
+
+
 <!-- build:js(.) scripts/vendor.js -->
 <!-- bower:js -->
 <script src="bower_components/jquery/dist/jquery.js"></script>
