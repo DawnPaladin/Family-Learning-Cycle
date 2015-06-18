@@ -1200,6 +1200,7 @@ var CarpenterOptions = {
 
 var manualOptions = {
 	canvas: "sandbox-toy",
+	story: "manual",
 	nameField: jQuery('#nameField'),
 	gradeSelect: jQuery('#gradeSelect'),
 	heightSlider: jQuery('#heightSlider'),
