@@ -21,66 +21,117 @@
 		<![endif]-->
 
 
-		<div class="toyControls">
-			<span class="toyControl">
-				<label for="nameField">Name</label> 
-				<input id="nameField" value="Guy">
-			</span>
-			<span class="toyControl">
-				<label for="gradeSelect">Grade</label> 
-				<select id="gradeSelect">
-					<option value="0">Preschool</option>
-					<option value="1">Pre-K</option>
-					<option value="2">Kindergarten</option>
-					<option value="3">1st grade</option>
-					<option value="4">2nd grade</option>
-					<option value="5">3rd grade</option>
-					<option value="6">4th grade</option>
-					<option value="7">5th grade</option>
-					<option value="8">6th grade</option>
-					<option value="9">7th grade</option>
-					<option value="10">8th grade</option>
-					<option value="11">9th grade</option>
-					<option value="12">10th grade</option>
-					<option value="13">11th grade</option>
-					<option value="14">12th grade</option>
-				</select>
-			</span>
-			<span class="toyControl">
-				<label for="heightSlider">Height</label>
-				<input type="range" id="heightSlider" min="20" max="70" step="5">
-			</span>
-			<span class="toyControl">
-				<label>Color</label>
-				<style>
-					.colorBox:nth-of-type(1)::before { background-color: #dd5b5a; }
-					.colorBox:nth-of-type(2)::before { background-color: #ffa544; }
-					.colorBox:nth-of-type(3)::before { background-color: #f9b5d1; }
-					.colorBox:nth-of-type(4)::before { background-color: #b66de2; }
-					.colorBox:nth-of-type(5)::before { background-color: #5377a6; }
-					.colorBox:nth-of-type(6)::before { background-color: #90d823; }
-				</style>
-				<input type="radio" name="chooseColor" class="colorBox" value="#dd5b5a" checked>
-				<input type="radio" name="chooseColor" class="colorBox" value="#ffa544">
-				<input type="radio" name="chooseColor" class="colorBox" value="#f9b5d1">
-				<input type="radio" name="chooseColor" class="colorBox" value="#b66de2">
-				<input type="radio" name="chooseColor" class="colorBox" value="#5377a6">
-				<input type="radio" name="chooseColor" class="colorBox" value="#90d823">
-			</span>
-			<button id="addChildBtn" class="toyControl">Add child</button>
-			<!-- <button id="testBtn" class="toyControl"></button> -->
+		<p>While public schools have a dedicated teacher for each subject, a common problem that homeschooling families face is that one person (often the mother) is typically doing most of the teaching. If she has multiple children, she must split her time between them. This requires the teacher to keep track of many different topics in her head, and limits the amount of time each child can spend with her.</p>
+
+		<p>The <strong>Family Learning Cycle</strong> solves this problem with curriculm packages which can be taught to children at several different grade levels all at the same time. The concept takes some getting used to, but it has several important benefits for your family:</p>
+
+		<ul>
+			<li><strong>Rapid learning.</strong> Families who are disciplined about starting school at 8 AM sharp are normally finished with the books by lunchtime, allowing the rest of the day for outdoor play, sports, music lessons, and self-directed study. (7th-8th graders spend an extra hour or two on advanced math and science.) Since lessons are short, many problems related to attention span can be avoided altogether.</li>
+			<li><strong>Kids learn from each other.</strong> Experience has shown us that lessons successfully imparted to older children will often spill over to their younger siblings. This applies to both academic lessons and moral ones, and it's enhanced when kids learn together.</li>
+			<li><strong>Thorough Bible integration.</strong> Our unusual curriculum structure allows us to juxtapose Biblical and secular history in ways other programs can't. Learning about God doesn't just happen in its own class--it's everywhere.</li>
+		</ul>
+
+		<h2>Here's how our curriculum works:</h2>
+
+		<div class="clearfix">
+			<img class="img-right" src="images/Discover_covers.png" alt="Discover for Preschool-3rd Grade">
+			<p>Students up through 3rd grade who have no older siblings should start with a curriculum from the Discover section. If there are older siblings, see "What about Younger Siblings?" section below.</p>
 		</div>
 
-		<div class="flc-toy-wrapper">
-			<canvas id="FamilyLearningCycleToy" width="972" height="1800">Your browser is out-of-date. To display the Family Learning Cycle, you'll need to update it.</canvas>
-			<div class="storyHoverBox">
-				<span id="storyText"></span>
+		<div class="clearfix">
+			<img class="img-right" src="images/Investigate_covers.png" alt="Investigate for Family Learning 3rd-8th grade">
+			<p>Students in 3rd-8th grade begin the Family Learning Cycle with Exploring Countries and Cultures. Like all of our Investigate packages, this provides Bible, geography, history, literature, science, music appreciation, and art activities for a range of ages. Our Teacher's Manuals explain what level of content should be taught to each child. A 7th grader, for example, will complete assignments more thoroughly than a 3rd grader while using many of the same resources. The Family Learning Cycle keeps the family together when possible and assures that the parent is only teaching one complete curriculum package each year.</p>
+			<p>Each year, the family purchases one Investigate package and all of their 2nd-8th graders move to the next stage in the cycle together. After completing 1850 to Modern Times, they return to Exploring Countries and Cultures, learning the curriculum at a higher level and in greater depth than they did the first time; then they complete Creation to the Greeks, and so on.</p>
+		</div>
+
+		<div class="clearfix">
+			<img class="img-right" src="images/Declare_covers.png" alt="Declare for High School">
+			<p>This continues for each student until they complete 8th grade. In 9th grade, they exit the Family Learning Cycle and begin the first year of our Declare program for high schoolers.</p>
+			<p>High school students complete most of their studies independently and have a scheduled meeting with the parent on Friday. Because Friday is a shorter day in the younger children's program, the parent has time to meet with the high school student and accomplish all tasks.</p>
+			<p>[Talk about the great shape for college that our high school track will put them on]</p>
+		</div>
+
+		<div class="flc-toy-wrapper" id="Robert-toy-wrapper">
+			<p>Let's see how this works with an example:</p>
+			<canvas id="Robert-toy" width="972" height="1800">Your browser is out-of-date. To display the Family Learning Cycle, you'll need to update it.</canvas>
+			<div class="storyShuttleBox">
+				<span class="storyText"></span>
 				<div class="storyControls">
-					<button id="storyPrevBtn" disabled="true">&lt;</button>
-					<button id="storyNextBtn">Next &gt;</button>
+					<button class="storyPrevBtn" disabled="true">&lt;</button>
+					<button class="storyNextBtn">Next &gt;</button>
 				</div>
 			</div>
 		</div>
+
+		<div class="flc-toy-wrapper" id="Carpenter-toy-wrapper">
+			<p>Not too complicated. Let's see how this works for a larger family. Meet the Carpenters, who have just decided to try homeschooling their children.</p> <!-- http://dresdenfiles.wikia.com/wiki/Carpenter_family -->
+			<canvas id="Carpenter-toy" width="972" height="1800">Your browser is out-of-date. To display the Family Learning Cycle, you'll need to update it.</canvas>
+			<div class="storyShuttleBox">
+				<span class="storyText"></span>
+				<div class="storyControls">
+					<button class="storyPrevBtn" disabled="true">&lt;</button>
+					<button class="storyNextBtn">Next &gt;</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="flc-toy-wrapper" id="sandbox-toy-wrapper">
+			<p>See how this would work for your family! Use the controls below to create a token for each of your children. Then drag each of them onto the platform that represents their current grade, and start clicking the Advance button to see how they move through the Family Learning Cycle.</p>
+
+			<div class="toyControls">
+				<span class="toyControl">
+					<label for="nameField">Name</label> 
+					<input id="nameField" value="Guy">
+				</span>
+				<span class="toyControl">
+					<label for="gradeSelect">Grade</label> 
+					<select id="gradeSelect">
+						<option value="0">Preschool</option>
+						<option value="1">Pre-K</option>
+						<option value="2">Kindergarten</option>
+						<option value="3">1st grade</option>
+						<option value="4">2nd grade</option>
+						<option value="5">3rd grade</option>
+						<option value="6">4th grade</option>
+						<option value="7">5th grade</option>
+						<option value="8">6th grade</option>
+						<option value="9">7th grade</option>
+						<option value="10">8th grade</option>
+						<option value="11">9th grade</option>
+						<option value="12">10th grade</option>
+						<option value="13">11th grade</option>
+						<option value="14">12th grade</option>
+					</select>
+				</span>
+				<span class="toyControl">
+					<label for="heightSlider">Height</label>
+					<input type="range" id="heightSlider" min="20" max="70" step="5">
+				</span>
+				<span class="toyControl">
+					<label>Color</label>
+					<style>
+						.colorBox:nth-of-type(1)::before { background-color: #dd5b5a; }
+						.colorBox:nth-of-type(2)::before { background-color: #ffa544; }
+						.colorBox:nth-of-type(3)::before { background-color: #f9b5d1; }
+						.colorBox:nth-of-type(4)::before { background-color: #b66de2; }
+						.colorBox:nth-of-type(5)::before { background-color: #5377a6; }
+						.colorBox:nth-of-type(6)::before { background-color: #90d823; }
+					</style>
+					<input type="radio" name="chooseColor" class="colorBox" value="#dd5b5a" checked>
+					<input type="radio" name="chooseColor" class="colorBox" value="#ffa544">
+					<input type="radio" name="chooseColor" class="colorBox" value="#f9b5d1">
+					<input type="radio" name="chooseColor" class="colorBox" value="#b66de2">
+					<input type="radio" name="chooseColor" class="colorBox" value="#5377a6">
+					<input type="radio" name="chooseColor" class="colorBox" value="#90d823">
+				</span>
+				<button id="addChildBtn" class="toyControl">Add child</button>
+				<!-- <button id="testBtn" class="toyControl"></button> -->
+			</div>
+
+			<canvas id="sandbox-toy" width="972" height="1800">Your browser is out-of-date. To display the Family Learning Cycle, you'll need to update it.</canvas>
+		</div>
+
+
 		<!-- build:js(.) scripts/vendor.js -->
 		<!-- bower:js -->
 		<script src="bower_components/jquery/dist/jquery.js"></script>
@@ -88,18 +139,9 @@
 		<!-- endbower -->
 		<!-- endbuild -->
 
-		<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-		<script>
-			(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-			function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-			e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-			e.src='//www.google-analytics.com/analytics.js';
-			r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-			ga('create','UA-XXXXX-X');ga('send','pageview');
-		</script>
-
-				<!-- build:js({app,.tmp}) scripts/main.js -->
-				<script src="scripts/flcToy.js"></script>
-				<!-- endbuild -->
+		<!-- build:js({app,.tmp}) scripts/main.js -->
+		<script src="scripts/flcToy.js"></script>
+		<script src="scripts/floatingControl.js"></script>
+		<!-- endbuild -->
 </body>
 </html>
