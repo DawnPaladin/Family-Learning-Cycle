@@ -719,6 +719,18 @@ function toyFactory() {
 	*/
 
 	/* === creation and destruction === */
+	flcToy.controller.addTokenClickHandler = function(options) {
+		var name = options.nameField.val();
+		var grade = options.gradeSelect.val();
+		var height = Number(options.heightSlider.val());
+		var color = jQuery('input[name = "' + options.colorBoxes + '"]:checked').val();
+		flcToy.controller.newToken(name, grade, height, color);
+		options.nameField.val("");
+		options.gradeSelect.val("0");
+		options.heightSlider.val(45);
+		document.querySelector('input[name = "' + options.colorBoxes + '"]:checked').checked = false;
+		document.querySelector('input[value = "#dd5b5a"]').checked = true;
+	};
 	flcToy.controller.newToken = function (name, gradeIndex, height, color) {
 		var gradeObj = flcToy.model.processGrade(gradeIndex);
 		var tokenIndex = 'token' + flcToy.model.tokenCount++;
@@ -1038,18 +1050,7 @@ function toyFactory() {
 		jQuery.when.apply(jQuery, platformPromises).then(function(){ // when all promises in platformPromises are fulfilled (see http://stackoverflow.com/a/5627301/1805453)
 			if (options.story === "manual") {
 				var addChildBtn = options.addChildBtn;
-				addChildBtn.click(function(){
-					var name = options.nameField.val();
-					var grade = options.gradeSelect.val();
-					var height = Number(options.heightSlider.val());
-					var color = document.querySelector('input[name = "' + options.colorBoxes + '"]:checked').val();
-					flcToy.controller.newToken(name, grade, height, color);
-					options.nameField.val("");
-					options.gradeSelect.val("0");
-					options.heightSlider.val(45);
-					document.querySelector('input[name = "' + options.colorBoxes + '"]:checked').checked = false;
-					document.querySelector('input[value = "#dd5b5a"]').checked = true;
-				});
+				addChildBtn.click(function(){ flcToy.controller.addTokenClickHandler(options); });
 			} else {
 				options.nextBtn.click(flcToy.story.turnPageForward);
 				options.prevBtn.click(flcToy.story.turnPageBackward);
