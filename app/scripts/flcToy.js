@@ -182,6 +182,16 @@ function toyFactory() {
 
 		flcToy.view.canvas.selection = false;
 
+		function disableScroll() {
+			flcToy.view.canvas.allowTouchScrolling = false;
+		}
+		function enableScroll() {
+			flcToy.view.canvas.allowTouchScrolling = true;
+		}
+		enableScroll();
+		flcToy.view.canvas.on('object:moving', disableScroll);
+		flcToy.view.canvas.on('mouse:up', enableScroll);
+
 		var CANVAS_WIDTH = 972;
 		var CANVAS_HEIGHT = 1800;
 
