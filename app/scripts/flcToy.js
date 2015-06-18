@@ -177,7 +177,7 @@ function toyFactory() {
 
 	// VIEW
 
-	flcToy.view.setup = function(canvasID) {
+	flcToy.view.setup = function(canvasID, manual) {
 		flcToy.view.canvas = new fabric.Canvas(canvasID);
 
 		flcToy.view.canvas.selection = false;
@@ -275,29 +275,30 @@ function toyFactory() {
 		var HEAD_RADIUS = PERSON_WIDTH / 2;
 		var PLATFORM_ELBOW_ROOM = 20;
 
-		flcToy.view.orphanage = new fabric.Rect({
-			width: 972,
-			height: 100,
-			left: 0,
-			top: 1700,
-			fill: "#F2F2F2",
-			selectable: false,
-		});
-		flcToy.view.canvas.add(flcToy.view.orphanage);
-		fabric.Image.fromURL('images/cycle-btn.png', function(loadedImage) {
-			flcToy.view.canvas.add(loadedImage);
-		}, {
-			selectable: true,
-			left: 400,
-			top: 700,
-			hoverCursor: "pointer",
-			hasControls: false,
-			hasBorders: false,
-			lockMovementX: true,
-			lockMovementY: true,
-			name: "cycle-btn",
-		});
-
+		if (manual === true) {
+			flcToy.view.orphanage = new fabric.Rect({
+				width: 972,
+				height: 100,
+				left: 0,
+				top: 1700,
+				fill: "#F2F2F2",
+				selectable: false,
+			});
+			flcToy.view.canvas.add(flcToy.view.orphanage);
+			fabric.Image.fromURL('images/cycle-btn.png', function(loadedImage) {
+				flcToy.view.canvas.add(loadedImage);
+			}, {
+				selectable: true,
+				left: 400,
+				top: 700,
+				hoverCursor: "pointer",
+				hasControls: false,
+				hasBorders: false,
+				lockMovementX: true,
+				lockMovementY: true,
+				name: "cycle-btn",
+			});
+		}
 
 		flcToy.view.setupPlatform = function(image, deferred) {
 			flcToy.view.canvas.add(image);
@@ -1019,7 +1020,7 @@ function toyFactory() {
 	flcToy.cycleYearHistory = [flcToy.cycleYear.name];
 
 	flcToy.setup = function(options) {
-		flcToy.view.setup(options.canvas);
+		flcToy.view.setup(options.canvas, (options.story === "manual"));
 
 		var platformPromises = [];
 
