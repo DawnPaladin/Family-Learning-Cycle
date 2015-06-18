@@ -16,3 +16,10 @@ function floatControl($control, $aor) { // Make a control float over the page, b
 }
 floatControl(jQuery('#Robert-toy-wrapper .storyShuttleBox'), jQuery('#Robert-toy-wrapper'));
 floatControl(jQuery('#Carpenter-toy-wrapper .storyShuttleBox'), jQuery('#Carpenter-toy-wrapper'));
+
+jQuery('.colorBox').each(function(){
+	var This = jQuery(this);
+	var control = This.find('input');
+	var color = control.val();
+	This.css('background-color', color);
+});

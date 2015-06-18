@@ -16,6 +16,7 @@ body {
   margin-top: 1em;
   margin-bottom: 1.5em;
   font-family: "Source Sans Pro", sans-serif;
+  text-align: center;
 }
 select, button {
   font-family: "Source Sans Pro", sans-serif;
@@ -24,19 +25,16 @@ select, button {
 .toyControl {
   margin: 0 0.5em;
 }
+#nameField {
+  width: 8em;
+}
 .colorBox {
   display: inline-block;
-  margin-right: .5em;
+  padding: .1em .25em;
 }
-.colorBox::before {
-  margin-top: -.25em;
-  margin-left: -.25em;
-  width: 1.6em;
-  height: 1.6em;
-  content: '';
-  display: block;
+.colorBox > input {
+  display: inline-block;
 }
-.colorBox:checked::before { content: '✔'; text-align: center; }
 
 .flc-toy-wrapper {
   width: 1800px;
