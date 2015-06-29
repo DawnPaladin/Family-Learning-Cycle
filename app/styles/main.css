@@ -28,6 +28,9 @@ select, button {
 #nameField {
   width: 8em;
 }
+#heightSlider {
+   width: 8em;
+}
 .colorBox {
   display: inline-block;
   padding: .1em .25em;
