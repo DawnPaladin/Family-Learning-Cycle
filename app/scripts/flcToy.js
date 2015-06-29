@@ -144,9 +144,9 @@ function toyFactory() {
 		// process value from Grade dropdown
 		var gradeLevels = ["Preschool", "Pre-K", "Kindergarten", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", ""];
 		var gradeText = gradeLevels[gradeIndex];
-		var gradeObj = { 
-			index: gradeIndex, 
-			line2Size: "large" 
+		var gradeObj = {
+			index: gradeIndex,
+			line2Size: "large"
 		};
 		switch (gradeText) {
 			case "Preschool":
@@ -217,9 +217,9 @@ function toyFactory() {
 				flcToy.view.canvas.add(image);
 			},
 			{ // options to pass to new image object
-				left: 200, 
-				top: 50, 
-				selectable: false, 
+				left: 200,
+				top: 50,
+				selectable: false,
 			}
 		);
 
@@ -546,8 +546,8 @@ function toyFactory() {
 	flcToy.story = {
 		library: {
 			Robert: [
-				{ 
-					text: "Let's imagine a family with one child named Robert. Robert's parents start him out in Preschool.", 
+				{
+					text: "Let's imagine a family with one child named Robert. Robert's parents start him out in Preschool.",
 					tokens: [
 						{ //format: string name, string gradeIndex, int height (20-70), string color
 							name: "Robert",
@@ -799,9 +799,9 @@ function toyFactory() {
 			flcToy.model.platformRegistry[platformIndex].url, // path to image
 			function(image){ flcToy.view.setupPlatform(image, deferred); }, // callback after loading image
 			{ // options to pass to new image object
-				left: flcToy.model.platformRegistry[platformIndex].coords.x, 
-				top: flcToy.model.platformRegistry[platformIndex].coords.y, 
-				selectable: false, 
+				left: flcToy.model.platformRegistry[platformIndex].coords.x,
+				top: flcToy.model.platformRegistry[platformIndex].coords.y,
+				selectable: false,
 			}
 		);
 		flcToy.model.Locations[name].platformIndex = platformIndex;
@@ -977,14 +977,14 @@ function toyFactory() {
 	};
 	flcToy.controller.updateAllTokenLocations = function() {
 		for (var j = 0; j < flcToy.model.platformCount; j++) {
-			var platformIndex = 'platform' + j; 
+			var platformIndex = 'platform' + j;
 			var platformName = flcToy.model.platformRegistry[platformIndex].name;
 			var roster = [];
 			flcToy.controller.forEachToken(function(tokenIndex, tokenData){ // https://jslinterrors.com/dont-make-functions-within-a-loop
 				if (tokenData.location.name === platformName) {
 					roster.push(tokenIndex);
 				}
-			}); // jshint ignore:line 
+			}); // jshint ignore:line
 			flcToy.controller.walkTokensToPlatform(roster, flcToy.model.platformRegistry[platformIndex], false, true);
 		}
 	};
@@ -1092,7 +1092,7 @@ function toyFactory() {
 		});
 	};
 
-	flcToy.controller.checkAndSetADVDisabledState = function() {
+	flcToy.controller.updateCycleYearAndADV = function() {
 		// enable/disable ADV depending on whether the FLC is active
 		if (flcToy.controller.tokensInFLC()) {
 			flcToy.cycleYear = flcToy.cycleYear.next;
@@ -1119,11 +1119,17 @@ function toyFactory() {
 		flcToy.model.platformRegistry.prev = clone(flcToy.model.platformRegistry);
 		flcToy.cycleYearHistory.push(flcToy.cycleYear.name);
 
-		flcToy.controller.checkAndSetADVDisabledState();
+		flcToy.controller.forEachToken(function(tokenIndex, tokenData) {
+			flcToy.controller.incrementTokenGrade(flcToy.model.tokenRegistry[tokenIndex].canvasGroup);
+			if (flcToy.model.tokenRegistry[tokenIndex].grade.index === 11) { // move 9th graders out of FLC
+				flcToy.model.tokenRegistry[tokenIndex].location = flcToy.model.Locations.AHL;
+			}
+		});
+
+		flcToy.controller.updateCycleYearAndADV();
 
 		// determine changed token locations
 		flcToy.controller.forEachToken(function(tokenIndex, tokenData) {
-			flcToy.controller.incrementTokenGrade(flcToy.model.tokenRegistry[tokenIndex].canvasGroup);
 			var tokenLocation = flcToy.model.tokenRegistry[tokenIndex].location;
 			if (tokenLocation.section === 'Discover') {
 				if ((tokenLocation.name === 'ADV') || (tokenLocation.name === 'LGS' && flcToy.controller.tokensInFLC())) {
@@ -1136,18 +1142,14 @@ function toyFactory() {
 				}
 			}
 			if (tokenLocation.section === 'Investigate') {
-				if (flcToy.model.tokenRegistry[tokenIndex].grade.index === 11) {
-					flcToy.model.tokenRegistry[tokenIndex].location = flcToy.model.Locations.AHL;
-				}
-				else {
-					flcToy.model.tokenRegistry[tokenIndex].location = flcToy.cycleYear;
-				}
+				flcToy.model.tokenRegistry[tokenIndex].location = flcToy.cycleYear;
 			}
 			if (tokenLocation.section === 'Declare') {
-				if (tokenLocation.name === 'US2') {
+				if (flcToy.model.tokenRegistry[tokenIndex].grade.index === 11) { // just-arrived 9th graders
+					// stay put, you've moved already
+				} else if (tokenLocation.name === 'US2') {
 					flcToy.model.tokenRegistry[tokenIndex].location = flcToy.model.Locations.college;
-				}
-				else {
+				} else {
 					flcToy.model.tokenRegistry[tokenIndex].location = tokenLocation.next;
 				}
 			}
