@@ -533,28 +533,45 @@ function toyFactory() {
 			if (typeof options.target === 'object' && options.target.name === 'cycle-btn') {
 				flcToy.controller.advanceCycle();
 			}
-			flcToy.view.ripple(options.e.offsetX, options.e.offsetY);
+			//flcToy.view.ripple(options.e.offsetX, options.e.offsetY);
 		});
 
 		flcToy.view.eraseTokenImage = function(tokenImage) {
 			flcToy.view.canvas.remove(tokenImage);
 		};
 
-		flcToy.view.ripple = function(x, y) {
-			var shape = new fabric.Circle({
+		flcToy.view.ripple = function(x, y, color) {
+			var fill = new fabric.Circle({
+				top: y,
+				left: x,
+				radius: 1,
+				fill: color,
+				opacity: 0.3,
+				originX: "center",
+				originY: "center",
+			});
+			flcToy.view.canvas.add(fill);
+			fill.animate({radius: CANVAS_HEIGHT, opacity: 0}, {
+				duration: 1000,
+				onChange: flcToy.view.canvas.renderAll.bind(flcToy.view.canvas),
+				onComplete: function(){ flcToy.view.canvas.remove(fill); }
+			});
+			var stroke = new fabric.Circle({
 				top: y,
 				left: x,
 				radius: 1,
 				fill: "transparent",
-				stroke: "red",
+				stroke: color,
+				strokeWidth: 5,
+				opacity: 0.8,
 				originX: "center",
 				originY: "center",
 			});
-			flcToy.view.canvas.add(shape);
-			shape.animate('radius', CANVAS_HEIGHT, {
+			flcToy.view.canvas.add(stroke);
+			stroke.animate({radius: CANVAS_HEIGHT}, {
 				duration: 1000,
 				onChange: flcToy.view.canvas.renderAll.bind(flcToy.view.canvas),
-				onComplete: function(){ flcToy.view.canvas.remove(shape); }
+				onComplete: function(){ flcToy.view.canvas.remove(stroke); }
 			});
 		};
 
@@ -771,7 +788,12 @@ function toyFactory() {
 		var grade = options.gradeSelect.val();
 		var height = Number(options.heightSlider.val());
 		var color = jQuery('input[name = "' + options.colorBoxes + '"]:checked').val();
-		flcToy.controller.newToken(name, grade, height, color);
+		var tokenIndex = flcToy.controller.newToken(name, grade, height, color);
+		var tokenData = flcToy.model.tokenRegistry[tokenIndex];
+		var platformData = flcToy.controller.lookupPlatformByGradeIndex(grade);
+		var platformCoords = flcToy.controller.lookupPlatformCenter(platformData);
+		flcToy.controller.moveTokenToPlatform(tokenData, platformData);
+		flcToy.view.ripple(platformCoords.x, platformCoords.y, color);
 		options.nameField.val("");
 		options.gradeSelect.val("0");
 		options.heightSlider.val(45);
@@ -850,6 +872,27 @@ function toyFactory() {
 				return flcToy.model.platformRegistry[platformIndex];
 			}
 		}
+	};
+	flcToy.controller.lookupPlatformCenter = function(platformData) {
+		var platformCenter = {
+			x: platformData.imageObject.oCoords.mt.x,
+			y: platformData.imageObject.oCoords.ml.y
+		};
+		return platformCenter;
+	};
+	flcToy.controller.lookupPlatformByGradeIndex = function(gradeIndex) {
+		var platformIndex = "platform";
+		if (gradeIndex <= 4) { // Discover
+			platformIndex += gradeIndex; // place according to grade
+		} else if (gradeIndex > 4 && gradeIndex < 10){ // Investigate
+			platformIndex = flcToy.cycleYear.platformIndex; // place in FLC
+		} else if (gradeIndex >= 10) { // Declare
+			platformIndex += (gradeIndex - 1); // as of ECC, gradeIndex and tokenIndex no longer match up, because if you're an only child you do ECC twice
+		} else {
+			console.error("Invalid gradeIndex:", gradeIndex);
+		}
+		var platformData = flcToy.model.platformRegistry[platformIndex];
+		return platformData;
 	};
 
 	flcToy.controller.musterTokens = function(tokenRoster) { // convert an array of token names to an array of tokens
@@ -1267,11 +1310,11 @@ var manualOptions = {
 	addChildBtn: jQuery('#addChildBtn')
 };
 
-jQuery(function(){
+//jQuery(function(){
 	var toy1 = toyFactory();
 	toy1.setup(RobertOptions);
 	var toy2 = toyFactory();
 	toy2.setup(CarpenterOptions);
 	var toy3 = toyFactory();
 	toy3.setup(manualOptions);
-});
+//});
