@@ -533,10 +533,29 @@ function toyFactory() {
 			if (typeof options.target === 'object' && options.target.name === 'cycle-btn') {
 				flcToy.controller.advanceCycle();
 			}
+			flcToy.view.ripple(options.e.offsetX, options.e.offsetY);
 		});
 
 		flcToy.view.eraseTokenImage = function(tokenImage) {
 			flcToy.view.canvas.remove(tokenImage);
+		};
+
+		flcToy.view.ripple = function(x, y) {
+			var shape = new fabric.Circle({
+				top: y,
+				left: x,
+				radius: 1,
+				fill: "transparent",
+				stroke: "red",
+				originX: "center",
+				originY: "center",
+			});
+			flcToy.view.canvas.add(shape);
+			shape.animate('radius', CANVAS_HEIGHT, {
+				duration: 1000,
+				onChange: flcToy.view.canvas.renderAll.bind(flcToy.view.canvas),
+				onComplete: function(){ flcToy.view.canvas.remove(shape); }
+			});
 		};
 
 	}; // end view setup function
