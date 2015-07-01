@@ -643,7 +643,12 @@ function toyFactory() {
 							init: ["Alicia", "0", 35, "#b66de2", true],
 							platform: "hospital"
 						}
-					]
+					],
+					triggerFunc: function() {
+						var adv = flcToy.model.platformRegistry.ADV;
+						var platformCoords = flcToy.controller.lookupPlatformCenter(adv);
+						flcToy.view.ripple(platformCoords.x, platformCoords.y, "#34495e");
+					}
 				}, {
 					text: "As each child finishes the Discover section, they join the rest of the family in the Family Learning Cycle, whatever year they happen to be on.",
 					advance: true
@@ -725,6 +730,9 @@ function toyFactory() {
 					currentPage.tokens = undefined; // remove tokens from page to prevent them from being re-created if/when we return to this page
 													// now that we're using maxProgress, this is probably unnecessary
 					flcToy.controller.updateAllTokenLocations();
+				}
+				if (currentPage.triggerFunc) {
+					currentPage.triggerFunc();
 				}
 			} else { // advancing, but not for the first time
 				flcToy.story.box.html(currentPage.text);
