@@ -335,6 +335,7 @@ function toyFactory() {
 				flcToy.model.tokenRegistry[token.index].location = platform.location;
 				flcToy.view.distributeCrowd(image, platform.residents.list());
 				token.setCoords();
+				flcToy.controller.refreshADV();
 			};
 			platform.imageObject = image;
 			deferred.resolve("Platform is all set up");
@@ -522,6 +523,7 @@ function toyFactory() {
 					}
 				}
 				draggedToken.setCoords();
+				flcToy.controller.refreshADV();
 				if (!foundADock && draggedToken.intersectsWithObject(flcToy.view.orphanage)) {
 					flcToy.controller.orphan(draggedToken.index);
 					foundADock = true;
@@ -831,7 +833,7 @@ function toyFactory() {
 			var tokenIndex = "token" + i;
 			if (typeof flcToy.model.tokenRegistry[tokenIndex] === "object") {
 				if (typeof flcToy.model.tokenRegistry[tokenIndex].orphaned === "boolean" && flcToy.model.tokenRegistry[tokenIndex].orphaned === true) {
-					console.log("Skipping orphaned token");
+					//console.log("Skipping orphaned token");
 				} else {
 					func(tokenIndex, flcToy.model.tokenRegistry[tokenIndex]);
 				}
@@ -1162,14 +1164,18 @@ function toyFactory() {
 		});
 	};
 
-	flcToy.controller.updateCycleYearAndADV = function() {
-		// enable/disable ADV depending on whether the FLC is active
+	flcToy.controller.advanceCycleYear = function() {
 		if (flcToy.controller.tokensInFLC()) {
 			flcToy.cycleYear = flcToy.cycleYear.next;
-			flcToy.controller.disablePlatform(flcToy.model.platformRegistry.platform4);
-		}
-		else {
+		} else {
 			flcToy.cycleYear = flcToy.model.Locations.ECC;
+		}
+	};
+	flcToy.controller.refreshADV = function() {
+		// enable/disable ADV depending on whether the FLC is active
+		if (flcToy.controller.tokensInFLC()) {
+			flcToy.controller.disablePlatform(flcToy.model.platformRegistry.platform4);
+		} else {
 			flcToy.controller.enablePlatform(flcToy.model.platformRegistry.platform4);
 		}
 	};
@@ -1196,7 +1202,8 @@ function toyFactory() {
 			}
 		});
 
-		flcToy.controller.updateCycleYearAndADV();
+		flcToy.controller.advanceCycleYear();
+		flcToy.controller.refreshADV();
 
 		// determine changed token locations
 		flcToy.controller.forEachToken(function(tokenIndex, tokenData) {
