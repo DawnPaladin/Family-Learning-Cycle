@@ -118,6 +118,7 @@ function toyFactory() {
 	flcToy.model.Locations.college = List.makeNode("college", "other");
 	flcToy.model.Locations.orphanage = List.makeNode("orphanage", "other");
 	flcToy.model.Locations.hospital = List.makeNode("hospital", "other");
+	flcToy.model.Locations.adrift = List.makeNode("adrift", "other");
 
 	flcToy.model.CyclicCounter = function(initial, minimum, maximum) {
 		this.counter = initial;
@@ -509,27 +510,29 @@ function toyFactory() {
 
 		flcToy.view.dropToken = function(options){
 			var draggedToken = options.target;
-			if (draggedToken.index.indexOf("token") > -1) { // if this is a token
+			var tokenIndex = draggedToken.index;
+			if (tokenIndex.indexOf("token") > -1) { // if this is a token
 				var foundADock = false; // more predictable behavior if a token overlaps two platforms
+				flcToy.model.tokenRegistry[tokenIndex].location = flcToy.model.Locations.adrift;
 				for (var i = 0; i < flcToy.model.platformCount; i++) {
 					var platformIndex = "platform" + i;
-					flcToy.model.platformRegistry[platformIndex].residents.remove(draggedToken.index); // remove token from residence in each platform
+					flcToy.model.platformRegistry[platformIndex].residents.remove(tokenIndex); // remove token from residence in each platform
 					if (!foundADock && draggedToken.itemInGroupIntersectsWithObject(flcToy.model.platformRegistry[platformIndex].imageObject)) { // adapted from http://fabricjs.com/intersection/
 						flcToy.model.platformRegistry[platformIndex].imageObject.dock(draggedToken);
 						foundADock = true;
-					}
-					else {
+					} else {
 						flcToy.view.distributeCrowd(flcToy.model.platformRegistry[platformIndex].imageObject, flcToy.model.platformRegistry[platformIndex].residents.list()); // arrange tokens on the platform the token left
 					}
 				}
 				draggedToken.setCoords();
 				flcToy.controller.refreshADV();
 				if (!foundADock && draggedToken.intersectsWithObject(flcToy.view.orphanage)) {
-					flcToy.controller.orphan(draggedToken.index);
+					flcToy.controller.orphan(tokenIndex);
 					foundADock = true;
 				}
 			}
 		};
+
 		flcToy.view.canvas.on('object:modified', flcToy.view.dropToken);
 		flcToy.view.canvas.on('mouse:down', function(options){
 			if (typeof options.target === 'object' && options.target.name === 'cycle-btn') {
