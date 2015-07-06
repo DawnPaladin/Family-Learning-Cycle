@@ -546,21 +546,21 @@ function toyFactory() {
 		};
 
 		flcToy.view.ripple = function(x, y, color) {
-			var fill = new fabric.Circle({
-				top: y,
-				left: x,
-				radius: 1,
-				fill: color,
-				opacity: 0.3,
-				originX: "center",
-				originY: "center",
-			});
-			flcToy.view.canvas.add(fill);
-			fill.animate({radius: CANVAS_HEIGHT, opacity: 0}, {
-				duration: 1000,
-				onChange: flcToy.view.canvas.renderAll.bind(flcToy.view.canvas),
-				onComplete: function(){ flcToy.view.canvas.remove(fill); }
-			});
+			// var fill = new fabric.Circle({
+			// 	top: y,
+			// 	left: x,
+			// 	radius: 1,
+			// 	fill: color,
+			// 	opacity: 0.3,
+			// 	originX: "center",
+			// 	originY: "center",
+			// });
+			// flcToy.view.canvas.add(fill);
+			// fill.animate({radius: CANVAS_HEIGHT, opacity: 0}, {
+			// 	duration: 1000,
+			// 	onChange: flcToy.view.canvas.renderAll.bind(flcToy.view.canvas),
+			// 	onComplete: function(){ flcToy.view.canvas.remove(fill); }
+			// });
 			var stroke = new fabric.Circle({
 				top: y,
 				left: x,
