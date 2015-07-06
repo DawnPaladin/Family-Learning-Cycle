@@ -580,6 +580,35 @@ function toyFactory() {
 			});
 		};
 
+		flcToy.view.bridgeOut = {
+			setup: function() {
+				var platformCoords = flcToy.controller.lookupPlatformCenter(flcToy.model.platformRegistry.ADV);
+				var This = this;
+				fabric.Image.fromURL(
+					'images/do-not-enter.png', // path to image
+					function(image){ flcToy.view.canvas.add(image); flcToy.view.bridgeOut.image = image; }, // callback after loading image
+					{ // options to pass to new image object
+						left: platformCoords.x,
+						top: platformCoords.y + 0.5 - 8,
+						originX: "center",
+						originY: "center",
+						width: 30,
+						height: 30,
+						selectable: false,
+						opacity: 0,
+					}
+				);
+			},
+			show: function() {
+				flcToy.view.bridgeOut.image.opacity = 1;
+				flcToy.view.canvas.renderAll();
+			},
+			hide: function() {
+				flcToy.view.bridgeOut.image.opacity = 0;
+				flcToy.view.canvas.renderAll();
+			}
+		};
+
 	}; // end view setup function
 
 	// STORY
@@ -625,7 +654,8 @@ function toyFactory() {
 							init: ["Molly", "4", 70, "#f9b5d1", true],
 							platform: "platform4"
 						}
-					]
+					],
+					triggerFunc: function() { flcToy.view.bridgeOut.setup(); }
 				}, {
 					text: "At the end of the year, Molly advances to <i>Exploring Countries and Cultures</i> while Daniel moves into Pre-K.",
 					advance: true
@@ -638,9 +668,10 @@ function toyFactory() {
 							init: ["Matthew", "0", 45, "#5377a6", true],
 							platform: "hospital"
 						}
-					]
+					],
+					triggerFunc: function() { flcToy.view.bridgeOut.hide(); }
 				}, {
-					text: "<i>Adventures in US History</i> is only used for students who don't have older siblings in the Family Learning Cycle. [arrow pointing at greyed-out platform] When Daniel finishes first grade, instead of doing <i>Adventures</i>, he joins Molly in the Family Learning Cycle. Mrs. Carpenter will teach <i>Exploration to 1850</i> to both children, giving each child material appropriate for their age level as spelled out in the Teacher's Manual.",
+					text: "<i>Adventures in US History</i> is only used for students who don't have older siblings in the Family Learning Cycle. When Daniel finishes first grade, instead of doing <i>Adventures</i>, he joins Molly in the Family Learning Cycle. Mrs. Carpenter will teach <i>Exploration to 1850</i> to both children, giving each child material appropriate for their age level as spelled out in the Teacher's Manual.",
 					advance: true,
 					tokens: [
 						{
@@ -652,11 +683,13 @@ function toyFactory() {
 					triggerFunc: function() {
 						var adv = flcToy.model.platformRegistry.ADV;
 						var platformCoords = flcToy.controller.lookupPlatformCenter(adv);
-						flcToy.view.ripple(platformCoords.x, platformCoords.y, "#34495e");
+						flcToy.view.ripple(platformCoords.x, platformCoords.y, "#a00d1f");
+						flcToy.view.bridgeOut.show();
 					}
 				}, {
 					text: "As each child finishes the Discover section, they join the rest of the family in the Family Learning Cycle, whatever year they happen to be on.",
-					advance: true
+					advance: true,
+					triggerFunc: function() { flcToy.view.bridgeOut.hide(); }
 				}, {
 					text: "As each child finishes the Discover section, they join the rest of the family in the Family Learning Cycle, whatever year they happen to be on.",
 					advance: true
