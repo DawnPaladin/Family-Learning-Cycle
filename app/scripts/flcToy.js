@@ -894,9 +894,16 @@ function toyFactory() {
 		return platformCenter;
 	};
 	flcToy.controller.lookupPlatformByGradeIndex = function(gradeIndex) {
+		gradeIndex = Number(gradeIndex);
 		var platformIndex = "platform";
-		if (gradeIndex <= 4) { // Discover
+		if (gradeIndex < 4) { // Discover
 			platformIndex += gradeIndex; // place according to grade
+		} else if (gradeIndex === 4) {
+			if (flcToy.model.platformRegistry.ADV.disabled) {
+				platformIndex = flcToy.cycleYear.platformIndex; // place in FLC
+			} else {
+				platformIndex += gradeIndex; // place according to grade
+			}
 		} else if (gradeIndex > 4 && gradeIndex < 10){ // Investigate
 			platformIndex = flcToy.cycleYear.platformIndex; // place in FLC
 		} else if (gradeIndex >= 10) { // Declare
