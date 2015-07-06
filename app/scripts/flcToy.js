@@ -780,6 +780,10 @@ function toyFactory() {
 				}
 
 				flcToy.controller.updateAllTokenLocations();
+
+				if (currentPage.triggerFunc) {
+					currentPage.triggerFunc();
+				}
 			}
 
 			// enable/disable forward/back controls as appropriate
@@ -796,13 +800,11 @@ function toyFactory() {
 			var oldPage = flcToy.story.pages[flcToy.story.currentPage];
 			var currentPage = flcToy.story.pages[--flcToy.story.currentPage];
 			flcToy.story.box.html(currentPage.text);
-			/*if (flcToy.model.platformRegistry.platform0.residents.length() > 0) { // hospitalize residents of platform0
-				flcToy.model.platformRegistry.platform0.residents.list().forEach(function(tokenIndex, index, array){
-					flcToy.controller.hospitalize(tokenIndex);
-				});
-			}*/
 			if (oldPage.advance || false) {
 				flcToy.controller.reverseCycle();
+			}
+			if (currentPage.triggerFunc) {
+				currentPage.triggerFunc();
 			}
 
 			// if we're on the first page of the story, disable the Back button
