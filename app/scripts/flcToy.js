@@ -1,5 +1,7 @@
 /* jshint latedef: false */
 
+var imgDir = 'images';
+
 function toyFactory() {
 
 	var flcToy = {
@@ -213,7 +215,7 @@ function toyFactory() {
 		flcToy.view.canvas.add(DiscoverRect);
 
 		fabric.Image.fromURL(
-			"images/Discover.png", // path to image
+			imgDir+"/Discover.png", // path to image
 			function(image) { // callback after loading image
 				flcToy.view.canvas.add(image);
 			},
@@ -235,7 +237,7 @@ function toyFactory() {
 		flcToy.view.canvas.add(InvestigateRect);
 
 		fabric.Image.fromURL(
-			"images/FLC-circle.png", // path to image
+			imgDir+"/FLC-circle.png", // path to image
 			function(image) { // callback after loading image
 				flcToy.view.canvas.add(image);
 				image.sendToBack();
@@ -249,7 +251,7 @@ function toyFactory() {
 		);
 
 		fabric.Image.fromURL(
-			"images/Investigate.png", // path to image
+			imgDir+"/Investigate.png", // path to image
 			function(image) { // callback after loading image
 				flcToy.view.canvas.add(image);
 			},
@@ -271,7 +273,7 @@ function toyFactory() {
 		flcToy.view.canvas.add(DeclareRect);
 
 		fabric.Image.fromURL(
-			"images/Declare.png", // path to image
+			imgDir+"/Declare.png", // path to image
 			function(image) { // callback after loading image
 				flcToy.view.canvas.add(image);
 			},
