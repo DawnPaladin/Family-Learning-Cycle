@@ -201,8 +201,8 @@ function toyFactory() {
 		// draw background
 
 		var DiscoverHeight = 320;
-		var InvestigateHeight = 820;
-		var DeclareHeight = 320;
+		var InvestigateHeight = 760;
+		var DeclareHeight = 220;
 
 		var DiscoverRect = new fabric.Rect({
 			left: 0,
@@ -245,7 +245,7 @@ function toyFactory() {
 			},
 			{ // options to pass to new object
 				left: 145,
-				top: 520,
+				top: 440,
 				selectable: false,
 			}
 		);
@@ -257,7 +257,7 @@ function toyFactory() {
 			},
 			{ // options to pass to new image object
 				left: 125,
-				top: 570,
+				top: 520,
 				selectable: false,
 			}
 		);
@@ -279,7 +279,7 @@ function toyFactory() {
 			},
 			{ // options to pass to new image object
 				left: 225,
-				top: 1200,
+				top: 1100,
 				selectable: false,
 			}
 		);
@@ -1178,14 +1178,14 @@ function toyFactory() {
 		platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX + 450, DiscoverBaseY + 50, 'LGS', 'images/LGS.png'));
 		platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX + 600, DiscoverBaseY +  0, 'ADV', 'images/USH.png')); // 'ADV.png' gets hit by AdBlock
 
-		var InvestigateBase = DiscoverBaseY + 300;
+		var InvestigateBase = DiscoverBaseY + 240;
 		platformPromises.push(flcToy.controller.newPlatform(325, InvestigateBase +   0, 'ECC', 'images/ECC.png'));
 		platformPromises.push(flcToy.controller.newPlatform(600, InvestigateBase + 250, 'CTG', 'images/CTG.png'));
 		platformPromises.push(flcToy.controller.newPlatform(550, InvestigateBase + 500, 'RTR', 'images/RTR.png'));
 		platformPromises.push(flcToy.controller.newPlatform(100, InvestigateBase + 500, 'EXP', 'images/EXP.png'));
 		platformPromises.push(flcToy.controller.newPlatform( 50, InvestigateBase + 250, 'MOD', 'images/MOD.png'));
 
-		var DeclareBase = InvestigateBase + 850;
+		var DeclareBase = InvestigateBase + 780;
 		platformPromises.push(flcToy.controller.newPlatform( 50, DeclareBase +  0, 'AHL', 'images/AHL.png'));
 		platformPromises.push(flcToy.controller.newPlatform(275, DeclareBase + 25, 'WHL', 'images/WHL.png'));
 		platformPromises.push(flcToy.controller.newPlatform(500, DeclareBase +  0, 'US1', 'images/US1.png'));
