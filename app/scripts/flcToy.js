@@ -207,7 +207,7 @@ function toyFactory() {
 		var DiscoverRect = new fabric.Rect({
 			left: 0,
 			top: 0,
-			fill: "#fffcfa",
+			fill: "#fef9f0",
 			width: CANVAS_WIDTH,
 			height: DiscoverHeight,
 			selectable: false,
@@ -229,7 +229,7 @@ function toyFactory() {
 		var InvestigateRect = new fabric.Rect({
 			left: 0,
 			top: DiscoverHeight,
-			fill: "#fbfdff",
+			fill: "#f4f8fa",
 			width: CANVAS_WIDTH,
 			height: InvestigateHeight,
 			selectable: false,
@@ -265,7 +265,7 @@ function toyFactory() {
 		var DeclareRect = new fabric.Rect({
 			left: 0,
 			top: DiscoverHeight + InvestigateHeight,
-			fill: "#fcfff8",
+			fill: "#f2fae9",
 			width: CANVAS_WIDTH,
 			height: DeclareHeight,
 			selectable: false,
