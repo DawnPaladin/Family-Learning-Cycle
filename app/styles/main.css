@@ -44,16 +44,13 @@ select, button {
   width: 972px;
   margin-top: 6em;
 }
-#FamilyLearningCycleToy {
-  border: 1px dotted silver;
-  margin: 0px;
-}
 canvas {
   -webkit-tap-highlight-color:rgba(0,0,0,0); /* prevent canvas from being highlighted on taps */
+  margin-bottom: 20px;
 }
 .storyShuttleBox.hover {
   position: fixed;
-  bottom: 1em;
+  bottom: 15px;
   margin-left: -.75em;
 }
 .storyShuttleBox {
