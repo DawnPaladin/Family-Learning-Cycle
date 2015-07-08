@@ -1,6 +1,6 @@
 /* jshint latedef: false */
 
-var imgDir = 'images';
+var imgDir = '/images';
 
 function toyFactory() {
 
@@ -296,7 +296,7 @@ function toyFactory() {
 		}
 
 		if (manual === true) {
-			fabric.Image.fromURL('images/trashcan.png', function(loadedImage) {
+			fabric.Image.fromURL(imgDir+'/trashcan.png', function(loadedImage) {
 				flcToy.view.canvas.add(loadedImage);
 				flcToy.view.orphanage = loadedImage;
 			}, {
@@ -312,7 +312,7 @@ function toyFactory() {
 			});
 			flcToy.view.canvas.on("object:moving", showOrphanage);
 			flcToy.view.canvas.on("object:modified", hideOrphanage);
-			fabric.Image.fromURL('images/cycle-btn.png', function(loadedImage) {
+			fabric.Image.fromURL(imgDir+'/cycle-btn.png', function(loadedImage) {
 				flcToy.view.canvas.add(loadedImage);
 			}, {
 				selectable: true,
@@ -587,7 +587,7 @@ function toyFactory() {
 				var platformCoords = flcToy.controller.lookupPlatformCenter(flcToy.model.platformRegistry.ADV);
 				var This = this;
 				fabric.Image.fromURL(
-					'images/do-not-enter.png', // path to image
+					imgDir+'/do-not-enter.png', // path to image
 					function(image){ flcToy.view.canvas.add(image); flcToy.view.bridgeOut.image = image; }, // callback after loading image
 					{ // options to pass to new image object
 						left: platformCoords.x,
@@ -1172,27 +1172,27 @@ function toyFactory() {
 
 		var DiscoverBaseX = 90;
 		var DiscoverBaseY = 200;
-		platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX +  0, DiscoverBaseY +  0, 'Preschool', 'images/Preschool.png'));
-		platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX + 150, DiscoverBaseY + 50, 'Pre-K', 'images/Pre-K.png'));
-		platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX + 300, DiscoverBaseY +  0, 'Kindergarten', 'images/Kindergarten.png'));
-		platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX + 450, DiscoverBaseY + 50, 'LGS', 'images/LGS.png'));
-		platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX + 600, DiscoverBaseY +  0, 'ADV', 'images/USH.png')); // 'ADV.png' gets hit by AdBlock
+		platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX +  0, DiscoverBaseY +  0, 'Preschool', imgDir+'/Preschool.png'));
+		platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX + 150, DiscoverBaseY + 50, 'Pre-K', imgDir+'/Pre-K.png'));
+		platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX + 300, DiscoverBaseY +  0, 'Kindergarten', imgDir+'/Kindergarten.png'));
+		platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX + 450, DiscoverBaseY + 50, 'LGS', imgDir+'/LGS.png'));
+		platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX + 600, DiscoverBaseY +  0, 'ADV', imgDir+'/USH.png')); // 'ADV.png' gets hit by AdBlock
 
 		var InvestigateBase = DiscoverBaseY + 240;
-		platformPromises.push(flcToy.controller.newPlatform(325, InvestigateBase +   0, 'ECC', 'images/ECC.png'));
-		platformPromises.push(flcToy.controller.newPlatform(600, InvestigateBase + 250, 'CTG', 'images/CTG.png'));
-		platformPromises.push(flcToy.controller.newPlatform(550, InvestigateBase + 500, 'RTR', 'images/RTR.png'));
-		platformPromises.push(flcToy.controller.newPlatform(100, InvestigateBase + 500, 'EXP', 'images/EXP.png'));
-		platformPromises.push(flcToy.controller.newPlatform( 50, InvestigateBase + 250, 'MOD', 'images/MOD.png'));
+		platformPromises.push(flcToy.controller.newPlatform(325, InvestigateBase +   0, 'ECC', imgDir+'/ECC.png'));
+		platformPromises.push(flcToy.controller.newPlatform(600, InvestigateBase + 250, 'CTG', imgDir+'/CTG.png'));
+		platformPromises.push(flcToy.controller.newPlatform(550, InvestigateBase + 500, 'RTR', imgDir+'/RTR.png'));
+		platformPromises.push(flcToy.controller.newPlatform(100, InvestigateBase + 500, 'EXP', imgDir+'/EXP.png'));
+		platformPromises.push(flcToy.controller.newPlatform( 50, InvestigateBase + 250, 'MOD', imgDir+'/MOD.png'));
 
 		var DeclareBase = InvestigateBase + 780;
-		platformPromises.push(flcToy.controller.newPlatform( 50, DeclareBase +  0, 'AHL', 'images/AHL.png'));
-		platformPromises.push(flcToy.controller.newPlatform(275, DeclareBase + 25, 'WHL', 'images/WHL.png'));
-		platformPromises.push(flcToy.controller.newPlatform(500, DeclareBase +  0, 'US1', 'images/US1.png'));
-		platformPromises.push(flcToy.controller.newPlatform(725, DeclareBase + 25, 'US2', 'images/US2.png'));
+		platformPromises.push(flcToy.controller.newPlatform( 50, DeclareBase +  0, 'AHL', imgDir+'/AHL.png'));
+		platformPromises.push(flcToy.controller.newPlatform(275, DeclareBase + 25, 'WHL', imgDir+'/WHL.png'));
+		platformPromises.push(flcToy.controller.newPlatform(500, DeclareBase +  0, 'US1', imgDir+'/US1.png'));
+		platformPromises.push(flcToy.controller.newPlatform(725, DeclareBase + 25, 'US2', imgDir+'/US2.png'));
 
-		platformPromises.push(flcToy.controller.newPlatform( 25, 1325, 'college', 'images/college.png'));
-		platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX - 500, DiscoverBaseY, 'hospital', 'images/hospital.png'));
+		platformPromises.push(flcToy.controller.newPlatform( 25, 1325, 'college', imgDir+'/college.png'));
+		platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX - 500, DiscoverBaseY, 'hospital', imgDir+'/hospital.png'));
 
 		jQuery.when.apply(jQuery, platformPromises).then(function(){ // when all promises in platformPromises are fulfilled (see http://stackoverflow.com/a/5627301/1805453)
 			if (options.story === "manual") {
