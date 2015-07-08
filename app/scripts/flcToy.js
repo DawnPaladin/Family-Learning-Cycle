@@ -196,7 +196,7 @@ function toyFactory() {
 		flcToy.view.canvas.on('mouse:up', enableScroll);
 
 		var CANVAS_WIDTH = 972;
-		var CANVAS_HEIGHT = 1660;
+		var CANVAS_HEIGHT = 1500;
 
 		// draw background
 
@@ -1191,7 +1191,7 @@ function toyFactory() {
 		platformPromises.push(flcToy.controller.newPlatform(500, DeclareBase +  0, 'US1', 'images/US1.png'));
 		platformPromises.push(flcToy.controller.newPlatform(725, DeclareBase + 25, 'US2', 'images/US2.png'));
 
-		platformPromises.push(flcToy.controller.newPlatform( 25, 1490, 'college', 'images/college.png'));
+		platformPromises.push(flcToy.controller.newPlatform( 25, 1325, 'college', 'images/college.png'));
 		platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX - 500, DiscoverBaseY, 'hospital', 'images/hospital.png'));
 
 		jQuery.when.apply(jQuery, platformPromises).then(function(){ // when all promises in platformPromises are fulfilled (see http://stackoverflow.com/a/5627301/1805453)
