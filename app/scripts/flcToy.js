@@ -1250,8 +1250,7 @@ function toyFactory() {
 
 		jQuery.when.apply(jQuery, platformPromises).then(function(){ // when all promises in platformPromises are fulfilled (see http://stackoverflow.com/a/5627301/1805453)
 			if (options.story === "manual") {
-				var addChildBtn = options.addChildBtn;
-				addChildBtn.click(function(){ flcToy.controller.tokenPreview.changeHandler(options); });
+				options.controls.on('input change', function(){ flcToy.controller.tokenPreview.changeHandler(options); });
 			} else {
 				options.nextBtn.click(flcToy.story.turnPageForward);
 				options.prevBtn.click(flcToy.story.turnPageBackward);
@@ -1419,11 +1418,11 @@ var CarpenterOptions = {
 var manualOptions = {
 	canvas: "sandbox-toy",
 	story: "manual",
+	controls: jQuery('#sandbox-toy-wrapper .toyControls'),
 	nameField: jQuery('#nameField'),
 	gradeSelect: jQuery('#gradeSelect'),
 	heightSlider: jQuery('#heightSlider'),
 	colorBoxes: "chooseColor",
-	addChildBtn: jQuery('#addChildBtn')
 };
 
 //jQuery(function(){
