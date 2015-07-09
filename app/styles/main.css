@@ -60,6 +60,10 @@ canvas {
   box-shadow: .5em .5em .5em #F0F0F0;
   padding: .5em;
 }
+.storyShuttleBox.hidden {
+   opacity: 0;
+   z-index: -1;
+}
 @media (max-width: 1020px) {
   .storyShuttleBox.hover {
     margin-left: 0;

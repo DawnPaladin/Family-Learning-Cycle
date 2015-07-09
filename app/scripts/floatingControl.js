@@ -13,11 +13,11 @@ function floatControl($control, $aor) { // Make a control float over the page, b
 		var aorTop = aorOffset;
 		var aorBottom = aorOffset + aorHeight;
 		if (theoreticalBoxPosition > aorTop && theoreticalBoxPosition < aorBottom) {
-			$original.css('opacity', 1);
-			$placeholder.css('opacity', 0);
+			$original.removeClass('hidden');
+			$placeholder.addClass('hidden');
 		} else {
-			$original.css('opacity', 0);
-			$placeholder.css('opacity', 1);
+			$original.addClass('hidden');
+			$placeholder.removeClass('hidden');
 		}
 	});
 }
