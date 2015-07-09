@@ -219,7 +219,7 @@ function toyFactory() {
 			fontFamily: "Source Sans Pro",
 			fontSize: 15,
 			top: 0,
-			left: 115,
+			left: 118,
 			originX: "center",
 			selectable: false,
 		});
@@ -856,7 +856,39 @@ function toyFactory() {
 	*/
 
 	/* === creation and destruction === */
-	flcToy.controller.addTokenClickHandler = function(options) {
+	flcToy.controller.tokenPreview = {
+		tokenIndex: null,
+		spawnCoordsX: 117.5,
+		spawnCoordsY: 240,
+	};
+	flcToy.controller.tokenPreview.new = function(options) {
+		var name = options.nameField.val();
+		var grade = options.gradeSelect.val();
+		var height = Number(options.heightSlider.val());
+		var color = jQuery('input[name = "' + options.colorBoxes + '"]:checked').val();
+		var tokenIndex = flcToy.controller.newToken(name, grade, height, color);
+		flcToy.controller.tokenPreview.tokenIndex = tokenIndex;
+		console.log("Created preview token", tokenIndex);
+	};
+	flcToy.controller.tokenPreview.update = function(tokenIndex, options) {
+		var tokenImage = flcToy.model.tokenRegistry[tokenIndex].canvasGroup;
+		flcToy.view.eraseTokenImage(tokenImage);
+		var name = options.nameField.val();
+		var grade = flcToy.model.processGrade(options.gradeSelect.val());
+		var height = Number(options.heightSlider.val());
+		var color = jQuery('input[name = "' + options.colorBoxes + '"]:checked').val();
+		var x = flcToy.controller.tokenPreview.spawnCoordsX;
+		var y = flcToy.controller.tokenPreview.spawnCoordsY;
+		flcToy.model.tokenRegistry[tokenIndex].canvasGroup = flcToy.view.drawNewToken(x, y, name, grade, height, color, tokenIndex, false);
+	};
+	flcToy.controller.tokenPreview.changeHandler = function(options) {
+		if (flcToy.controller.tokenPreview.tokenIndex === null) {
+			flcToy.controller.tokenPreview.new(options);
+		} else {
+			flcToy.controller.tokenPreview.update(flcToy.controller.tokenPreview.tokenIndex, options);
+		}
+	};
+	flcToy.controller.tokenPreview.updateHandler = function(options) {
 		var name = options.nameField.val();
 		var grade = options.gradeSelect.val();
 		var height = Number(options.heightSlider.val());
@@ -876,7 +908,7 @@ function toyFactory() {
 		var tokenIndex = 'token' + flcToy.model.tokenCount++;
 		var tokenData = new flcToy.model.Token(name, gradeObj, height, color, lockMovement);
 		flcToy.model.tokenRegistry[tokenIndex] = tokenData;
-		flcToy.model.tokenRegistry[tokenIndex].canvasGroup = flcToy.view.drawNewToken(100, 500, name, gradeObj, height, color, tokenIndex, lockMovement);
+		flcToy.model.tokenRegistry[tokenIndex].canvasGroup = flcToy.view.drawNewToken(flcToy.controller.tokenPreview.spawnCoordsX, flcToy.controller.tokenPreview.spawnCoordsY, name, gradeObj, height, color, tokenIndex, lockMovement);
 		return tokenIndex;
 	}; //newToken('Twilight Sparkle', '1', 50, '#662D8A');
 	flcToy.controller.orphan = function(tokenIndex) {
@@ -1219,7 +1251,7 @@ function toyFactory() {
 		jQuery.when.apply(jQuery, platformPromises).then(function(){ // when all promises in platformPromises are fulfilled (see http://stackoverflow.com/a/5627301/1805453)
 			if (options.story === "manual") {
 				var addChildBtn = options.addChildBtn;
-				addChildBtn.click(function(){ flcToy.controller.addTokenClickHandler(options); });
+				addChildBtn.click(function(){ flcToy.controller.tokenPreview.changeHandler(options); });
 			} else {
 				options.nextBtn.click(flcToy.story.turnPageForward);
 				options.prevBtn.click(flcToy.story.turnPageBackward);
