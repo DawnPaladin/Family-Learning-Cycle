@@ -21,8 +21,10 @@ function floatControl($control, $aor) { // Make a control float over the page, b
 		}
 	});
 }
-floatControl(jQuery('#Robert-toy-wrapper .storyShuttleBox'), jQuery('#Robert-toy-wrapper .canvas-container'));
-floatControl(jQuery('#Carpenter-toy-wrapper .storyShuttleBox'), jQuery('#Carpenter-toy-wrapper .canvas-container'));
+jQuery(document).ready(function(){
+	floatControl(jQuery('#Robert-toy-wrapper .storyShuttleBox'), jQuery('#Robert-toy-wrapper .canvas-container'));
+	floatControl(jQuery('#Carpenter-toy-wrapper .storyShuttleBox'), jQuery('#Carpenter-toy-wrapper .canvas-container'));
+});
 
 jQuery('.colorBox').each(function(){
 	var This = jQuery(this);
