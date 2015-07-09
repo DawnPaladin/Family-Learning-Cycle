@@ -195,18 +195,40 @@ function toyFactory() {
 		flcToy.view.canvas.on('object:moving', disableScroll);
 		flcToy.view.canvas.on('mouse:up', enableScroll);
 
-		var CANVAS_WIDTH = 972;
-		var CANVAS_HEIGHT = 1500;
-
 		// draw background
 
+		var foyerHeight = manual ? 250 : 0; // also defined in flcToy.setup
 		var DiscoverHeight = 320;
 		var InvestigateHeight = 760;
 		var DeclareHeight = 220;
 
+		var CANVAS_WIDTH = 972;
+		var CANVAS_HEIGHT = foyerHeight + DiscoverHeight + InvestigateHeight + DeclareHeight + 200;
+
+		var tokenPreviewRect = new fabric.Rect({
+			left: 0,
+			top: 20,
+			stroke: "silver",
+			strokeWidth: 5,
+			fill: "transparent",
+			width: 225,
+			height: 225,
+			selectable: false,
+		});
+		var tokenPreviewText = new fabric.Text("Preview", {
+			fontFamily: "Source Sans Pro",
+			fontSize: 15,
+			top: 0,
+			left: 115,
+			originX: "center",
+			selectable: false,
+		});
+
+		flcToy.view.canvas.add(tokenPreviewRect, tokenPreviewText);
+
 		var DiscoverRect = new fabric.Rect({
 			left: 0,
-			top: 0,
+			top: foyerHeight,
 			fill: "#fef9f0",
 			width: CANVAS_WIDTH,
 			height: DiscoverHeight,
@@ -221,14 +243,14 @@ function toyFactory() {
 			},
 			{ // options to pass to new image object
 				left: 200,
-				top: 50,
+				top: foyerHeight + 50,
 				selectable: false,
 			}
 		);
 
 		var InvestigateRect = new fabric.Rect({
 			left: 0,
-			top: DiscoverHeight,
+			top: foyerHeight + DiscoverHeight,
 			fill: "#f4f8fa",
 			width: CANVAS_WIDTH,
 			height: InvestigateHeight,
@@ -245,7 +267,7 @@ function toyFactory() {
 			},
 			{ // options to pass to new object
 				left: 145,
-				top: 440,
+				top: foyerHeight + DiscoverHeight + 120,
 				selectable: false,
 			}
 		);
@@ -257,14 +279,14 @@ function toyFactory() {
 			},
 			{ // options to pass to new image object
 				left: 125,
-				top: 520,
+				top: foyerHeight + DiscoverHeight + 200,
 				selectable: false,
 			}
 		);
 
 		var DeclareRect = new fabric.Rect({
 			left: 0,
-			top: DiscoverHeight + InvestigateHeight,
+			top: foyerHeight + DiscoverHeight + InvestigateHeight,
 			fill: "#f2fae9",
 			width: CANVAS_WIDTH,
 			height: DeclareHeight,
@@ -279,7 +301,7 @@ function toyFactory() {
 			},
 			{ // options to pass to new image object
 				left: 225,
-				top: 1100,
+				top: foyerHeight + DiscoverHeight + InvestigateHeight + 20,
 				selectable: false,
 			}
 		);
@@ -317,7 +339,7 @@ function toyFactory() {
 			}, {
 				selectable: true,
 				left: 400,
-				top: 700,
+				top: foyerHeight + DiscoverHeight + 350,
 				hoverCursor: "pointer",
 				hasControls: false,
 				hasBorders: false,
@@ -843,8 +865,6 @@ function toyFactory() {
 		var tokenData = flcToy.model.tokenRegistry[tokenIndex];
 		var platformData = flcToy.controller.lookupPlatformByGradeIndex(grade);
 		var platformCoords = flcToy.controller.lookupPlatformCenter(platformData);
-		flcToy.controller.moveTokenToPlatform(tokenData, platformData);
-		flcToy.view.ripple(platformCoords.x, platformCoords.y, color);
 		options.nameField.val("");
 		options.gradeSelect.val("0");
 		options.heightSlider.val(45);
@@ -1167,12 +1187,13 @@ function toyFactory() {
 	flcToy.cycleYearHistory = [flcToy.cycleYear.name];
 
 	flcToy.setup = function(options) {
-		flcToy.view.setup(options.canvas, (options.story === "manual"));
+		var manual = options.story === "manual";
+		flcToy.view.setup(options.canvas, manual);
 
 		var platformPromises = [];
 
 		var DiscoverBaseX = 90;
-		var DiscoverBaseY = 200;
+		var DiscoverBaseY = manual ? 450 : 200; // foyer height also defined in flcToy.view.setup
 		platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX +  0, DiscoverBaseY +  0, 'Preschool', imgDir+'/Preschool.png'));
 		platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX + 150, DiscoverBaseY + 50, 'Pre-K', imgDir+'/Pre-K.png'));
 		platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX + 300, DiscoverBaseY +  0, 'Kindergarten', imgDir+'/Kindergarten.png'));
@@ -1192,7 +1213,7 @@ function toyFactory() {
 		platformPromises.push(flcToy.controller.newPlatform(500, DeclareBase +  0, 'US1', imgDir+'/US1.png'));
 		platformPromises.push(flcToy.controller.newPlatform(725, DeclareBase + 25, 'US2', imgDir+'/US2.png'));
 
-		platformPromises.push(flcToy.controller.newPlatform( 25, 1325, 'college', imgDir+'/college.png'));
+		platformPromises.push(flcToy.controller.newPlatform( 25, DeclareBase + 105, 'college', imgDir+'/college.png'));
 		platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX - 500, DiscoverBaseY, 'hospital', imgDir+'/hospital.png'));
 
 		jQuery.when.apply(jQuery, platformPromises).then(function(){ // when all promises in platformPromises are fulfilled (see http://stackoverflow.com/a/5627301/1805453)
