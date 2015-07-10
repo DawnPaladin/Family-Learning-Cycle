@@ -198,7 +198,7 @@ function toyFactory() {
 
 		// draw background
 
-		var foyerHeight = manual ? 250 : 0; // also defined in flcToy.setup
+		var foyerHeight = manual ? 350 : 0; // also defined in flcToy.setup
 		var DiscoverHeight = 320;
 		var InvestigateHeight = 760;
 		var DeclareHeight = 220;
@@ -235,8 +235,32 @@ function toyFactory() {
 				selectable: false,
 			}
 		);
-
-		flcToy.view.canvas.add(tokenPreviewRect, tokenPreviewText);
+		fabric.Image.fromURL(
+			imgDir+"/auto-place.png", // path to image
+			function(image) { // callback after loading image
+				flcToy.view.canvas.add(image);
+			}, { // options to pass to new image object
+				left: 500,
+				top: 255,
+				hasControls: false,
+				hasBorders: false,
+				lockMovementX: true,
+				lockMovementY: true,
+				hoverCursor: "pointer",
+				name: 'auto-place-btn',
+			}
+		);
+		var autoPlaceText = new fabric.Text(
+			"or drag them wherever you want",
+			{
+				fontFamily: "Source Sans Pro",
+				fontSize: 16,
+				left: 620,
+				top: 272,
+				textAlign: "left",
+				selectable: false,
+			});
+		flcToy.view.canvas.add(tokenPreviewRect, tokenPreviewText, autoPlaceText);
 
 		var DiscoverRect = new fabric.Rect({
 			left: 0,
@@ -572,7 +596,10 @@ function toyFactory() {
 			if (typeof options.target === 'object' && options.target.name === 'cycle-btn') {
 				flcToy.controller.advanceCycle();
 			}
-			//flcToy.view.ripple(options.e.offsetX, options.e.offsetY);
+			if (typeof options.target === 'object' && options.target.name === 'auto-place-btn') {
+				var autoPlaceRoster = flcToy.model.platformRegistry.staging.residents.list();
+				flcToy.controller.autoPlaceTokens(autoPlaceRoster);
+			}
 		});
 
 		flcToy.view.eraseTokenImage = function(tokenImage) {
@@ -913,6 +940,14 @@ function toyFactory() {
 		document.querySelector('input[name = "' + options.colorBoxes + '"]:checked').checked = false;
 		document.querySelector('input[value = "#dd5b5a"]').checked = true;
 	};
+	flcToy.controller.autoPlaceTokens = function(roster) {
+		for (var i = 0; i < roster.length; i++) { // for each token in roster
+			var tokenData = flcToy.model.tokenRegistry[roster[i]];
+			var gradeIndex = tokenData.grade.index;
+
+			console.log(gradeIndex);
+		}
+	};
 	flcToy.controller.newToken = function (name, gradeIndex, height, color, lockMovement) {
 		var gradeObj = flcToy.model.processGrade(gradeIndex);
 		var tokenIndex = 'token' + flcToy.model.tokenCount++;
@@ -1239,7 +1274,7 @@ function toyFactory() {
 		var platformPromises = [];
 
 		var DiscoverBaseX = 90;
-		var DiscoverBaseY = manual ? 450 : 200; // foyer height also defined in flcToy.view.setup
+		var DiscoverBaseY = manual ? 550 : 200; // foyer height also defined in flcToy.view.setup
 		platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX +  0, DiscoverBaseY +  0, 'Preschool', imgDir+'/Preschool.png'));
 		platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX + 150, DiscoverBaseY + 50, 'Pre-K', imgDir+'/Pre-K.png'));
 		platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX + 300, DiscoverBaseY +  0, 'Kindergarten', imgDir+'/Kindergarten.png'));
@@ -1263,7 +1298,7 @@ function toyFactory() {
 		platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX - 500, DiscoverBaseY, 'hospital', imgDir+'/hospital.png'));
 
 		if (manual) {
-			platformPromises.push(flcToy.controller.newPlatform( 450, 180, 'staging', imgDir+'/staging.png'));
+			platformPromises.push(flcToy.controller.newPlatform( 400, 180, 'staging', imgDir+'/staging.png'));
 		}
 
 		jQuery.when.apply(jQuery, platformPromises).then(function(){ // when all promises in platformPromises are fulfilled (see http://stackoverflow.com/a/5627301/1805453)
