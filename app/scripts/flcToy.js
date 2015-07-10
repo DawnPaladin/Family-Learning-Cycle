@@ -949,8 +949,9 @@ function toyFactory() {
 		for (var i = 0; i < roster.length; i++) { // for each token in roster
 			var tokenData = flcToy.model.tokenRegistry[roster[i]];
 			var gradeIndex = tokenData.grade.index;
-
-			console.log(gradeIndex);
+			var platformData = flcToy.controller.lookupPlatformByGradeIndex(gradeIndex);
+			flcToy.controller.assignTokenToPlatform(tokenData, platformData);
+			flcToy.controller.updateAllTokenLocations();
 		}
 	};
 	flcToy.controller.newToken = function (name, gradeIndex, height, color, lockMovement) {
