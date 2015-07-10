@@ -1,7 +1,7 @@
 function floatControl($control, $aor) { // Make a control float over the page, but only when a particular element (the Area of Responsibility) is onscreen
 	var $placeholder = $control.filter('.placeholder');
 	var $original = $control.filter('.original');
-	jQuery(window).scroll(function(){
+	function determineBoxPosition() {
 		var scrollTop = jQuery(window).scrollTop(); // distance between the top of the window and the top of the page
 		var screenHeight = Math.round(jQuery(window).height());
 		var boxHeight = Math.round($control.outerHeight());
@@ -19,7 +19,9 @@ function floatControl($control, $aor) { // Make a control float over the page, b
 			$original.addClass('hidden');
 			$placeholder.removeClass('hidden');
 		}
-	});
+	}
+	jQuery(window).scroll(determineBoxPosition);
+	determineBoxPosition();
 }
 jQuery(document).ready(function(){
 	floatControl(jQuery('#Robert-toy-wrapper .storyShuttleBox'), jQuery('#Robert-toy-wrapper .canvas-container'));
