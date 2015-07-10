@@ -336,16 +336,14 @@ function toyFactory() {
 			}, {
 				selectable: false,
 				left: 972 - 200 - 25,
-				top: DiscoverHeight + 25,
+				top: 25,
 				hasControls: false,
 				hasBorders: false,
 				lockMovementX: true,
 				lockMovementY: true,
-				visible: false,
 				name: "orphanage",
 			});
-			flcToy.view.canvas.on("object:moving", showOrphanage);
-			flcToy.view.canvas.on("object:modified", hideOrphanage);
+			flcToy.view.canvas.on("object:modified", flcToy.controller.tokenDragHandler);
 			fabric.Image.fromURL(imgDir+'/cycle-btn.png', function(loadedImage) {
 				flcToy.view.canvas.add(loadedImage);
 			}, {
@@ -1171,6 +1169,10 @@ function toyFactory() {
 			}); // jshint ignore:line
 			flcToy.controller.walkTokensToPlatform(roster, flcToy.model.platformRegistry[platformIndex], false, true);
 		}
+	};
+
+	flcToy.controller.tokenDragHandler = function(options) {
+		flcToy.controller.tokenPreview.tokenIndex = null;
 	};
 
 	flcToy.controller.incrementTokenGrade = function(tokenImage) {
