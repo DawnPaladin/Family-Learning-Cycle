@@ -930,29 +930,21 @@ function toyFactory() {
 			flcToy.controller.tokenPreview.update(flcToy.controller.tokenPreview.tokenIndex, options);
 		}
 	};
-	flcToy.controller.tokenPreview.updateHandler = function(options) {
-		var name = options.nameField.val();
-		var grade = options.gradeSelect.val();
-		var height = Number(options.heightSlider.val());
-		var color = jQuery('input[name = "' + options.colorBoxes + '"]:checked').val();
-		var tokenIndex = flcToy.controller.newToken(name, grade, height, color);
-		var tokenData = flcToy.model.tokenRegistry[tokenIndex];
-		var platformData = flcToy.controller.lookupPlatformByGradeIndex(grade);
-		var platformCoords = flcToy.controller.lookupPlatformCenter(platformData);
-		options.nameField.val("");
-		options.gradeSelect.val("0");
-		options.heightSlider.val(45);
-		document.querySelector('input[name = "' + options.colorBoxes + '"]:checked').checked = false;
-		document.querySelector('input[value = "#dd5b5a"]').checked = true;
-	};
 	flcToy.controller.autoPlaceTokens = function(roster) {
 		for (var i = 0; i < roster.length; i++) { // for each token in roster
 			var tokenData = flcToy.model.tokenRegistry[roster[i]];
 			var gradeIndex = tokenData.grade.index;
 			var platformData = flcToy.controller.lookupPlatformByGradeIndex(gradeIndex);
 			flcToy.controller.assignTokenToPlatform(tokenData, platformData);
-			flcToy.controller.updateAllTokenLocations();
 		}
+		flcToy.controller.refreshADV(); // check ADV and do it again
+		for (var j = 0; j < roster.length; j++) {
+			var tokenData = flcToy.model.tokenRegistry[roster[j]]; // jshint ignore:line
+			var gradeIndex = tokenData.grade.index; // jshint ignore:line
+			var platformData = flcToy.controller.lookupPlatformByGradeIndex(gradeIndex); // jshint ignore:line
+			flcToy.controller.assignTokenToPlatform(tokenData, platformData);
+		}
+		flcToy.controller.updateAllTokenLocations();
 	};
 	flcToy.controller.newToken = function (name, gradeIndex, height, color, lockMovement) {
 		var gradeObj = flcToy.model.processGrade(gradeIndex);
