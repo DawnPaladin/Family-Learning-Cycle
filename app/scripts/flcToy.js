@@ -206,62 +206,6 @@ function toyFactory() {
 		var CANVAS_WIDTH = 972;
 		var CANVAS_HEIGHT = foyerHeight + DiscoverHeight + InvestigateHeight + DeclareHeight + 200;
 
-		var tokenPreviewRect = new fabric.Rect({
-			left: 0,
-			top: 20,
-			stroke: "silver",
-			strokeWidth: 5,
-			fill: "transparent",
-			width: 225,
-			height: 225,
-			selectable: false,
-		});
-		var tokenPreviewText = new fabric.Text("Preview", {
-			fontFamily: "Source Sans Pro",
-			fontSize: 15,
-			top: 0,
-			left: 118,
-			originX: "center",
-			selectable: false,
-		});
-		fabric.Image.fromURL(
-			imgDir+"/arrow.png", // path to image
-			function(image) { // callback after loading image
-				flcToy.view.canvas.add(image);
-			},
-			{ // options to pass to new image object
-				left: 200,
-				top: 80,
-				selectable: false,
-			}
-		);
-		fabric.Image.fromURL(
-			imgDir+"/auto-place.png", // path to image
-			function(image) { // callback after loading image
-				flcToy.view.canvas.add(image);
-			}, { // options to pass to new image object
-				left: 500,
-				top: 255,
-				hasControls: false,
-				hasBorders: false,
-				lockMovementX: true,
-				lockMovementY: true,
-				hoverCursor: "pointer",
-				name: 'auto-place-btn',
-			}
-		);
-		var autoPlaceText = new fabric.Text(
-			"or drag them wherever you want",
-			{
-				fontFamily: "Source Sans Pro",
-				fontSize: 16,
-				left: 620,
-				top: 272,
-				textAlign: "left",
-				selectable: false,
-			});
-		flcToy.view.canvas.add(tokenPreviewRect, tokenPreviewText, autoPlaceText);
-
 		var DiscoverRect = new fabric.Rect({
 			left: 0,
 			top: foyerHeight,
@@ -354,6 +298,62 @@ function toyFactory() {
 		}
 
 		if (manual === true) {
+			var tokenPreviewRect = new fabric.Rect({
+				left: 0,
+				top: 20,
+				stroke: "silver",
+				strokeWidth: 5,
+				fill: "transparent",
+				width: 225,
+				height: 225,
+				selectable: false,
+			});
+			var tokenPreviewText = new fabric.Text("Preview", {
+				fontFamily: "Source Sans Pro",
+				fontSize: 15,
+				top: 0,
+				left: 118,
+				originX: "center",
+				selectable: false,
+			});
+			fabric.Image.fromURL(
+				imgDir+"/arrow.png", // path to image
+				function(image) { // callback after loading image
+					flcToy.view.canvas.add(image);
+				},
+				{ // options to pass to new image object
+					left: 200,
+					top: 80,
+					selectable: false,
+				}
+			);
+			fabric.Image.fromURL(
+				imgDir+"/auto-place.png", // path to image
+				function(image) { // callback after loading image
+					flcToy.view.canvas.add(image);
+				}, { // options to pass to new image object
+					left: 500,
+					top: 255,
+					hasControls: false,
+					hasBorders: false,
+					lockMovementX: true,
+					lockMovementY: true,
+					hoverCursor: "pointer",
+					name: 'auto-place-btn',
+				}
+			);
+			var autoPlaceText = new fabric.Text(
+				"or drag them wherever you want",
+				{
+					fontFamily: "Source Sans Pro",
+					fontSize: 16,
+					left: 620,
+					top: 272,
+					textAlign: "left",
+					selectable: false,
+				});
+			flcToy.view.canvas.add(tokenPreviewRect, tokenPreviewText, autoPlaceText);
+
 			fabric.Image.fromURL(imgDir+'/trashcan.png', function(loadedImage) {
 				flcToy.view.canvas.add(loadedImage);
 				flcToy.view.orphanage = loadedImage;
