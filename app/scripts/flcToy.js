@@ -120,6 +120,7 @@ function toyFactory() {
 	flcToy.model.Locations.college = List.makeNode("college", "other");
 	flcToy.model.Locations.orphanage = List.makeNode("orphanage", "other");
 	flcToy.model.Locations.hospital = List.makeNode("hospital", "other");
+	flcToy.model.Locations.staging = List.makeNode("staging", "other");
 	flcToy.model.Locations.adrift = List.makeNode("adrift", "other");
 
 	flcToy.model.CyclicCounter = function(initial, minimum, maximum) {
@@ -223,6 +224,17 @@ function toyFactory() {
 			originX: "center",
 			selectable: false,
 		});
+		fabric.Image.fromURL(
+			imgDir+"/arrow.png", // path to image
+			function(image) { // callback after loading image
+				flcToy.view.canvas.add(image);
+			},
+			{ // options to pass to new image object
+				left: 200,
+				top: 80,
+				selectable: false,
+			}
+		);
 
 		flcToy.view.canvas.add(tokenPreviewRect, tokenPreviewText);
 
@@ -1247,6 +1259,10 @@ function toyFactory() {
 
 		platformPromises.push(flcToy.controller.newPlatform( 25, DeclareBase + 105, 'college', imgDir+'/college.png'));
 		platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX - 500, DiscoverBaseY, 'hospital', imgDir+'/hospital.png'));
+
+		if (manual) {
+			platformPromises.push(flcToy.controller.newPlatform( 450, 180, 'staging', imgDir+'/staging.png'));
+		}
 
 		jQuery.when.apply(jQuery, platformPromises).then(function(){ // when all promises in platformPromises are fulfilled (see http://stackoverflow.com/a/5627301/1805453)
 			if (options.story === "manual") {
