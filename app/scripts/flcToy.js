@@ -908,7 +908,8 @@ function toyFactory() {
 		console.log("Created preview token", tokenIndex);
 	};
 	flcToy.controller.tokenPreview.update = function(tokenIndex, options) {
-		var tokenImage = flcToy.model.tokenRegistry[tokenIndex].canvasGroup;
+		var tokenData = flcToy.model.tokenRegistry[tokenIndex];
+		var tokenImage = tokenData.canvasGroup;
 		flcToy.view.eraseTokenImage(tokenImage);
 		var name = options.nameField.val();
 		var grade = flcToy.model.processGrade(options.gradeSelect.val());
@@ -916,7 +917,11 @@ function toyFactory() {
 		var color = jQuery('input[name = "' + options.colorBoxes + '"]:checked').val();
 		var x = flcToy.controller.tokenPreview.spawnCoordsX;
 		var y = flcToy.controller.tokenPreview.spawnCoordsY;
-		flcToy.model.tokenRegistry[tokenIndex].canvasGroup = flcToy.view.drawNewToken(x, y, name, grade, height, color, tokenIndex, false);
+		tokenData.canvasGroup = flcToy.view.drawNewToken(x, y, name, grade, height, color, tokenIndex, false);
+		tokenData.name = name;
+		tokenData.grade = grade;
+		tokenData.height = height;
+		tokenData.color = color;
 	};
 	flcToy.controller.tokenPreview.changeHandler = function(options) {
 		if (flcToy.controller.tokenPreview.tokenIndex === null) {
