@@ -1,4 +1,4 @@
-function floatControl($control, $aor) { // Make a control float over the page, but only when a particular element (the Area of Responsibility) is onscreen
+function floatControl($control, $aor, storyName) { // Make a control float over the page, but only when a particular element (the Area of Responsibility) is onscreen
 	var $placeholder = $control.filter('.placeholder');
 	var $original = $control.filter('.original');
 	function determineBoxPosition() {
@@ -22,10 +22,25 @@ function floatControl($control, $aor) { // Make a control float over the page, b
 	}
 	jQuery(window).scroll(determineBoxPosition);
 	determineBoxPosition();
+
+	$control.each(function(){ // There are two copies of the story box at any given time, one hidden.
+		jQuery(this).on('HitFirstPage.'+storyName, function(event) {
+			jQuery(this).find('.storyPrevBtn').prop("disabled", true);
+		});
+		jQuery(this).on('LeaveFirstPage.'+storyName, function(event) {
+			jQuery(this).find('.storyPrevBtn').prop("disabled", false);
+		});
+		jQuery(this).on('HitLastPage.'+storyName, function(event) {
+			jQuery(this).find('.storyNextBtn').prop("disabled", true);
+		});
+		jQuery(this).on('LeaveLastPage.'+storyName, function(event) {
+			jQuery(this).find('.storyNextBtn').prop("disabled", false);
+		});
+	});
 }
 jQuery(document).ready(function(){
-	floatControl(jQuery('#Robert-toy-wrapper .storyShuttleBox'), jQuery('#Robert-toy-wrapper .canvas-container'));
-	floatControl(jQuery('#Carpenter-toy-wrapper .storyShuttleBox'), jQuery('#Carpenter-toy-wrapper .canvas-container'));
+	floatControl(jQuery('#Robert-toy-wrapper .storyShuttleBox'), jQuery('#Robert-toy-wrapper .canvas-container'), "Robert");
+	floatControl(jQuery('#Carpenter-toy-wrapper .storyShuttleBox'), jQuery('#Carpenter-toy-wrapper .canvas-container'), "Carpenters");
 });
 
 jQuery('.colorBox').each(function(){

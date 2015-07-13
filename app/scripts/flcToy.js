@@ -848,12 +848,12 @@ function toyFactory() {
 				}
 			}
 
-			// enable/disable forward/back controls as appropriate
+			// trigger events to modify controls at beginning and end of story
 			if (flcToy.story.currentPage > 0) {
-				flcToy.story.prevBtn.prop("disabled", false);
+				flcToy.story.box.trigger('LeaveFirstPage.'+flcToy.story.name);
 			}
 			if (flcToy.story.currentPage === flcToy.story.pages.length - 1) {
-				flcToy.story.nextBtn.prop("disabled", true);
+				flcToy.story.box.trigger('HitLastPage.'+flcToy.story.name);
 			}
 
 			flcToy.controller.verifyTokenData();
@@ -869,13 +869,14 @@ function toyFactory() {
 				currentPage.triggerFunc();
 			}
 
-			// if we're on the first page of the story, disable the Back button
+			// trigger events to modify controls at beginning and end of story
 			if (flcToy.story.currentPage < 1) {
-				flcToy.story.prevBtn.prop("disabled", true);
+				flcToy.story.box.trigger('HitFirstPage.'+flcToy.story.name);
 			}
 			if (flcToy.story.currentPage < flcToy.story.pages.length) {
-				flcToy.story.nextBtn.prop("disabled", false);
+				flcToy.story.box.trigger('LeaveLastPage.'+flcToy.story.name);
 			}
+			
 			flcToy.controller.verifyTokenData();
 		},
 	};
@@ -1305,8 +1306,8 @@ function toyFactory() {
 			} else {
 				options.nextBtn.click(flcToy.story.turnPageForward);
 				options.prevBtn.click(flcToy.story.turnPageBackward);
-				var storyName = options.story;
-				flcToy.story.pages = flcToy.story.library[storyName];
+				flcToy.story.name = options.story;
+				flcToy.story.pages = flcToy.story.library[flcToy.story.name];
 				flcToy.story.box = options.textField;
 				flcToy.story.nextBtn = options.nextBtn;
 				flcToy.story.prevBtn = options.prevBtn;
