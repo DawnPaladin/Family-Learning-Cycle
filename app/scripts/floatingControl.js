@@ -31,10 +31,16 @@ function floatControl($control, $aor, storyName) { // Make a control float over 
 			jQuery(this).find('.storyPrevBtn').prop("disabled", false);
 		});
 		jQuery(this).on('HitLastPage.'+storyName, function(event) {
-			jQuery(this).find('.storyNextBtn').prop("disabled", true);
+			jQuery(this).find('.storyNextBtn')
+				.prop("disabled", true)
+				.text("Done")
+			;
 		});
 		jQuery(this).on('LeaveLastPage.'+storyName, function(event) {
-			jQuery(this).find('.storyNextBtn').prop("disabled", false);
+			jQuery(this).find('.storyNextBtn')
+				.prop("disabled", false)
+				.text("Next >")
+			;
 		});
 	});
 }
