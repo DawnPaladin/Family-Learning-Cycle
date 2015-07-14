@@ -59,6 +59,7 @@ canvas {
   border: 5px solid #3498db;
   box-shadow: .5em .5em .5em #F0F0F0;
   padding: .5em;
+  position: relative;
 }
 .storyShuttleBox.hidden {
    opacity: 0;
@@ -77,4 +78,13 @@ canvas {
 }
 .storyControls {
   float: right;
+}
+.scrollDownArrow {
+  width: 50px;
+  height: 110%;
+  position: absolute;
+  left: 103%;
+  top: 0px;
+  background-image: url('../images/pulsing-down-arrow.gif');
+  background-repeat: no-repeat;
 }
