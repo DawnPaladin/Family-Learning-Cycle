@@ -1,6 +1,6 @@
 /* jshint latedef: false */
 
-var imgDir = '/images';
+var imgDir = 'images';
 
 function toyFactory() {
 
@@ -328,7 +328,7 @@ function toyFactory() {
 				}
 			);
 			fabric.Image.fromURL(
-				imgDir+"/auto-place.png", // path to image
+				imgDir+"/Auto-place.png", // path to image
 				function(image) { // callback after loading image
 					flcToy.view.canvas.add(image);
 				}, { // options to pass to new image object
