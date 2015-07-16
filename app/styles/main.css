@@ -88,6 +88,6 @@ canvas {
   position: absolute;
   left: 103%;
   top: 0px;
-  background-image: url('../images/pulsing-down-arrow.gif');
+  background-image: url('../images/pulsing-down-arrow-outline.gif');
   background-repeat: no-repeat;
 }
