@@ -56,14 +56,16 @@ canvas {
 .storyShuttleBox {
   width: 486px;
   background-color: white;
-  border: 5px solid #3498db;
-  box-shadow: .5em .5em .5em #F0F0F0;
+  border: 5px solid silver;
   padding: .5em;
   position: relative;
 }
 .storyShuttleBox.hidden {
    opacity: 0;
    z-index: -1;
+}
+.storyShuttleBox.active {
+  border: 5px solid #3498db;
 }
 @media (max-width: 1020px) {
   .storyShuttleBox.hover {
@@ -80,6 +82,7 @@ canvas {
   float: right;
 }
 .scrollDownArrow {
+  display: none;
   width: 50px;
   height: 110%;
   position: absolute;
