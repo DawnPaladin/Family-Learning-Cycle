@@ -689,13 +689,25 @@ function toyFactory() {
 					}
 				);
 			},
-			show: function() {
-				flcToy.view.bridgeOut.image.opacity = 1;
-				flcToy.view.canvas.renderAll();
+			show: function(duration) {
+				flcToy.view.bridgeOut.image.animate(
+					{ opacity: 1 },
+					{ 
+						duration: duration,
+						easing: fabric.util.ease.easeInQuint,
+						onChange: flcToy.view.canvas.renderAll.bind(flcToy.view.canvas),
+					}
+				);
 			},
-			hide: function() {
-				flcToy.view.bridgeOut.image.opacity = 0;
-				flcToy.view.canvas.renderAll();
+			hide: function(duration) {
+				flcToy.view.bridgeOut.image.animate(
+					{ opacity: 0 },
+					{ 
+						duration: duration,
+						easing: fabric.util.ease.easeInQuint,
+						onChange: flcToy.view.canvas.renderAll.bind(flcToy.view.canvas),
+					}
+				);
 			}
 		};
 
@@ -774,13 +786,15 @@ function toyFactory() {
 					triggerFunc: function() {
 						var adv = flcToy.model.platformRegistry.ADV;
 						var platformCoords = flcToy.controller.lookupPlatformCenter(adv);
-						flcToy.view.bridgeOut.show();
-						flcToy.view.flash(flcToy.view.bridgeOut.image, 250, 3);
+						flcToy.view.bridgeOut.show(250);
+						window.setTimeout(function(){
+							flcToy.view.flash(flcToy.view.bridgeOut.image, 250, 2);
+						}, 250);
 					}
 				}, {
 					text: "As each child finishes the Discover section, they join the rest of the family in the Family Learning Cycle, whatever year they happen to be on.",
 					advance: true,
-					triggerFunc: function() { flcToy.view.bridgeOut.hide(); }
+					triggerFunc: function() { flcToy.view.bridgeOut.hide(250); }
 				}, {
 					text: "As each child finishes the Discover section, they join the rest of the family in the Family Learning Cycle, whatever year they happen to be on.",
 					advance: true
