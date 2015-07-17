@@ -1122,7 +1122,7 @@ function toyFactory() {
 	flcToy.controller.tokensInFLC = function() {
 		var foundFLCPlatform = false;
 		flcToy.controller.forEachToken(function(tokenIndex, tokenData){
-			if (tokenData.location.section === "Investigate") {
+			if (tokenData.location && tokenData.location.section === "Investigate") {
 				foundFLCPlatform = true;
 			}
 		});
@@ -1240,7 +1240,7 @@ function toyFactory() {
 			var platformName = flcToy.model.platformRegistry[platformIndex].name;
 			var roster = [];
 			flcToy.controller.forEachToken(function(tokenIndex, tokenData){ // https://jslinterrors.com/dont-make-functions-within-a-loop
-				if (tokenData.location.name === platformName) {
+				if (tokenData.location && tokenData.location.name === platformName) {
 					roster.push(tokenIndex);
 				}
 			}); // jshint ignore:line
