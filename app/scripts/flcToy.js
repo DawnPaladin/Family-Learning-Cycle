@@ -737,7 +737,7 @@ function toyFactory() {
 				{ text: "<i>Rome to the Reformation</i> provides perspective on the New Testament by showing what life was like under the Romans. We follow the development of the church and study the Middle Ages, culminating with the Renaissance and Reformation.", advance: true },
 				{ text: "In <i>Exploration to 1850</i>, our third year of chronological history, we explore the New World with Leif Ericsson, Christopher Columbus, and many others. We study the history of America from colonial times to the California gold rush, learn about the courage and faith of many who came to America, and see how U.S. and world history are interrelated.", advance: true },
 				{ text: "<i>1850 to Modern Times</i> rounds out our study of chronological history by studying states and capitals, reciting the Gettysburg Address, solving cryptography puzzles, and baking Vietnamese Apricot Coconut Cake, among other things.", advance: true },
-				{ text: "In 8th grade, Robert returns to <i>Exploring Countries and Cultures</i> to study it in greater depth than was possible in 3rd grade.", advance: true },
+				{ text: "In 8th grade, Robert returns to <i>Exploring Countries and Cultures</i> to study it in greater depth than was possible in 3rd grade. As a 3rd grader, Robert studied countries by writing a sentence about each one. Now he studies countries by writing reports.", advance: true },
 				{ text: "In 9th grade, Robert exits the Family Learning Cycle and begins high school.", advance: true },
 				{ text: "(Keep advancing Robert through high school.)", advance: true },
 				{ text: "(Keep advancing Robert through high school.)", advance: true },
