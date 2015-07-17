@@ -640,6 +640,35 @@ function toyFactory() {
 				onComplete: function(){ flcToy.view.canvas.remove(stroke); }
 			});
 		};
+		flcToy.view.flash = function(image, duration, quantity) {
+			if (quantity > 0) {
+				image.animate(
+					{ 
+						opacity: 0,
+					},
+					{ 
+						duration: duration,
+						easing: fabric.util.ease.easeInQuint,
+						onChange: flcToy.view.canvas.renderAll.bind(flcToy.view.canvas),
+						onComplete: function(){
+							image.animate(
+								{ 
+									opacity: 1,
+								},
+								{
+									duration: duration,
+									easing: fabric.util.ease.easeOutQuint,
+									onChange: flcToy.view.canvas.renderAll.bind(flcToy.view.canvas),
+									onComplete: function(){
+										flcToy.view.flash(image, duration, quantity - 1);
+									}
+								}
+							);
+						}
+					}
+				);
+			}
+		};
 
 		flcToy.view.bridgeOut = {
 			setup: function() {
@@ -745,8 +774,8 @@ function toyFactory() {
 					triggerFunc: function() {
 						var adv = flcToy.model.platformRegistry.ADV;
 						var platformCoords = flcToy.controller.lookupPlatformCenter(adv);
-						flcToy.view.ripple(platformCoords.x, platformCoords.y, "#a00d1f");
 						flcToy.view.bridgeOut.show();
+						flcToy.view.flash(flcToy.view.bridgeOut.image, 250, 3);
 					}
 				}, {
 					text: "As each child finishes the Discover section, they join the rest of the family in the Family Learning Cycle, whatever year they happen to be on.",
