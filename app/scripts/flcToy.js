@@ -354,7 +354,7 @@ function toyFactory() {
 				});
 			flcToy.view.canvas.add(tokenPreviewRect, tokenPreviewText, autoPlaceText);
 
-			fabric.Image.fromURL(imgDir+'/trashcan.png', function(loadedImage) {
+			fabric.Image.fromURL(imgDir+'/trashcan-plain.png', function(loadedImage) {
 				flcToy.view.canvas.add(loadedImage);
 				flcToy.view.orphanage = loadedImage;
 			}, {
@@ -367,7 +367,8 @@ function toyFactory() {
 				lockMovementY: true,
 				name: "orphanage",
 			});
-			flcToy.view.canvas.on("object:modified", flcToy.controller.tokenDragHandler);
+			flcToy.view.canvas.on("object:moving", flcToy.controller.tokenDraggingHandler);
+			flcToy.view.canvas.on("object:modified", flcToy.controller.tokenDraggedHandler);
 			fabric.Image.fromURL(imgDir+'/cycle-btn.png', function(loadedImage) {
 				flcToy.view.canvas.add(loadedImage);
 			}, {
@@ -556,7 +557,7 @@ function toyFactory() {
 
 				var intersects = intersection.status === 'Intersection';
 				var contains = aContainsB(platformRect.points, tokenBaseRect.points);
-				//tokenBaseRect.setColor(intersects || contains) ? "green" : "red");
+				//tokenBaseRect.setColor((intersects || contains) ? "green" : "red");
 				//flcToy.view.canvas.add(tokenBaseRect, platformRect);
 				//console.log(intersection.status, contains);
 
@@ -1003,6 +1004,7 @@ function toyFactory() {
 		console.log('Removing ' + tokenIndex);
 		flcToy.view.eraseTokenImage(flcToy.model.tokenRegistry[tokenIndex].canvasGroup);
 		flcToy.model.tokenRegistry[tokenIndex] = { orphaned: true };
+		flcToy.view.orphanage.setSrc('images/trashcan-plain.png', function(){flcToy.view.canvas.renderAll();});
 	};
 	flcToy.controller.hospitalize = function(tokenIndex) {
 		console.assert((typeof tokenIndex === "string"), "This is not a tokenIndex:", tokenIndex);
@@ -1248,7 +1250,18 @@ function toyFactory() {
 		}
 	};
 
-	flcToy.controller.tokenDragHandler = function(options) {
+	flcToy.controller.tokenDraggingHandler = function(options) {
+		var draggedToken = options.target;
+		var orphanage = flcToy.view.orphanage;
+		draggedToken.setCoords();
+		if (draggedToken.itemInGroupIntersectsWithObject(orphanage)) {
+			orphanage.setSrc('images/trashcan-hover.png');
+		} else {
+			orphanage.setSrc('images/trashcan-plain.png');
+		}
+	};
+	flcToy.controller.tokenDraggedHandler = function(options) {
+		var draggedToken = options.target;
 		flcToy.controller.tokenPreview.tokenIndex = null;
 	};
 
