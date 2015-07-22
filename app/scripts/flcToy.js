@@ -712,6 +712,32 @@ function toyFactory() {
 			}
 		};
 
+		flcToy.view.setCycleYear = function(platformIndex) {
+			console.assert((typeof platformIndex === "string"), "This is not a platformIndex:", platformIndex);
+			if (flcToy.view.cycleYear) {
+				flcToy.view.cycleYear.remove();
+			}
+
+			var platformData = flcToy.model.platformRegistry[platformIndex];
+			var platformCenter = flcToy.controller.lookupPlatformCenter(platformData);
+
+			fabric.Image.fromURL(
+				imgDir+'/active-platform.png', // path to image
+				function(image) { 
+					flcToy.view.canvas.add(image); 
+					flcToy.view.canvas.renderAll.bind(flcToy.view.canvas);
+					flcToy.view.cycleYear = image;
+				},
+				{
+					left: platformCenter.x,
+					top: platformCenter.y+1,
+					originX: "center",
+					originY: "center",
+					selectable: false,
+				}
+			);
+		};
+
 	}; // end view setup function
 
 	// STORY
