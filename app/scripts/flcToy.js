@@ -714,8 +714,18 @@ function toyFactory() {
 
 		flcToy.view.setCycleYear = function(platformIndex) {
 			console.assert((typeof platformIndex === "string"), "This is not a platformIndex:", platformIndex);
+			var fadeDuration = 250;
 			if (flcToy.view.cycleYear) {
-				flcToy.view.cycleYear.remove();
+				var oldCycleYear = flcToy.view.cycleYear;
+				oldCycleYear.animate(
+					{ opacity: 0 },
+					{ 
+						duration: fadeDuration,
+						easing: fabric.util.ease.easeInQuint,
+						onChange: flcToy.view.canvas.renderAll.bind(flcToy.view.canvas),
+						onComplete: function(){ oldCycleYear.remove(); }
+					}
+				);
 			}
 
 			var platformData = flcToy.model.platformRegistry[platformIndex];
@@ -727,15 +737,24 @@ function toyFactory() {
 					flcToy.view.canvas.add(image); 
 					image.sendToBack();
 					image.bringForward(true);
-					flcToy.view.canvas.renderAll.bind(flcToy.view.canvas);
+					image.bringForward(true);
+					image.animate(
+						{ opacity: 1 },
+						{
+							duration: fadeDuration,
+							easing: fabric.util.ease.easeInQuint,
+							onChange: flcToy.view.canvas.renderAll.bind(flcToy.view.canvas),
+						}
+					);
 					flcToy.view.cycleYear = image;
 				},
 				{
 					left: platformCenter.x,
-					top: platformCenter.y+1,
+					top: platformCenter.y+2,
 					originX: "center",
 					originY: "center",
 					selectable: false,
+					opacity: 0,
 				}
 			);
 		};
