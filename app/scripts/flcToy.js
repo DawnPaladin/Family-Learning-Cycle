@@ -725,6 +725,8 @@ function toyFactory() {
 				imgDir+'/active-platform.png', // path to image
 				function(image) { 
 					flcToy.view.canvas.add(image); 
+					image.sendToBack();
+					image.bringForward(true);
 					flcToy.view.canvas.renderAll.bind(flcToy.view.canvas);
 					flcToy.view.cycleYear = image;
 				},
@@ -1405,6 +1407,7 @@ function toyFactory() {
 		} else {
 			flcToy.model.cycleYear = flcToy.model.Locations.ECC;
 		}
+		flcToy.view.setCycleYear(flcToy.model.cycleYear.platformIndex);
 	};
 	flcToy.controller.refreshADV = function() {
 		// enable/disable ADV depending on whether the FLC is active
