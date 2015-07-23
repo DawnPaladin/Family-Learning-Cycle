@@ -1105,12 +1105,12 @@ function toyFactory() {
 			platformIndex += gradeIndex; // place according to grade
 		} else if (gradeIndex === 4) {
 			if (flcToy.model.platformRegistry.ADV.disabled) {
-				platformIndex = flcToy.cycleYear.platformIndex; // place in FLC
+				platformIndex = flcToy.model.cycleYear.platformIndex; // place in FLC
 			} else {
 				platformIndex += gradeIndex; // place according to grade
 			}
 		} else if (gradeIndex > 4 && gradeIndex < 10){ // Investigate
-			platformIndex = flcToy.cycleYear.platformIndex; // place in FLC
+			platformIndex = flcToy.model.cycleYear.platformIndex; // place in FLC
 		} else if (gradeIndex >= 10) { // Declare
 			platformIndex += (gradeIndex - 1); // as of ECC, gradeIndex and tokenIndex no longer match up, because if you're an only child you do ECC twice
 		} else {
@@ -1345,8 +1345,8 @@ function toyFactory() {
 
 	/* === initialization === */
 
-	flcToy.cycleYear = flcToy.model.Locations.ECC;
-	flcToy.cycleYearHistory = [flcToy.cycleYear.name];
+	flcToy.model.cycleYear = flcToy.model.Locations.ECC;
+	flcToy.model.cycleYearHistory = [flcToy.model.cycleYear.name];
 
 	flcToy.setup = function(options) {
 		var manual = options.story === "manual";
@@ -1401,9 +1401,9 @@ function toyFactory() {
 
 	flcToy.controller.advanceCycleYear = function() {
 		if (flcToy.controller.tokensInFLC()) {
-			flcToy.cycleYear = flcToy.cycleYear.next;
+			flcToy.model.cycleYear = flcToy.model.cycleYear.next;
 		} else {
-			flcToy.cycleYear = flcToy.model.Locations.ECC;
+			flcToy.model.cycleYear = flcToy.model.Locations.ECC;
 		}
 	};
 	flcToy.controller.refreshADV = function() {
@@ -1428,7 +1428,7 @@ function toyFactory() {
 		// save current state to history
 		flcToy.model.tokenRegistry.prev = clone(flcToy.model.tokenRegistry);
 		flcToy.model.platformRegistry.prev = clone(flcToy.model.platformRegistry);
-		flcToy.cycleYearHistory.push(flcToy.cycleYear.name);
+		flcToy.model.cycleYearHistory.push(flcToy.model.cycleYear.name);
 
 		flcToy.controller.forEachToken(function(tokenIndex, tokenData) {
 			flcToy.controller.incrementTokenGrade(flcToy.model.tokenRegistry[tokenIndex].canvasGroup);
@@ -1445,7 +1445,7 @@ function toyFactory() {
 			var tokenLocation = flcToy.model.tokenRegistry[tokenIndex].location;
 			if (tokenLocation.section === 'Discover') {
 				if ((tokenLocation.name === 'ADV') || (tokenLocation.name === 'LGS' && flcToy.controller.tokensInFLC())) {
-					flcToy.model.tokenRegistry[tokenIndex].location = flcToy.cycleYear;
+					flcToy.model.tokenRegistry[tokenIndex].location = flcToy.model.cycleYear;
 				}
 				else {
 					//console.log(tokenRegistryCopy.token0.location.name);
@@ -1454,7 +1454,7 @@ function toyFactory() {
 				}
 			}
 			if (tokenLocation.section === 'Investigate') {
-				flcToy.model.tokenRegistry[tokenIndex].location = flcToy.cycleYear;
+				flcToy.model.tokenRegistry[tokenIndex].location = flcToy.model.cycleYear;
 			}
 			if (tokenLocation.section === 'Declare') {
 				if (flcToy.model.tokenRegistry[tokenIndex].grade.index === 11) { // just-arrived 9th graders
@@ -1472,7 +1472,7 @@ function toyFactory() {
 			for (var l = 0; l < flcToy.model.platformRegistry.platform4.residents.length(); l++) {
 				flcToy.controller.assignTokenToPlatform(
 					flcToy.model.tokenRegistry[flcToy.model.platformRegistry.platform4.residents.list(l)], // tokenData
-					flcToy.model.platformRegistry[flcToy.cycleYear.platformIndex] // platformData
+					flcToy.model.platformRegistry[flcToy.model.cycleYear.platformIndex] // platformData
 				);
 			}
 			flcToy.controller.disablePlatform(flcToy.model.platformRegistry.platform4);
@@ -1492,7 +1492,7 @@ function toyFactory() {
 
 			flcToy.model.tokenRegistry = flcToy.model.tokenRegistry.prev;
 			flcToy.model.platformRegistry = flcToy.model.platformRegistry.prev;
-			flcToy.cycleYear = flcToy.model.Locations[flcToy.cycleYearHistory[flcToy.story.currentPage]];
+			flcToy.model.cycleYear = flcToy.model.Locations[flcToy.model.cycleYearHistory[flcToy.story.currentPage]];
 
 	 		flcToy.model.tokenRegistry.next = tokenFutureHistory;
 	 		flcToy.model.platformRegistry.next = platformFutureHistory;
@@ -1512,7 +1512,7 @@ function toyFactory() {
 		try {
 			flcToy.model.tokenRegistry = flcToy.model.tokenRegistry.next;
 			flcToy.model.platformRegistry = flcToy.model.platformRegistry.next;
-			flcToy.cycleYear = flcToy.model.Locations[flcToy.cycleYearHistory[flcToy.story.currentPage]];
+			flcToy.model.cycleYear = flcToy.model.Locations[flcToy.model.cycleYearHistory[flcToy.story.currentPage]];
 		} catch (error) {
 			console.warn("Cannot restore board state from future-history.", error);
 		}
