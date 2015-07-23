@@ -1450,7 +1450,6 @@ function toyFactory() {
 		// save current state to history
 		flcToy.model.tokenRegistry.prev = clone(flcToy.model.tokenRegistry);
 		flcToy.model.platformRegistry.prev = clone(flcToy.model.platformRegistry);
-		flcToy.model.cycleYearHistory.push(flcToy.model.cycleYear.name);
 
 		flcToy.controller.forEachToken(function(tokenIndex, tokenData) {
 			flcToy.controller.incrementTokenGrade(flcToy.model.tokenRegistry[tokenIndex].canvasGroup);
@@ -1461,6 +1460,7 @@ function toyFactory() {
 
 		flcToy.controller.advanceCycleYear();
 		flcToy.controller.refreshADV();
+		flcToy.model.cycleYearHistory.push(flcToy.model.cycleYear.name);
 
 		// determine changed token locations
 		flcToy.controller.forEachToken(function(tokenIndex, tokenData) {
@@ -1515,6 +1515,7 @@ function toyFactory() {
 			flcToy.model.tokenRegistry = flcToy.model.tokenRegistry.prev;
 			flcToy.model.platformRegistry = flcToy.model.platformRegistry.prev;
 			flcToy.model.cycleYear = flcToy.model.Locations[flcToy.model.cycleYearHistory[flcToy.story.currentPage]];
+			flcToy.view.setCycleYear(flcToy.model.cycleYear.platformIndex);
 
 	 		flcToy.model.tokenRegistry.next = tokenFutureHistory;
 	 		flcToy.model.platformRegistry.next = platformFutureHistory;
@@ -1535,6 +1536,7 @@ function toyFactory() {
 			flcToy.model.tokenRegistry = flcToy.model.tokenRegistry.next;
 			flcToy.model.platformRegistry = flcToy.model.platformRegistry.next;
 			flcToy.model.cycleYear = flcToy.model.Locations[flcToy.model.cycleYearHistory[flcToy.story.currentPage]];
+			flcToy.view.setCycleYear(flcToy.model.cycleYear.platformIndex);
 		} catch (error) {
 			console.warn("Cannot restore board state from future-history.", error);
 		}
