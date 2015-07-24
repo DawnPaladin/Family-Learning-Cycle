@@ -728,6 +728,9 @@ function toyFactory() {
 				);
 			}
 
+			if (platformIndex === "none") {
+				return;
+			}
 			var platformData = flcToy.model.platformRegistry[platformIndex];
 			var platformCenter = flcToy.controller.lookupPlatformCenter(platformData);
 
@@ -1423,10 +1426,18 @@ function toyFactory() {
 	flcToy.controller.advanceCycleYear = function() {
 		if (flcToy.controller.tokensInFLC()) {
 			flcToy.model.cycleYear = flcToy.model.cycleYear.next;
+			flcToy.view.setCycleYear(flcToy.model.cycleYear.platformIndex);
 		} else {
 			flcToy.model.cycleYear = flcToy.model.Locations.ECC;
+			flcToy.view.setCycleYear("none");
 		}
-		flcToy.view.setCycleYear(flcToy.model.cycleYear.platformIndex);
+	};
+	flcToy.controller.refreshCycleYear = function() {
+		if (flcToy.controller.tokensInFLC()) {
+			flcToy.view.setCycleYear(flcToy.model.cycleYear.platformIndex);
+		} else {
+			flcToy.view.setCycleYear("none");
+		}
 	};
 	flcToy.controller.refreshADV = function() {
 		// enable/disable ADV depending on whether the FLC is active
@@ -1498,6 +1509,7 @@ function toyFactory() {
 				);
 			}
 			flcToy.controller.disablePlatform(flcToy.model.platformRegistry.platform4);
+			flcToy.view.setCycleYear(flcToy.model.cycleYear.platformIndex);
 		}
 
 		// move tokens to their new locations
@@ -1515,7 +1527,8 @@ function toyFactory() {
 			flcToy.model.tokenRegistry = flcToy.model.tokenRegistry.prev;
 			flcToy.model.platformRegistry = flcToy.model.platformRegistry.prev;
 			flcToy.model.cycleYear = flcToy.model.Locations[flcToy.model.cycleYearHistory[flcToy.story.currentPage]];
-			flcToy.view.setCycleYear(flcToy.model.cycleYear.platformIndex);
+			flcToy.controller.refreshADV();
+			flcToy.controller.refreshCycleYear();
 
 	 		flcToy.model.tokenRegistry.next = tokenFutureHistory;
 	 		flcToy.model.platformRegistry.next = platformFutureHistory;
@@ -1536,7 +1549,8 @@ function toyFactory() {
 			flcToy.model.tokenRegistry = flcToy.model.tokenRegistry.next;
 			flcToy.model.platformRegistry = flcToy.model.platformRegistry.next;
 			flcToy.model.cycleYear = flcToy.model.Locations[flcToy.model.cycleYearHistory[flcToy.story.currentPage]];
-			flcToy.view.setCycleYear(flcToy.model.cycleYear.platformIndex);
+			flcToy.controller.refreshADV();
+			flcToy.controller.refreshCycleYear();
 		} catch (error) {
 			console.warn("Cannot restore board state from future-history.", error);
 		}
