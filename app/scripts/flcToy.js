@@ -476,7 +476,8 @@ function toyFactory() {
 				left: HEAD_RADIUS,
 				originX: "center",
 			});
-			var token = new fabric.Group([head, shoulders, torso, base, nameplateBG, nameplate, gradeLine1, gradeLine2], {
+			var nameplateNotEmpty = nameplate.getText().length > 0;
+			var token = new fabric.Group([head, shoulders, torso, base, nameplateNotEmpty ? nameplateBG : nameplate, nameplate, gradeLine1, gradeLine2], {
 				left: x,
 				top: y,
 				fill: color,
