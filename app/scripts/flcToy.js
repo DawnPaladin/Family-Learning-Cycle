@@ -361,7 +361,38 @@ function toyFactory() {
 					textAlign: "left",
 					selectable: false,
 				});
-			flcToy.view.canvas.add(tokenPreviewRect, tokenPreviewText, autoPlaceText);
+			var multiOccupancyErrorRect = new fabric.Rect({
+				left: 265,
+				top: foyerHeight + DiscoverHeight + 515,
+				fill: "#f9e9cc",
+				width: 425,
+				height: 75,
+				selectable: false,
+			});
+			var multiOccupancyErrorText = new fabric.Text(
+				"The idea of the Family Learning Cycle is that all children in the \n"+
+				"Investigate section are studying the same material. Please move \n"+
+				"all tokens in the Investigate section to a single location.",
+				{
+					top: foyerHeight + DiscoverHeight + 525,
+					left: 275,
+					fontFamily: "Source Sans Pro",
+					fontSize: 15,
+					selectable: false,
+					opacity: 1,
+				}
+			);
+			flcToy.view.canvas.add(tokenPreviewRect, tokenPreviewText, autoPlaceText, multiOccupancyErrorRect, multiOccupancyErrorText);
+			flcToy.view.showOccupancyError = function() {
+				multiOccupancyErrorRect.opacity = 1;
+				multiOccupancyErrorText.opacity = 1;
+				flcToy.view.canvas.renderAll();
+			};
+			flcToy.view.hideOccupancyError = function() {
+				multiOccupancyErrorRect.opacity = 0;
+				multiOccupancyErrorText.opacity = 0;
+				flcToy.view.canvas.renderAll();
+			};
 
 			fabric.Image.fromURL(imgDir+'/trashcan-plain.png', function(loadedImage) {
 				flcToy.view.canvas.add(loadedImage);
@@ -1362,7 +1393,6 @@ function toyFactory() {
 		if (flcToy.model.checkForFLCMultiOccupancy()) {
 			window.alert("The idea of the Family Learning Cycle is that all children in the Investigate section are studying the same material. Please move all tokens in the Investigate section to a single location.");
 		}
-		console.log("Checking FLC multi-occupancy");
 	};
 
 	flcToy.controller.tokenDraggingHandler = function(options) {
