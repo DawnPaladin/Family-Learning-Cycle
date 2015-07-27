@@ -766,17 +766,20 @@ function toyFactory() {
 		function preventLeaving(e) { // from https://groups.google.com/d/msg/fabricjs/DHvNmjJfaYM/KgtR3tfbfkMJ
 			var myCanvas = flcToy.view.canvas;
 	        var activeObject = e.target;
+	        var windowLowerEdge = jQuery(document).scrollTop() + jQuery(window).height();
+	        var canvasUpperEdge = jQuery(myCanvas.lowerCanvasEl).offset().top;
+
 	        if ((activeObject.get('left') - (activeObject.get('width') / 2) < 0)) {
 	            activeObject.set('left', activeObject.get('width') / 2); 
 	        }
-	        if ((activeObject.get('top') - (activeObject.get('height') / 2) < 0)) {
+	        if ((activeObject.get('top') - (activeObject.get('height') / 2) < 0)) { // off top
 	            activeObject.set('top', activeObject.get('height') / 2);
 	        }
 	        if (activeObject.get('left') + (activeObject.get('width') / 2) > myCanvas.getWidth()) {
 	            var positionX = myCanvas.getWidth() - (activeObject.get('width'))  / 2;
 	            activeObject.set('left', positionX > myCanvas.getWidth() / 2 ? positionX : myCanvas.getWidth() / 2);
 	        }
-	        if (activeObject.get('top') + (activeObject.get('height')/ 2) > myCanvas.getHeight())
+	        if (activeObject.get('top') > myCanvas.getHeight()) // off bottom of canvas
 	        {
 	            var positionY = myCanvas.getHeight() - (activeObject.get('height')/ 2);
 	            activeObject.set('top', positionY > myCanvas.getHeight() / 2 ? positionY : myCanvas.getHeight() / 2);
