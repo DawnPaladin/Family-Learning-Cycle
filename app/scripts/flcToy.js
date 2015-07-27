@@ -772,8 +772,8 @@ function toyFactory() {
 			if ((activeObject.get('left') - (activeObject.get('width') / 2) < 0)) {
 				activeObject.set('left', activeObject.get('width') / 2); 
 			}
-			if ((activeObject.get('top') - (activeObject.get('height') / 2) < 0)) { // off top
-				activeObject.set('top', activeObject.get('height') / 2);
+			if ((activeObject.get('top') - (activeObject.get('height')) < 0)) { // off top, or out of window
+				activeObject.set('top', windowLowerEdge - canvasUpperEdge);
 			}
 			if (activeObject.get('left') + (activeObject.get('width') / 2) > myCanvas.getWidth()) {
 				var positionX = myCanvas.getWidth() - (activeObject.get('width'))  / 2;
