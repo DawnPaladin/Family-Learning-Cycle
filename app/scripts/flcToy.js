@@ -766,28 +766,28 @@ function toyFactory() {
 		function preventLeaving(e) { // from https://groups.google.com/d/msg/fabricjs/DHvNmjJfaYM/KgtR3tfbfkMJ
 			var myCanvas = flcToy.view.canvas;
 	        var activeObject = e.target;
-	        if ((activeObject.get('left') - (activeObject.get('width') * activeObject.get('scaleX')  / 2) < 0)) {
-	            activeObject.set('left', activeObject.get('width') * activeObject.get('scaleX')  / 2); 
+	        if ((activeObject.get('left') - (activeObject.get('width') / 2) < 0)) {
+	            activeObject.set('left', activeObject.get('width') / 2); 
 	        }
-	        if ((activeObject.get('top') - (activeObject.get('height') * activeObject.get('scaleY')  / 2) < 0)) {
-	            activeObject.set('top', activeObject.get('height') * activeObject.get('scaleY')  / 2);
+	        if ((activeObject.get('top') - (activeObject.get('height') / 2) < 0)) {
+	            activeObject.set('top', activeObject.get('height') / 2);
 	        }
-	        if (activeObject.get('left') + (activeObject.get('width') * activeObject.get('scaleX')  / 2) > myCanvas.getWidth()) {
-	            var positionX = myCanvas.getWidth() - (activeObject.get('width') * activeObject.get('scaleX'))  / 2;
+	        if (activeObject.get('left') + (activeObject.get('width') / 2) > myCanvas.getWidth()) {
+	            var positionX = myCanvas.getWidth() - (activeObject.get('width'))  / 2;
 	            activeObject.set('left', positionX > myCanvas.getWidth() / 2 ? positionX : myCanvas.getWidth() / 2);
 	        }
-	        if (activeObject.get('top') + (activeObject.get('height') * activeObject.get('scaleY') / 2) > myCanvas.getHeight())
+	        if (activeObject.get('top') + (activeObject.get('height')/ 2) > myCanvas.getHeight())
 	        {
-	            var positionY = myCanvas.getHeight() - (activeObject.get('height') * activeObject.get('scaleY') / 2);
+	            var positionY = myCanvas.getHeight() - (activeObject.get('height')/ 2);
 	            activeObject.set('top', positionY > myCanvas.getHeight() / 2 ? positionY : myCanvas.getHeight() / 2);
 	        }
 
 	        //below just prevention for object from getting width or height greater than canvas width and height
-	        if (activeObject.get('width') * activeObject.get('scaleX') > myCanvas.getWidth())
+	        if (activeObject.get('width')> myCanvas.getWidth())
 	        {
 	            activeObject.set('scaleX', myCanvas.getWidth() / activeObject.get('width'));
 	        }
-	        if (activeObject.get('height') * activeObject.get('scaleY') > myCanvas.getHeight())
+	        if (activeObject.get('height')> myCanvas.getHeight())
 	        {
 	            activeObject.set('scaleY', myCanvas.getHeight() / activeObject.get('height'));
 	        }
