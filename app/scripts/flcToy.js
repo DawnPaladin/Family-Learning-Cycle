@@ -766,14 +766,32 @@ function toyFactory() {
 		function preventLeaving(e) { // from https://groups.google.com/d/msg/fabricjs/DHvNmjJfaYM/KgtR3tfbfkMJ
 			var myCanvas = flcToy.view.canvas;
 			var activeObject = e.target;
-			var windowLowerEdge = jQuery(document).scrollTop() + jQuery(window).height();
-			var canvasUpperEdge = jQuery(myCanvas.lowerCanvasEl).offset().top;
+			var windowLowerEdge = { relativeTo: {} };
+			var canvasUpperEdge = { relativeTo: {} };
+			var windowUpperEdge = { relativeTo: {} };
+			var windowCenter = { relativeTo: {} };
+			var windowHeight = jQuery(window).height();
+			var tokenMaxHeight = 70;
+			windowLowerEdge.relativeTo.window = Math.round(jQuery(document).scrollTop() + jQuery(window).height());
+			canvasUpperEdge.relativeTo.window = Math.round(jQuery(myCanvas.lowerCanvasEl).offset().top);
+			windowLowerEdge.relativeTo.canvas = Math.round(windowLowerEdge.relativeTo.window - canvasUpperEdge.relativeTo.window);
+			canvasUpperEdge.relativeTo.canvas = Math.round(0);
+			windowUpperEdge.relativeTo.canvas = Math.round(windowLowerEdge.relativeTo.canvas - windowHeight);
+			windowCenter.relativeTo.canvas = Math.round((windowHeight / 2) + windowUpperEdge.relativeTo.canvas);
+			if (windowCenter.relativeTo.canvas < 0) { windowCenter.relativeTo.canvas = tokenMaxHeight * 3; } // window center is outside the canvas, so stick the token to the window top. Current page structure is such that this can't happen at the bottom of the sandbox canvas, only the top.
+			/*console.log(
+				"windowLowerEdge.relativeTo.window", windowLowerEdge.relativeTo.window, 
+				"canvasUpperEdge.relativeTo.window", canvasUpperEdge.relativeTo.window, 
+				"windowLowerEdge.relativeTo.canvas", windowLowerEdge.relativeTo.canvas,
+				"windowUpperEdge.relativeTo.canvas", windowUpperEdge.relativeTo.canvas,
+				"windowCenter.relativeTo.canvas", windowCenter.relativeTo.canvas
+			);*/
 
 			if ((activeObject.get('left') - (activeObject.get('width') / 2) < 0)) {
 				activeObject.set('left', activeObject.get('width') / 2); 
 			}
 			if ((activeObject.get('top') - (activeObject.get('height')) < 0)) { // off top, or out of window
-				activeObject.set('top', windowLowerEdge - canvasUpperEdge);
+				activeObject.set('top', windowCenter.relativeTo.canvas);
 			}
 			if (activeObject.get('left') + (activeObject.get('width') / 2) > myCanvas.getWidth()) {
 				var positionX = myCanvas.getWidth() - (activeObject.get('width'))  / 2;
@@ -785,13 +803,11 @@ function toyFactory() {
 				activeObject.set('top', positionY > myCanvas.getHeight() / 2 ? positionY : myCanvas.getHeight() / 2);
 			}
 
-			//below just prevention for object from getting width or height greater than canvas width and height
-			if (activeObject.get('width')> myCanvas.getWidth())
-			{
+			// below just prevention for object from getting width or height greater than canvas width and height
+			if (activeObject.get('width')> myCanvas.getWidth()) {
 				activeObject.set('scaleX', myCanvas.getWidth() / activeObject.get('width'));
 			}
-			if (activeObject.get('height')> myCanvas.getHeight())
-			{
+			if (activeObject.get('height')> myCanvas.getHeight()) {
 				activeObject.set('scaleY', myCanvas.getHeight() / activeObject.get('height'));
 			}
 		}
