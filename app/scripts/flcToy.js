@@ -765,37 +765,37 @@ function toyFactory() {
 
 		function preventLeaving(e) { // from https://groups.google.com/d/msg/fabricjs/DHvNmjJfaYM/KgtR3tfbfkMJ
 			var myCanvas = flcToy.view.canvas;
-	        var activeObject = e.target;
-	        var windowLowerEdge = jQuery(document).scrollTop() + jQuery(window).height();
-	        var canvasUpperEdge = jQuery(myCanvas.lowerCanvasEl).offset().top;
+			var activeObject = e.target;
+			var windowLowerEdge = jQuery(document).scrollTop() + jQuery(window).height();
+			var canvasUpperEdge = jQuery(myCanvas.lowerCanvasEl).offset().top;
 
-	        if ((activeObject.get('left') - (activeObject.get('width') / 2) < 0)) {
-	            activeObject.set('left', activeObject.get('width') / 2); 
-	        }
-	        if ((activeObject.get('top') - (activeObject.get('height') / 2) < 0)) { // off top
-	            activeObject.set('top', activeObject.get('height') / 2);
-	        }
-	        if (activeObject.get('left') + (activeObject.get('width') / 2) > myCanvas.getWidth()) {
-	            var positionX = myCanvas.getWidth() - (activeObject.get('width'))  / 2;
-	            activeObject.set('left', positionX > myCanvas.getWidth() / 2 ? positionX : myCanvas.getWidth() / 2);
-	        }
-	        if (activeObject.get('top') > myCanvas.getHeight()) // off bottom of canvas
-	        {
-	            var positionY = myCanvas.getHeight() - (activeObject.get('height')/ 2);
-	            activeObject.set('top', positionY > myCanvas.getHeight() / 2 ? positionY : myCanvas.getHeight() / 2);
-	        }
+			if ((activeObject.get('left') - (activeObject.get('width') / 2) < 0)) {
+				activeObject.set('left', activeObject.get('width') / 2); 
+			}
+			if ((activeObject.get('top') - (activeObject.get('height') / 2) < 0)) { // off top
+				activeObject.set('top', activeObject.get('height') / 2);
+			}
+			if (activeObject.get('left') + (activeObject.get('width') / 2) > myCanvas.getWidth()) {
+				var positionX = myCanvas.getWidth() - (activeObject.get('width'))  / 2;
+				activeObject.set('left', positionX > myCanvas.getWidth() / 2 ? positionX : myCanvas.getWidth() / 2);
+			}
+			if (activeObject.get('top') > myCanvas.getHeight()) // off bottom of canvas
+			{
+				var positionY = myCanvas.getHeight() - (activeObject.get('height')/ 2);
+				activeObject.set('top', positionY > myCanvas.getHeight() / 2 ? positionY : myCanvas.getHeight() / 2);
+			}
 
-	        //below just prevention for object from getting width or height greater than canvas width and height
-	        if (activeObject.get('width')> myCanvas.getWidth())
-	        {
-	            activeObject.set('scaleX', myCanvas.getWidth() / activeObject.get('width'));
-	        }
-	        if (activeObject.get('height')> myCanvas.getHeight())
-	        {
-	            activeObject.set('scaleY', myCanvas.getHeight() / activeObject.get('height'));
-	        }
-	    }
-	    flcToy.view.canvas.observe('object:moving', preventLeaving);
+			//below just prevention for object from getting width or height greater than canvas width and height
+			if (activeObject.get('width')> myCanvas.getWidth())
+			{
+				activeObject.set('scaleX', myCanvas.getWidth() / activeObject.get('width'));
+			}
+			if (activeObject.get('height')> myCanvas.getHeight())
+			{
+				activeObject.set('scaleY', myCanvas.getHeight() / activeObject.get('height'));
+			}
+		}
+		flcToy.view.canvas.observe('object:moving', preventLeaving);
 	}; // end view setup function
 
 	// STORY
@@ -1215,49 +1215,49 @@ function toyFactory() {
 		return foundFLCPlatform;
 	};
 	function clone(obj) { // from http://stackoverflow.com/a/728694/1805453
-	    var copy;
+		var copy;
 
-	    // Handle the 3 simple types, and null or undefined
-	    if (null === obj || "object" !== typeof obj) {
-	    	return obj;
-	    }
+		// Handle the 3 simple types, and null or undefined
+		if (null === obj || "object" !== typeof obj) {
+			return obj;
+		}
 
-	    // Handle Date
-	    if (obj instanceof Date) {
-	        copy = new Date();
-	        copy.setTime(obj.getTime());
-	        return copy;
-	    }
+		// Handle Date
+		if (obj instanceof Date) {
+			copy = new Date();
+			copy.setTime(obj.getTime());
+			return copy;
+		}
 
-	    // Handle Array
-	    if (obj instanceof Array) {
-	        copy = [];
-	        for (var i = 0, len = obj.length; i < len; i++) {
-	            copy[i] = clone(obj[i]);
-	        }
-	        return copy;
-	    }
+		// Handle Array
+		if (obj instanceof Array) {
+			copy = [];
+			for (var i = 0, len = obj.length; i < len; i++) {
+				copy[i] = clone(obj[i]);
+			}
+			return copy;
+		}
 
-	    // Handle Object
-	    if (obj instanceof Object) {
-	        copy = {};
-	        for (var attr in obj) {
-	            if (obj.hasOwnProperty(attr)) {
-	            	if (attr === "location") {
-	            		var locationName = obj.location.name;
-	            		copy.location = flcToy.model.Locations[locationName];
-	            	} else if (attr === "canvasGroup" || attr === "imageObject") {
-	            		// don't copy these recursively
-	            		copy[attr] = obj[attr];
-	            	} else {
-	            		copy[attr] = clone(obj[attr]);
-	            	}
-	            }
-	        }
-	        return copy;
-	    }
+		// Handle Object
+		if (obj instanceof Object) {
+			copy = {};
+			for (var attr in obj) {
+				if (obj.hasOwnProperty(attr)) {
+					if (attr === "location") {
+						var locationName = obj.location.name;
+						copy.location = flcToy.model.Locations[locationName];
+					} else if (attr === "canvasGroup" || attr === "imageObject") {
+						// don't copy these recursively
+						copy[attr] = obj[attr];
+					} else {
+						copy[attr] = clone(obj[attr]);
+					}
+				}
+			}
+			return copy;
+		}
 
-	    throw new Error("Unable to copy obj! Its type isn't supported.");
+		throw new Error("Unable to copy obj! Its type isn't supported.");
 	}
 
 	/* === movement === */
@@ -1564,8 +1564,8 @@ function toyFactory() {
 			flcToy.controller.refreshADV();
 			flcToy.controller.refreshCycleYear();
 
-	 		flcToy.model.tokenRegistry.next = tokenFutureHistory;
-	 		flcToy.model.platformRegistry.next = platformFutureHistory;
+			flcToy.model.tokenRegistry.next = tokenFutureHistory;
+			flcToy.model.platformRegistry.next = platformFutureHistory;
 		} catch (error) {
 			console.warn("Cannot restore board state from history.", error);
 		}
