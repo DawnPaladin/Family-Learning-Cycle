@@ -178,6 +178,15 @@ function toyFactory() {
 		}
 		return gradeObj;
 	};
+	flcToy.model.checkForFLCMultiOccupancy = function() {
+		var platformsWithTokens = [];
+		flcToy.controller.forEachToken(function(tokenIndex, tokenData){
+			if (tokenData.location && tokenData.location.section === "Investigate" && platformsWithTokens.indexOf(tokenData.location.name) === -1) { // if token has a location not on the list
+				platformsWithTokens.push(tokenData.location.name);
+			}
+		});
+		return platformsWithTokens.length > 1;
+	};
 
 	// VIEW
 
@@ -389,13 +398,13 @@ function toyFactory() {
 			var platform = flcToy.controller.lookupPlatformByURL(image._element.src);
 
 			image.dock = function(token) {
-				//console.log("Docking " + token + " into " + image);
 				token.top = image.getCenterPoint().y;
 				platform.residents.add(token.index);
 				flcToy.model.tokenRegistry[token.index].location = platform.location;
 				flcToy.view.distributeCrowd(image, platform.residents.list());
 				token.setCoords();
 				flcToy.controller.refreshADV();
+				flcToy.controller.updateFLCMultiOccupacy();
 			};
 			platform.imageObject = image;
 			deferred.resolve("Platform is all set up");
@@ -1348,6 +1357,12 @@ function toyFactory() {
 			}); // jshint ignore:line
 			flcToy.controller.walkTokensToPlatform(roster, flcToy.model.platformRegistry[platformIndex], false, true);
 		}
+	};
+	flcToy.controller.updateFLCMultiOccupacy = function() {
+		if (flcToy.model.checkForFLCMultiOccupancy()) {
+			window.alert("The idea of the Family Learning Cycle is that all children in the Investigate section are studying the same material. Please move all tokens in the Investigate section to a single location.");
+		}
+		console.log("Checking FLC multi-occupancy");
 	};
 
 	flcToy.controller.tokenDraggingHandler = function(options) {
