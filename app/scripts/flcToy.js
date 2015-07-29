@@ -424,6 +424,13 @@ function toyFactory() {
 				lockMovementY: true,
 				name: "cycle-btn",
 			});
+		} else { // not manual
+			flcToy.view.showOccupancyError = function() {
+				console.error("Story-based FLC toys shouldn't have occupancy errors.");
+			};
+			flcToy.view.hideOccupancyError = function() {
+				// do nothing
+			};
 		}
 
 		flcToy.view.setupPlatform = function(image, deferred) {
@@ -632,6 +639,7 @@ function toyFactory() {
 					flcToy.controller.orphan(tokenIndex);
 					foundADock = true;
 				}
+				flcToy.controller.updateFLCMultiOccupacy();
 			}
 		};
 
@@ -1393,7 +1401,9 @@ function toyFactory() {
 	};
 	flcToy.controller.updateFLCMultiOccupacy = function() {
 		if (flcToy.model.checkForFLCMultiOccupancy()) {
-			window.alert("The idea of the Family Learning Cycle is that all children in the Investigate section are studying the same material. Please move all tokens in the Investigate section to a single location.");
+			flcToy.view.showOccupancyError();
+		} else {
+			flcToy.view.hideOccupancyError();
 		}
 	};
 
