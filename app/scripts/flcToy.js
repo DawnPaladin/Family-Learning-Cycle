@@ -1413,6 +1413,7 @@ function toyFactory() {
 
 	flcToy.controller.tokenDraggingHandler = function(options) {
 		var draggedToken = options.target;
+		if (typeof draggedToken.index === "undefined") { return false; } // tried to drag a non-token
 		var orphanage = flcToy.view.orphanage;
 		draggedToken.setCoords();
 		if (draggedToken.itemInGroupIntersectsWithObject(orphanage)) {
