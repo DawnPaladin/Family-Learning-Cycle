@@ -53,9 +53,6 @@ function toyFactory() {
 			} else {
 				residentsList.push(tokenIndex);
 			}
-			/*if (platformName === "Preschool") {
-				console.log("Adding", tokenIndex, "to", platformName, "registry, which now reads:", residentsList);
-			}*/
 		};
 		this.residents.find = function(tokenIndex) {
 			for (var i = 0; i < residentsList.length; i++) {
@@ -66,13 +63,9 @@ function toyFactory() {
 			return -1;
 		};
 		this.residents.remove = function(tokenIndex) {
-			//console.log("Removing", tokenIndex, "from", platformName, "registry, called by", arguments.callee.caller.toString());
 			var arrayIndex = This.residents.find(tokenIndex);
 			if (arrayIndex > -1) {
 				residentsList.splice(arrayIndex, 1);
-				/*if (platformName === "Preschool") {
-					console.log("Removing", tokenIndex, "from", platformName, "registry, which now reads:", residentsList);
-				}*/
 			}
 		};
 		this.residents.erase = function() {
@@ -1114,7 +1107,6 @@ function toyFactory() {
 		var color = jQuery('input[name = "' + options.colorBoxes + '"]:checked').val();
 		var tokenIndex = flcToy.controller.newToken(name, grade, height, color);
 		flcToy.controller.tokenPreview.tokenIndex = tokenIndex;
-		console.log("Created preview token", tokenIndex);
 	};
 	flcToy.controller.tokenPreview.update = function(tokenIndex, options) {
 		var tokenData = flcToy.model.tokenRegistry[tokenIndex];
@@ -1165,7 +1157,6 @@ function toyFactory() {
 	}; //newToken('Twilight Sparkle', '1', 50, '#662D8A');
 	flcToy.controller.orphan = function(tokenIndex) {
 		console.assert((typeof tokenIndex === "string"), "This is not a tokenIndex:", tokenIndex);
-		console.log('Removing ' + tokenIndex);
 		flcToy.view.eraseTokenImage(flcToy.model.tokenRegistry[tokenIndex].canvasGroup);
 		flcToy.model.tokenRegistry[tokenIndex] = { orphaned: true };
 		flcToy.view.orphanage.setSrc('images/trashcan-plain.png', function(){flcToy.view.canvas.renderAll();});
@@ -1359,7 +1350,6 @@ function toyFactory() {
 	};
 	flcToy.controller.walkToken = function(tokenData, coords) {
 		console.assert((typeof tokenData === "object" && typeof tokenData.name === "string"), "This is not a tokenData:", tokenData);
-		//console.log('Walk ', tokenData, ' to ', coords);
 		tokenData.canvasGroup.animate(coords, {
 			duration: 750,
 			easing: fabric.util.ease.easeInOutCubic,
@@ -1385,7 +1375,6 @@ function toyFactory() {
 	flcToy.controller.assignTokenToPlatform = function(tokenData, platformData) {
 		console.assert((typeof tokenData === "object" && typeof tokenData.name === "string"), "This is not a tokenData:", tokenData);
 		console.assert((typeof platformData === "object" && typeof platformData.name === "string"), "This is not a platformData:", platformData);
-		//console.log(tokenData, platformData);
 		// update platform information about tokens
 		flcToy.controller.deregisterTokenFromAllPlatforms(tokenData, false);
 		platformData.residents.add(tokenData.canvasGroup.index);
