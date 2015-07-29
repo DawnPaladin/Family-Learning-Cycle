@@ -188,6 +188,7 @@ function toyFactory() {
 				cycleYear = tokenData.location;
 			}
 		});
+		if (!cycleYear) { cycleYear = flcToy.model.Locations.ECC; }
 		return cycleYear;
 	};
 
@@ -640,6 +641,7 @@ function toyFactory() {
 				}
 				draggedToken.setCoords();
 				flcToy.controller.refreshADV();
+				flcToy.controller.refreshCycleYear();
 				if (!foundADock && draggedToken.intersectsWithObject(flcToy.view.orphanage)) {
 					flcToy.controller.orphan(tokenIndex);
 					foundADock = true;
@@ -786,7 +788,7 @@ function toyFactory() {
 				);
 			}
 
-			if (platformIndex === "none") {
+			if (!platformIndex || platformIndex === "none") {
 				return;
 			}
 			var platformData = flcToy.model.platformRegistry[platformIndex];
@@ -1544,7 +1546,8 @@ function toyFactory() {
 		}
 	};
 	flcToy.controller.refreshCycleYear = function() {
-		if (flcToy.controller.tokensInFLC()) {
+		if (flcToy.controller.tokensInFLC() === true && flcToy.model.checkForFLCMultiOccupancy() === false) {
+			flcToy.model.cycleYear = flcToy.model.calculateCycleYear();
 			flcToy.view.setCycleYear(flcToy.model.cycleYear.platformIndex);
 		} else {
 			flcToy.view.setCycleYear("none");
