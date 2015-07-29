@@ -361,6 +361,19 @@ function toyFactory() {
 					textAlign: "left",
 					selectable: false,
 				});
+			fabric.Image.fromURL(
+				imgDir+"/hazard-triangle.png", // path to image
+				function(image) { // callback after loading image
+					flcToy.view.canvas.add(image);
+					flcToy.view.hazardTriangle = image;
+				}, { // options to pass to new image object
+					left: 460,
+					top: foyerHeight + DiscoverHeight + 415,
+					selectable: false,
+					name: 'hazard-triangle',
+					opacity: 0
+				}
+			);
 			var multiOccupancyErrorRect = new fabric.Rect({
 				left: 265,
 				top: foyerHeight + DiscoverHeight + 515,
@@ -386,11 +399,13 @@ function toyFactory() {
 			flcToy.view.showOccupancyError = function() {
 				multiOccupancyErrorRect.opacity = 1;
 				multiOccupancyErrorText.opacity = 1;
+				flcToy.view.hazardTriangle.opacity = 1;
 				flcToy.view.canvas.renderAll();
 			};
 			flcToy.view.hideOccupancyError = function() {
 				multiOccupancyErrorRect.opacity = 0;
 				multiOccupancyErrorText.opacity = 0;
+				flcToy.view.hazardTriangle.opacity = 0;
 				flcToy.view.canvas.renderAll();
 			};
 
