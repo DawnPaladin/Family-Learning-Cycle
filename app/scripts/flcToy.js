@@ -387,11 +387,13 @@ function toyFactory() {
 			flcToy.view.showOccupancyError = function() {
 				multiOccupancyErrorRect.opacity = 1;
 				multiOccupancyErrorText.opacity = 1;
+				flcToy.view.cycleBtn.setOptions({hoverCursor: "default"});
 				flcToy.view.cycleBtn.setSrc(imgDir+'/cycle-err-btn.png', function(){ flcToy.view.canvas.renderAll(); });
 			};
 			flcToy.view.hideOccupancyError = function() {
 				multiOccupancyErrorRect.opacity = 0;
 				multiOccupancyErrorText.opacity = 0;
+				flcToy.view.cycleBtn.setOptions({hoverCursor: "pointer"});
 				flcToy.view.cycleBtn.setSrc(imgDir+'/cycle-btn.png', function(){ flcToy.view.canvas.renderAll(); });
 			};
 
@@ -646,7 +648,9 @@ function toyFactory() {
 		flcToy.view.canvas.on('object:modified', flcToy.view.dropToken);
 		flcToy.view.canvas.on('mouse:down', function(options){
 			if (typeof options.target === 'object' && options.target.name === 'cycle-btn') {
-				flcToy.controller.advanceCycle();
+				if (flcToy.model.checkForFLCMultiOccupancy() === false) {
+					flcToy.controller.advanceCycle();
+				}
 			}
 			if (typeof options.target === 'object' && options.target.name === 'auto-place-btn') {
 				var autoPlaceRoster = flcToy.model.platformRegistry.staging.residents.list();
