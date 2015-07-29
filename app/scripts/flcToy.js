@@ -187,6 +187,16 @@ function toyFactory() {
 		});
 		return platformsWithTokens.length > 1;
 	};
+	flcToy.model.calculateCycleYear = function() {
+		// Assumes that only one of the Investigate platforms has tokens on it. This should only be run after flcToy.model.checkForFLCMultiOccupancy().
+		var cycleYear = null;
+		flcToy.controller.forEachToken(function(tokenIndex, tokenData){
+			if (tokenData.location && tokenData.location.section === "Investigate") { // if token has a location not on the list
+				cycleYear = tokenData.location;
+			}
+		});
+		return cycleYear;
+	};
 
 	// VIEW
 
@@ -1581,6 +1591,7 @@ function toyFactory() {
 			}
 		});
 
+		flcToy.model.cycleYear = flcToy.model.calculateCycleYear();
 		flcToy.controller.advanceCycleYear();
 		flcToy.controller.refreshADV();
 		flcToy.model.cycleYearHistory.push(flcToy.model.cycleYear.name);
