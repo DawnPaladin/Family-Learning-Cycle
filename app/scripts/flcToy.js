@@ -1412,6 +1412,13 @@ function toyFactory() {
 		}
 	};
 
+	flcToy.controller.blankControls = function() {
+		document.getElementById('nameField').value = "";
+		document.getElementById('gradeSelect').value = "0";
+		document.getElementById('heightSlider').value = 45;
+		document.querySelector('input[name = "chooseColor"]:checked').checked = false;
+		document.querySelector('input[value = "#e77c09"]').checked = true;
+	};
 	flcToy.controller.tokenDraggingHandler = function(options) {
 		var draggedToken = options.target;
 		if (typeof draggedToken.index === "undefined") { return false; } // tried to drag a non-token
@@ -1422,6 +1429,7 @@ function toyFactory() {
 		} else {
 			orphanage.setSrc('images/trashcan-plain.png');
 		}
+		flcToy.controller.blankControls();
 	};
 	flcToy.controller.tokenDraggedHandler = function(options) {
 		var draggedToken = options.target;
