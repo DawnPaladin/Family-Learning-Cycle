@@ -883,7 +883,7 @@ function toyFactory() {
 					tokens: [
 						{ //format: string name, string gradeIndex, int height (20-70), string color
 							name: "Robert",
-							init: ["Robert", "0", 50, "#dd5b5a", true],
+							init: ["Robert", "0", 50, "#e77c09", true],
 							platform: "hospital"
 						}
 					]
@@ -910,11 +910,11 @@ function toyFactory() {
 					tokens: [
 						{ //format: string name, string gradeIndex, int height (20-70), string color
 							name: "Daniel",
-							init: ["Daniel", "0", 55, "#ffa544", true],
+							init: ["Daniel", "0", 55, "#e77c09", true],
 							platform: "hospital"
 						}, {
 							name: "Molly",
-							init: ["Molly", "4", 70, "#f9b5d1", true],
+							init: ["Molly", "4", 70, "#e94d8e", true],
 							platform: "platform4"
 						}
 					],
@@ -939,7 +939,7 @@ function toyFactory() {
 					tokens: [
 						{
 							name: "Alicia",
-							init: ["Alicia", "0", 35, "#b66de2", true],
+							init: ["Alicia", "0", 35, "#8145a6", true],
 							platform: "hospital"
 						}
 					],
