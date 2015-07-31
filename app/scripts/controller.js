@@ -84,7 +84,6 @@ function flcControllerFactory(model, view, story) {
 		controller.refreshADV();
 		controller.updateFLCMultiOccupacy();
 	};
-	// TODO: controller.dock() used to be view.setupPlatform()\image.dock(). Needs to get hooked up.
 	controller.orphan = function(tokenIndex) {
 		console.assert((typeof tokenIndex === "string"), "This is not a tokenIndex:", tokenIndex);
 		view.eraseTokenImage(model.tokenRegistry[tokenIndex].canvasGroup);
@@ -121,14 +120,16 @@ function flcControllerFactory(model, view, story) {
 	view.dropToken = function(options){
 		var draggedToken = options.target;
 		var tokenIndex = draggedToken.index;
+		var tokenData = model.tokenRegistry[tokenIndex];
 		if (tokenIndex.indexOf("token") > -1) { // if this is a token
 			var foundADock = false; // more predictable behavior if a token overlaps two platforms
 			model.tokenRegistry[tokenIndex].location = model.Locations.adrift;
 			for (var i = 0; i < model.platformCount; i++) {
 				var platformIndex = "platform" + i;
+				var platformData = model.platformRegistry[platformIndex];
 				model.platformRegistry[platformIndex].residents.remove(tokenIndex); // remove token from residence in each platform
 				if (!foundADock && draggedToken.itemInGroupIntersectsWithObject(model.platformRegistry[platformIndex].imageObject)) { // adapted from http://fabricjs.com/intersection/
-					model.platformRegistry[platformIndex].imageObject.dock(draggedToken);
+					controller.dock(tokenData, platformData);
 					foundADock = true;
 				} else {
 					view.distributeCrowd(model.platformRegistry[platformIndex].imageObject, model.platformRegistry[platformIndex].residents.list()); // arrange tokens on the platform the token left
