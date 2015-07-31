@@ -52,15 +52,15 @@ function flcControllerFactory(model, view, story) {
 		for (var i = 0; i < roster.length; i++) { // for each token in roster
 			var tokenData = model.tokenRegistry[roster[i]];
 			var gradeIndex = tokenData.grade.index;
-			var platformData = controller.lookupPlatformByGradeIndex(gradeIndex);
-			controller.assignTokenToPlatform(tokenData, platformData);
+			var platformData = model.lookupPlatformByGradeIndex(gradeIndex);
+			model.assignTokenToPlatform(tokenData, platformData);
 		}
 		controller.refreshADV(); // check ADV and do it again
 		for (var j = 0; j < roster.length; j++) {
 			var tokenData = model.tokenRegistry[roster[j]]; // jshint ignore:line
 			var gradeIndex = tokenData.grade.index; // jshint ignore:line
-			var platformData = controller.lookupPlatformByGradeIndex(gradeIndex); // jshint ignore:line
-			controller.assignTokenToPlatform(tokenData, platformData);
+			var platformData = model.lookupPlatformByGradeIndex(gradeIndex); // jshint ignore:line
+			model.assignTokenToPlatform(tokenData, platformData);
 		}
 		controller.updateAllTokenLocations();
 	};
@@ -74,11 +74,10 @@ function flcControllerFactory(model, view, story) {
 		return tokenIndex;
 	};
 	controller.dock = function(tokenData, platformData) {
-		// down for repairs
 		var tokenImage = tokenData.canvasGroup;
 		var platformImage = platformData.imageObject;
 		tokenImage.top = platformImage.getCenterPoint().y;
-		controller.assignTokenToPlatform(tokenData, platformData);
+		model.assignTokenToPlatform(tokenData, platformData);
 		view.distributeCrowd(platformImage, platformData.residents.list());
 		tokenImage.setCoords();
 		controller.refreshADV();
@@ -117,7 +116,7 @@ function flcControllerFactory(model, view, story) {
 		return deferred.promise();
 	};
 
-	view.dropToken = function(options){
+	controller.dropToken = function(options){
 		var draggedToken = options.target;
 		var tokenIndex = draggedToken.index;
 		var tokenData = model.tokenRegistry[tokenIndex];
@@ -145,8 +144,7 @@ function flcControllerFactory(model, view, story) {
 			controller.updateFLCMultiOccupacy();
 		}
 	};
-
-	view.canvas.on('object:modified', view.dropToken);
+	view.canvas.on('object:modified', controller.dropToken);
 	view.canvas.on('mouse:down', function(options){
 		if (typeof options.target === 'object' && options.target.name === 'cycle-btn') {
 			if (model.checkForFLCMultiOccupancy() === false) {
@@ -160,18 +158,6 @@ function flcControllerFactory(model, view, story) {
 	});
 
 	/* === utility === */
-	controller.lookupCanvasObjectByURL = function(url) {
-		for (var i = 0; i < view.canvas._objects.length; i++) {
-			try {
-				if (view.canvas._objects[i]._element.src.indexOf(url) > 0) {
-					return view.canvas._objects[i];
-				}
-			}
-			catch (error) {
-				//console.error(error);
-			}
-		}
-	};
 	controller.lookupPlatformByURL = function(url) {
 		for (var i = 0; i < model.platformCount; i++) {
 			var platformIndex = 'platform' + i;
@@ -183,64 +169,7 @@ function flcControllerFactory(model, view, story) {
 			}
 		}
 	};
-	controller.lookupPlatformByGradeIndex = function(gradeIndex) {
-		gradeIndex = Number(gradeIndex);
-		var platformIndex = "platform";
-		if (gradeIndex < 4) { // Discover
-			platformIndex += gradeIndex; // place according to grade
-		} else if (gradeIndex === 4) {
-			if (model.platformRegistry.ADV.disabled) {
-				platformIndex = model.cycleYear.platformIndex; // place in FLC
-			} else {
-				platformIndex += gradeIndex; // place according to grade
-			}
-		} else if (gradeIndex > 4 && gradeIndex < 10){ // Investigate
-			platformIndex = model.cycleYear.platformIndex; // place in FLC
-		} else if (gradeIndex >= 10) { // Declare
-			platformIndex += (gradeIndex - 1); // as of ECC, gradeIndex and tokenIndex no longer match up, because if you're an only child you do ECC twice
-		} else {
-			console.error("Invalid gradeIndex:", gradeIndex);
-		}
-		var platformData = model.platformRegistry[platformIndex];
-		return platformData;
-	};
 
-	controller.musterTokens = function(tokenRoster) { // convert an array of token names to an array of tokens
-		console.assert(Array.isArray(tokenRoster), "This is not a tokenRoster:", tokenRoster);
-		var formation = [];
-		for (var i = 0; i < tokenRoster.length; i++) {
-			formation.push(model.tokenRegistry[tokenRoster[i]]);
-		}
-		return formation;
-	};
-
-	controller.deregisterTokenFromAllPlatforms = function(tokenData, redistribute) {
-		console.assert((typeof tokenData === "object" && typeof tokenData.name === "string"), "This is not a tokenData:", tokenData);
-		for (var i = 0; i < model.platformCount; i++) { // remove token from all previous platforms
-			var platformIndex = 'platform' + i;
-			model.platformRegistry[platformIndex].residents.remove(tokenData.canvasGroup.index); // remove token from residence in each platform
-			if (redistribute) {
-				view.distributeCrowd(model.platformRegistry[platformIndex].imageObject, model.platformRegistry[platformIndex].residents.list());
-			}
-		}
-	};
-
-	controller.clearResidentsFromPlatforms = function() {
-		for (var i = 0; i < model.platformCount; i++) {
-			var platformIndex = 'platform' + i;
-			model.platformRegistry[platformIndex].residents.erase();
-		}
-	};
-
-	controller.tokensInFLC = function() {
-		var foundFLCPlatform = false;
-		model.forEachToken(function(tokenIndex, tokenData){
-			if (tokenData.location && tokenData.location.section === "Investigate") {
-				foundFLCPlatform = true;
-			}
-		});
-		return foundFLCPlatform;
-	};
 	function clone(obj) { // from http://stackoverflow.com/a/728694/1805453
 		var copy;
 
@@ -284,7 +213,7 @@ function flcControllerFactory(model, view, story) {
 			return copy;
 		}
 
-		throw new Error("Unable to copy obj! Its type isn't supported.");
+		throw new Error("Unable to copy object! Its type isn't supported.");
 	}
 
 	/* === movement === */
@@ -304,46 +233,21 @@ function flcControllerFactory(model, view, story) {
 			}
 		}
 	};
-	controller.walkToken = function(tokenData, coords) {
-		console.assert((typeof tokenData === "object" && typeof tokenData.name === "string"), "This is not a tokenData:", tokenData);
-		tokenData.canvasGroup.animate(coords, {
-			duration: 750,
-			easing: fabric.util.ease.easeInOutCubic,
-			onChange: view.canvas.renderAll.bind(view.canvas),
-		});
-	};
 	controller.walkTokensToPlatform = function(tokenRoster, platformData, incrementGrade, updateRosters) {
 		console.assert(Array.isArray(tokenRoster), "This is not a tokenRoster:", tokenRoster);
 		console.assert((typeof platformData === "object" && typeof platformData.imageObject === "object" && typeof platformData.name === "string"), "This is not a platformData:", platformData);
 		var formation = view.crowdDistribution(platformData.imageObject, tokenRoster.length);
-		var tokenFormation = controller.musterTokens(tokenRoster);
+		var tokenFormation = model.musterTokens(tokenRoster);
 		for (var i = 0; i < tokenRoster.length; i++) {
-			controller.walkToken(tokenFormation[i], formation[i]);
+			view.walkToken(tokenFormation[i], formation[i]);
 			if (incrementGrade) {
 				controller.incrementTokenGrade(tokenFormation[i].canvasGroup);
 			}
 			if (updateRosters) {
-				controller.assignTokenToPlatform(tokenFormation[i], platformData);
+				model.assignTokenToPlatform(tokenFormation[i], platformData);
 			}
 			tokenFormation[i].canvasGroup.setCoords();
 		}
-	};
-	controller.assignTokenToPlatform = function(tokenData, platformData) {
-		console.assert((typeof tokenData === "object" && typeof tokenData.name === "string"), "This is not a tokenData:", tokenData);
-		console.assert((typeof platformData === "object" && typeof platformData.name === "string"), "This is not a platformData:", platformData);
-		// update platform information about tokens
-		controller.deregisterTokenFromAllPlatforms(tokenData, false);
-		platformData.residents.add(tokenData.canvasGroup.index);
-		// update token information about platforms
-		tokenData.location = platformData.location;
-	};
-	controller.verifyTokenData = function(log) {
-		model.forEachToken(function(tokenIndex, tokenData) {
-			var platformIndex = tokenData.location.platformIndex;
-			var platformResidents = model.platformRegistry[platformIndex].residents.list();
-			if (log) { console.log(tokenIndex, "platform:", platformIndex, "; residents:", platformResidents); }
-			console.assert(platformResidents.indexOf(tokenIndex) > -1, platformIndex + " rejects " + tokenIndex + "'s claim of residence.");
-		});
 	};
 	controller.updateAllTokenLocations = function() {
 		for (var j = 0; j < model.platformCount; j++) {
@@ -386,7 +290,7 @@ function flcControllerFactory(model, view, story) {
 		controller.blankControls();
 	};
 	controller.tokenDraggedHandler = function(options) {
-		var draggedToken = options.target;
+		//var draggedToken = options.target;
 		controller.tokenPreview.tokenIndex = null;
 	};
 
@@ -429,20 +333,8 @@ function flcControllerFactory(model, view, story) {
 		view.canvas.renderAll();
 	};
 
-	controller.disablePlatform = function(platform) {
-		console.assert((typeof platform === "object" && typeof platform.imageObject === "object" && typeof platform.name === "string"), "This is not a platformData:", platform);
-		platform.disabled = true;
-		platform.imageObject.opacity = 0.5;
-		view.canvas.renderAll();
-	};
-	controller.enablePlatform = function(platform) {
-		console.assert((typeof platform === "object" && typeof platform.imageObject === "object" && typeof platform.name === "string"), "This is not a platformData:", platform);
-		platform.disabled = false;
-		platform.imageObject.opacity = 1;
-		view.canvas.renderAll();
-	};
 	controller.advanceCycleYear = function() {
-		if (controller.tokensInFLC()) {
+		if (model.tokensInFLC()) {
 			model.cycleYear = model.cycleYear.next;
 			view.setCycleYear(model.cycleYear.platformIndex);
 		} else {
@@ -451,7 +343,7 @@ function flcControllerFactory(model, view, story) {
 		}
 	};
 	controller.refreshCycleYear = function() {
-		if (controller.tokensInFLC() === true && model.checkForFLCMultiOccupancy() === false) {
+		if (model.tokensInFLC() === true && model.checkForFLCMultiOccupancy() === false) {
 			model.cycleYear = model.calculateCycleYear();
 			view.setCycleYear(model.cycleYear.platformIndex);
 		} else {
@@ -460,10 +352,10 @@ function flcControllerFactory(model, view, story) {
 	};
 	controller.refreshADV = function() {
 		// enable/disable ADV depending on whether the FLC is active
-		if (controller.tokensInFLC()) {
-			controller.disablePlatform(model.platformRegistry.platform4);
+		if (model.tokensInFLC()) {
+			view.disablePlatform(model.platformRegistry.platform4);
 		} else {
-			controller.enablePlatform(model.platformRegistry.platform4);
+			view.enablePlatform(model.platformRegistry.platform4);
 		}
 	};
 
@@ -498,35 +390,35 @@ function flcControllerFactory(model, view, story) {
 		model.forEachToken(function(tokenIndex, tokenData) {
 			var tokenLocation = model.tokenRegistry[tokenIndex].location;
 			if (tokenLocation.section === 'Discover') {
-				if ((tokenLocation.name === 'ADV') || (tokenLocation.name === 'LGS' && controller.tokensInFLC())) {
-					controller.assignTokenToPlatform(tokenData, cyclePlatformData);
+				if ((tokenLocation.name === 'ADV') || (tokenLocation.name === 'LGS' && model.tokensInFLC())) {
+					model.assignTokenToPlatform(tokenData, cyclePlatformData);
 				} else {
-					controller.assignTokenToPlatform(tokenData, model.platformRegistry[tokenLocation.next.name]);
+					model.assignTokenToPlatform(tokenData, model.platformRegistry[tokenLocation.next.name]);
 				}
 			}
 			if (tokenLocation.section === 'Investigate') {
-				controller.assignTokenToPlatform(tokenData, cyclePlatformData); // 9th graders have already been moved in advanceCycle()'s first forEachToken() call
+				model.assignTokenToPlatform(tokenData, cyclePlatformData); // 9th graders have already been moved in advanceCycle()'s first forEachToken() call
 			}
 			if (tokenLocation.section === 'Declare') {
 				if (model.tokenRegistry[tokenIndex].grade.index === 11) { // just-arrived 9th graders
 					// stay put, you've moved already
 				} else if (tokenLocation.name === 'US2') {
-					controller.assignTokenToPlatform(tokenData, model.platformRegistry.college);
+					model.assignTokenToPlatform(tokenData, model.platformRegistry.college);
 				} else {
-					controller.assignTokenToPlatform(tokenData, model.platformRegistry[tokenLocation.next.name]);
+					model.assignTokenToPlatform(tokenData, model.platformRegistry[tokenLocation.next.name]);
 				}
 			}
 		});
 
 		// special case handling: A token enters ADV when the FLC was just activated
-		if (controller.tokensInFLC() && model.platformRegistry.platform4.residents.length() > 0) {
+		if (model.tokensInFLC() && model.platformRegistry.platform4.residents.length() > 0) {
 			for (var l = 0; l < model.platformRegistry.platform4.residents.length(); l++) {
-				controller.assignTokenToPlatform(
+				model.assignTokenToPlatform(
 					model.tokenRegistry[model.platformRegistry.platform4.residents.list(l)], // tokenData
 					model.platformRegistry[model.cycleYear.platformIndex] // platformData
 				);
 			}
-			controller.disablePlatform(model.platformRegistry.platform4);
+			view.disablePlatform(model.platformRegistry.platform4);
 			view.setCycleYear(model.cycleYear.platformIndex);
 		}
 
@@ -599,7 +491,7 @@ function flcControllerFactory(model, view, story) {
 					var platformData = model.platformRegistry[currentToken.platform];
 					controller.moveTokenToPlatform(tokenData, platformData);
 					if (platformData.name === "hospital") { // animate tokens from Hospital to Preschool platform
-						controller.assignTokenToPlatform(tokenData, model.platformRegistry.Preschool);
+						model.assignTokenToPlatform(tokenData, model.platformRegistry.Preschool);
 						controller.forgeBirthCertificate(tokenIndex, tokenData);
 					}
 				}
@@ -632,7 +524,7 @@ function flcControllerFactory(model, view, story) {
 			story.box.trigger('HitLastPage.'+story.name);
 		}
 
-		controller.verifyTokenData();
+		model.verifyTokenData();
 	};
 	controller.turnPageBackward = function(){
 		var oldPage = story.pages[story.currentPage];
@@ -653,7 +545,7 @@ function flcControllerFactory(model, view, story) {
 			story.box.trigger('LeaveLastPage.'+story.name);
 		}
 		
-		controller.verifyTokenData();
+		model.verifyTokenData();
 	};
 
 	function christmasGhosts(tokenIndex) {

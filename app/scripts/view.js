@@ -415,6 +415,19 @@ function flcViewFactory(fabric, model, imgDir, canvasID, manual) {
 			view.canvas.remove(tokenImage);
 		};
 
+		view.disablePlatform = function(platform) {
+			console.assert((typeof platform === "object" && typeof platform.imageObject === "object" && typeof platform.name === "string"), "This is not a platformData:", platform);
+			platform.disabled = true;
+			platform.imageObject.opacity = 0.5;
+			view.canvas.renderAll();
+		};
+		view.enablePlatform = function(platform) {
+			console.assert((typeof platform === "object" && typeof platform.imageObject === "object" && typeof platform.name === "string"), "This is not a platformData:", platform);
+			platform.disabled = false;
+			platform.imageObject.opacity = 1;
+			view.canvas.renderAll();
+		};
+
 		view.ripple = function(x, y, color) {
 			// var fill = new fabric.Circle({
 			// 	top: y,
@@ -486,6 +499,26 @@ function flcViewFactory(fabric, model, imgDir, canvasID, manual) {
 				y: platformImage.oCoords.ml.y
 			};
 			return platformCenter;
+		};
+		view.lookupCanvasObjectByURL = function(url) { // presently unused, but possibly useful
+			for (var i = 0; i < view.canvas._objects.length; i++) {
+				try {
+					if (view.canvas._objects[i]._element.src.indexOf(url) > 0) {
+						return view.canvas._objects[i];
+					}
+				}
+				catch (error) {
+					console.error(error);
+				}
+			}
+		};
+		view.walkToken = function(tokenData, coords) {
+			console.assert((typeof tokenData === "object" && typeof tokenData.name === "string"), "This is not a tokenData:", tokenData);
+			tokenData.canvasGroup.animate(coords, {
+				duration: 750,
+				easing: fabric.util.ease.easeInOutCubic,
+				onChange: view.canvas.renderAll.bind(view.canvas),
+			});
 		};
 
 		view.bridgeOut = {
