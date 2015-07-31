@@ -8,9 +8,9 @@ function toyFactory() {
 	var flcToy = {};
 
 	flcToy.setup = function(options) {
-		flcToy.model = flcModelFactory();
-		flcToy.view = flcViewFactory(fabric, flcToy.model, imgDir, options.canvas, options.manual);
 		var manual = options.story === "manual";
+		flcToy.model = flcModelFactory();
+		flcToy.view = flcViewFactory(fabric, flcToy.model, imgDir, options.canvas, manual);
 		flcToy.view.setup(options.canvas, manual);
 		flcToy.story = flcStoryFactory(flcToy.model, flcToy.view);
 		flcToy.controller = flcControllerFactory(flcToy.model, flcToy.view, flcToy.story);
@@ -47,7 +47,7 @@ function toyFactory() {
 		}
 
 		jQuery.when.apply(jQuery, platformPromises).then(function(){ // when all promises in platformPromises are fulfilled (see http://stackoverflow.com/a/5627301/1805453)
-			if (options.story === "manual") {
+			if (manual) {
 				options.controls.find('input[type=radio]'         ).on('change', function() { flcToy.controller.tokenPreview.changeHandler(options); });
 				options.controls.find('input[type!=radio], select').on('input',  function() { flcToy.controller.tokenPreview.changeHandler(options); });
 			} else {
@@ -92,11 +92,9 @@ var manualOptions = {
 	colorBoxes: "chooseColor",
 };
 
-//jQuery(function(){
-	var toy1 = toyFactory();
-	toy1.setup(RobertOptions);
-	var toy2 = toyFactory();
-	toy2.setup(CarpenterOptions);
-	var toy3 = toyFactory();
-	toy3.setup(manualOptions);
-//});
+var toy1 = toyFactory();
+toy1.setup(RobertOptions);
+var toy2 = toyFactory();
+toy2.setup(CarpenterOptions);
+var toy3 = toyFactory();
+toy3.setup(manualOptions);
