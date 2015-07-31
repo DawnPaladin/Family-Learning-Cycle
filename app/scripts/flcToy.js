@@ -1595,30 +1595,28 @@ function toyFactory() {
 		flcToy.controller.advanceCycleYear();
 		flcToy.controller.refreshADV();
 		flcToy.model.cycleYearHistory.push(flcToy.model.cycleYear.name);
+		var cyclePlatformData = flcToy.model.platformRegistry[flcToy.model.cycleYear.name];
 
 		// determine changed token locations
 		flcToy.controller.forEachToken(function(tokenIndex, tokenData) {
 			var tokenLocation = flcToy.model.tokenRegistry[tokenIndex].location;
 			if (tokenLocation.section === 'Discover') {
 				if ((tokenLocation.name === 'ADV') || (tokenLocation.name === 'LGS' && flcToy.controller.tokensInFLC())) {
-					flcToy.model.tokenRegistry[tokenIndex].location = flcToy.model.cycleYear;
-				}
-				else {
-					//console.log(tokenRegistryCopy.token0.location.name);
-					flcToy.model.tokenRegistry[tokenIndex].location = tokenLocation.next;
-					//console.log(tokenRegistryCopy.token0.location.name);
+					flcToy.controller.assignTokenToPlatform(tokenData, cyclePlatformData);
+				} else {
+					flcToy.controller.assignTokenToPlatform(tokenData, flcToy.model.platformRegistry[tokenLocation.next.name]);
 				}
 			}
 			if (tokenLocation.section === 'Investigate') {
-				flcToy.model.tokenRegistry[tokenIndex].location = flcToy.model.cycleYear;
+				flcToy.controller.assignTokenToPlatform(tokenData, cyclePlatformData); // 9th graders have already been moved in advanceCycle()'s first forEachToken() call
 			}
 			if (tokenLocation.section === 'Declare') {
 				if (flcToy.model.tokenRegistry[tokenIndex].grade.index === 11) { // just-arrived 9th graders
 					// stay put, you've moved already
 				} else if (tokenLocation.name === 'US2') {
-					flcToy.model.tokenRegistry[tokenIndex].location = flcToy.model.Locations.college;
+					flcToy.controller.assignTokenToPlatform(tokenData, flcToy.model.platformRegistry.college);
 				} else {
-					flcToy.model.tokenRegistry[tokenIndex].location = tokenLocation.next;
+					flcToy.controller.assignTokenToPlatform(tokenData, flcToy.model.platformRegistry[tokenLocation.next.name]);
 				}
 			}
 		});
