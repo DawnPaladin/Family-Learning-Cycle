@@ -582,7 +582,7 @@ function flcViewFactory(fabric, model, imgDir, canvasID, manual) {
 				return;
 			}
 			var platformData = model.platformRegistry[platformIndex];
-			var platformCenter = view.lookupPlatformCenter(platformData);
+			var platformCenter = view.lookupPlatformCenter(platformData.imageObject);
 
 			fabric.Image.fromURL(
 				imgDir+'/active-platform.png', // path to image

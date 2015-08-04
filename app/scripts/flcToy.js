@@ -51,8 +51,8 @@ function toyFactory() {
 				options.controls.find('input[type=radio]'         ).on('change', function() { flcToy.controller.tokenPreview.changeHandler(options); });
 				options.controls.find('input[type!=radio], select').on('input',  function() { flcToy.controller.tokenPreview.changeHandler(options); });
 			} else {
-				options.nextBtn.click(flcToy.story.turnPageForward);
-				options.prevBtn.click(flcToy.story.turnPageBackward);
+				options.nextBtn.click(flcToy.controller.turnPageForward);
+				options.prevBtn.click(flcToy.controller.turnPageBackward);
 				flcToy.story.name = options.story;
 				flcToy.story.pages = flcToy.story.library[flcToy.story.name];
 				flcToy.story.box = options.textField;

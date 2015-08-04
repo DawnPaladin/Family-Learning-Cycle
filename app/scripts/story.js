@@ -70,7 +70,7 @@ function flcStoryFactory(model, view) {
 					],
 					triggerFunc: function() {
 						var adv = model.platformRegistry.ADV;
-						var platformCoords = view.lookupPlatformCenter(adv);
+						var platformCoords = view.lookupPlatformCenter(adv.imageObject);
 						view.bridgeOut.show(250);
 						window.setTimeout(function(){
 							view.flash(view.bridgeOut.image, 250, 2);
