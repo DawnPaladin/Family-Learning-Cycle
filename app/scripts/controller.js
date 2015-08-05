@@ -63,6 +63,7 @@ function flcControllerFactory(model, view, story) {
 			model.assignTokenToPlatform(tokenData, platformData);
 		}
 		controller.updateAllTokenLocations();
+		controller.refreshCycleYear();
 	};
 	controller.newToken = function (name, gradeIndex, height, color, lockMovement) {
 		var gradeObj = model.processGrade(gradeIndex);
@@ -392,6 +393,7 @@ function flcControllerFactory(model, view, story) {
 			if (tokenLocation.section === 'Discover') {
 				if ((tokenLocation.name === 'ADV') || (tokenLocation.name === 'LGS' && model.tokensInFLC())) {
 					model.assignTokenToPlatform(tokenData, cyclePlatformData);
+					controller.refreshCycleYear();
 				} else {
 					model.assignTokenToPlatform(tokenData, model.platformRegistry[tokenLocation.next.name]);
 				}
