@@ -562,19 +562,21 @@ function flcViewFactory(fabric, model, imgDir, canvasID, manual) {
 			}
 		};
 
+		view.cycleYear = [];
 		view.setCycleYear = function(platformIndex) {
 			console.assert((typeof platformIndex === "string"), "This is not a platformIndex:", platformIndex);
 			var fadeDuration = 250;
-			if (view.cycleYear) {
-				var oldCycleYear = view.cycleYear;
-				oldCycleYear.animate(
+
+			while(view.cycleYear.length) {
+				var currentImage = view.cycleYear.pop();
+				currentImage.animate(
 					{ opacity: 0 },
 					{ 
 						duration: fadeDuration,
 						easing: fabric.util.ease.easeInQuint,
 						onChange: view.canvas.renderAll.bind(view.canvas),
-						onComplete: function(){ oldCycleYear.remove(); }
-					}
+						onComplete: function(){ currentImage.remove(); }
+					} // jshint ignore:line
 				);
 			}
 
@@ -599,7 +601,7 @@ function flcViewFactory(fabric, model, imgDir, canvasID, manual) {
 							onChange: view.canvas.renderAll.bind(view.canvas),
 						}
 					);
-					view.cycleYear = image;
+					view.cycleYear.push(image);
 				},
 				{
 					left: platformCenter.x,
