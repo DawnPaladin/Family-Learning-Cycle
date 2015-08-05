@@ -562,56 +562,54 @@ function flcViewFactory(fabric, model, imgDir, canvasID, manual) {
 			}
 		};
 
-		view.cycleYear = [];
+		var fadeDuration = 250;
+		fabric.Image.fromURL(
+			imgDir+'/active-platform.png', // path to image
+			function(image) { 
+				view.canvas.add(image); 
+				image.bringToFront();
+				view.cycleYear = image;
+			},
+			{
+				originX: "center",
+				originY: "center",
+				selectable: false,
+				opacity: 0,
+			}
+		);
 		view.setCycleYear = function(platformIndex) {
 			console.assert((typeof platformIndex === "string"), "This is not a platformIndex:", platformIndex);
-			var fadeDuration = 250;
 
-			while(view.cycleYear.length) {
-				var currentImage = view.cycleYear.pop();
-				currentImage.animate(
+			function hideCycleYear(callback) {
+				view.cycleYear.animate(
 					{ opacity: 0 },
 					{ 
 						duration: fadeDuration,
 						easing: fabric.util.ease.easeInQuint,
 						onChange: view.canvas.renderAll.bind(view.canvas),
-						onComplete: function(){ currentImage.remove(); }
-					} // jshint ignore:line
+						onComplete: callback
+					}
 				);
 			}
-
+			function showCycleYear(coords, callback) {
+				view.cycleYear.set({
+					left: coords.x,
+					top: coords.y + 2,
+				});
+				view.cycleYear.animate({opacity: 1}, {
+					duration: fadeDuration,
+					easing: fabric.util.ease.easeInOutCubic,
+					onChange: view.canvas.renderAll.bind(view.canvas),
+					onComplete: callback
+				});
+			}
 			if (!platformIndex || platformIndex === "none") {
+				hideCycleYear();
 				return;
 			}
 			var platformData = model.platformRegistry[platformIndex];
 			var platformCenter = view.lookupPlatformCenter(platformData.imageObject);
-
-			fabric.Image.fromURL(
-				imgDir+'/active-platform.png', // path to image
-				function(image) { 
-					view.canvas.add(image); 
-					image.sendToBack();
-					image.bringForward(true);
-					image.bringForward(true);
-					image.animate(
-						{ opacity: 1 },
-						{
-							duration: fadeDuration,
-							easing: fabric.util.ease.easeInQuint,
-							onChange: view.canvas.renderAll.bind(view.canvas),
-						}
-					);
-					view.cycleYear.push(image);
-				},
-				{
-					left: platformCenter.x,
-					top: platformCenter.y+2,
-					originX: "center",
-					originY: "center",
-					selectable: false,
-					opacity: 0,
-				}
-			);
+			hideCycleYear(function() { showCycleYear(platformCenter); });
 		};
 
 		function preventLeaving(e) { // from https://groups.google.com/d/msg/fabricjs/DHvNmjJfaYM/KgtR3tfbfkMJ
