@@ -91,3 +91,7 @@ canvas {
   background-image: url('../images/pulsing-down-arrow-outline.gif');
   background-repeat: no-repeat;
 }
+.smallPrint {
+  font-size: .8em;
+  line-height: 1.5em;
+}
