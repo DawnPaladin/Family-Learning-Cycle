@@ -8,6 +8,11 @@
 	tokenList is ambiguous. Don't use it.
 */
 
+function scrollToID(elementID) {
+	var offset = 50;
+	jQuery('html, body').animate({scrollTop:jQuery('#'+elementID).position().top+offset}, 500);
+}
+
 function flcControllerFactory(model, view, story) {
 	var controller = {};
 
@@ -475,6 +480,12 @@ function flcControllerFactory(model, view, story) {
 
 	controller.turnPageForward = function(){
 		var currentPage = story.pages[++story.currentPage];
+		if (story.currentPage === story.pages.length) { // if we're already on the last page
+			var nextToyID = jQuery(this).parents('.flc-toy-wrapper').next().attr('id');
+			scrollToID(nextToyID);
+			--story.currentPage;
+			return;
+		}
 		if (story.currentPage > story.maxProgress) { // if we are turning a page for the first time
 			story.maxProgress = story.currentPage;
 
