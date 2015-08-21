@@ -88,7 +88,7 @@ function flcControllerFactory(model, view, story) {
 		console.assert((typeof tokenIndex === "string"), "This is not a tokenIndex:", tokenIndex);
 		view.eraseTokenImage(model.tokenRegistry[tokenIndex].canvasGroup);
 		model.tokenRegistry[tokenIndex] = { orphaned: true };
-		view.orphanage.setSrc('images/trashcan-plain.png', function(){view.canvas.renderAll();});
+		view.orphanage.setSrc('images/delete-plain.png', function(){view.canvas.renderAll();});
 	};
 	controller.hospitalize = function(tokenIndex) {
 		console.assert((typeof tokenIndex === "string"), "This is not a tokenIndex:", tokenIndex);
@@ -284,9 +284,9 @@ function flcControllerFactory(model, view, story) {
 		var orphanage = view.orphanage;
 		draggedToken.setCoords();
 		if (draggedToken.itemInGroupIntersectsWithObject(orphanage)) {
-			orphanage.setSrc('images/trashcan-hover.png');
+			orphanage.setSrc('images/delete-hover.png');
 		} else {
-			orphanage.setSrc('images/trashcan-plain.png');
+			orphanage.setSrc('images/delete-plain.png');
 		}
 		controller.blankControls();
 	};

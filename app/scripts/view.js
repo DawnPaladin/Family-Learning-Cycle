@@ -208,7 +208,7 @@ function flcViewFactory(fabric, model, imgDir, canvasID, manual) {
 				view.cycleBtn.setSrc(imgDir+'/cycle-btn.png', function(){ view.canvas.renderAll(); });
 			};
 
-			fabric.Image.fromURL(imgDir+'/trashcan-plain.png', function(loadedImage) {
+			fabric.Image.fromURL(imgDir+'/delete-plain.png', function(loadedImage) {
 				view.canvas.add(loadedImage);
 				view.orphanage = loadedImage;
 			}, {
