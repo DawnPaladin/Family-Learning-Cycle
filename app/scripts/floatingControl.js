@@ -53,3 +53,8 @@ jQuery('.colorBox').each(function(){
 	var color = control.val();
 	This.css('background-color', color);
 });
+
+function scrollTo(elementID) {
+	var offset = 50;
+	jQuery('html, body').animate({scrollTop:jQuery('#'+elementID).position().top+offset}, 500);
+}
