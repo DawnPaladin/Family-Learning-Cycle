@@ -23,10 +23,10 @@ function flcStoryFactory(model, view) {
 				{ text: "In <i>Exploration to 1850</i>, our fourth year of chronological history, we explore the New World with Leif Ericsson, Christopher Columbus, and our Founding Fathers. We study the history of America from colonial times to the California gold rush, learn about the courage and faith of many who came to America, and see how U.S. and world history are interrelated.", advance: true },
 				{ text: "<i>1850 to Modern Times</i> rounds out our study of chronological history by studying states and capitals, reciting the Gettysburg Address, solving cryptography puzzles, and baking Vietnamese Apricot Coconut Cake, among other things.", advance: true },
 				{ text: "In 8th grade, Robert returns to <i>Exploring Countries and Cultures</i> to study it in greater depth than was possible in 3rd grade. As a 3rd grader, Robert studied countries by writing a sentence about each one. Now he studies countries by writing reports.", advance: true },
-				{ text: "In 9th grade, Robert exits the Family Learning Cycle and begins high school.", advance: true },
-				{ text: "(Keep advancing Robert through high school.)", advance: true },
-				{ text: "(Keep advancing Robert through high school.)", advance: true },
-				{ text: "(Keep advancing Robert through high school.)", advance: true },
+				{ text: "In 9th grade, Robert exits the Family Learning Cycle and begins high school with <i>Ancient History and Literature</i>. He'll construct a timeline of Biblical and ancient history, analyze <i>The Epic of Gilgamesh</i>, and read all the way through the Old Testament.", advance: true },
+				{ text: "In 10th grade, <i>World History and Literature</i> has Robert studying the history of the world from the fall of Rome to the founding of America. He'll read literature from each period of history he studies, as well as the entire New Testament. He'll study geography, learn to write a research paper, and build character by participating in service projects.", advance: true },
+				{ text: "In 11th grade, <i>U.S. History to 1877</i> will teach Robert about how the United States came to be and how it developed up through the Civil War. He'll develop a consistent Biblical worldview in the areas of theology, philosophy, biology, psychology, ethics, sociology, law, politics, economics, and history.", advance: true },
+				{ text: "In 12th grade, <i>U.S. History 1877 to the Present</i> completes Robert's study of history. By studying economics, public speaking, and spiritual disciplines, Robert prepares his mind and spirit to leave home.", advance: true },
 				{ text: "Robert graduates from high school and is ready to begin a career or leave for college.", advance: true }
 			],
 			Carpenters: [
