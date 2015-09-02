@@ -39,7 +39,7 @@ function toyFactory() {
 		platformPromises.push(flcToy.controller.newPlatform(500, DeclareBase +  0, 'US1', imgDir+'/US1.png'));
 		platformPromises.push(flcToy.controller.newPlatform(725, DeclareBase + 25, 'US2', imgDir+'/US2.png'));
 
-		platformPromises.push(flcToy.controller.newPlatform( 25, DeclareBase + 105, 'college', imgDir+'/college.png'));
+		platformPromises.push(flcToy.controller.newPlatform( 25, DeclareBase + 105, 'college', imgDir+'/graduation.png'));
 		platformPromises.push(flcToy.controller.newPlatform(DiscoverBaseX - 500, DiscoverBaseY, 'hospital', imgDir+'/hospital.png'));
 
 		if (manual) {
