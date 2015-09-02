@@ -121,16 +121,17 @@ function flcViewFactory(fabric, model, imgDir, canvasID, manual) {
 			var tokenPreviewRect = new fabric.Rect({
 				left: 0,
 				top: 20,
-				stroke: "silver",
-				strokeWidth: 5,
+				stroke: "#DEDEDD",
+				strokeWidth: 13,
 				fill: "transparent",
 				width: 225,
 				height: 225,
 				selectable: false,
 			});
-			var tokenPreviewText = new fabric.Text("Preview", {
+			var tokenPreviewText = new fabric.Text("PREVIEW", {
 				fontFamily: "Source Sans Pro",
 				fontSize: 15,
+				fill: "#919191",
 				top: 0,
 				left: 118,
 				originX: "center",
