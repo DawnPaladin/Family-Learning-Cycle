@@ -60,6 +60,8 @@ canvas {
   border: 5px solid silver;
   padding: .5em;
   position: relative;
+}
+#sandbox-toy-wrapper .storyShuttleBox {
   overflow: auto;
 }
 .storyShuttleBox.hidden {
