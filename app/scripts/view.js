@@ -172,40 +172,16 @@ function flcViewFactory(fabric, model, imgDir, canvasID, manual) {
 					textAlign: "left",
 					selectable: false,
 				});
-			var multiOccupancyErrorRect = new fabric.Rect({
-				left: 265,
-				top: foyerHeight + DiscoverHeight + 515,
-				fill: "#f9e9cc",
-				width: 425,
-				height: 75,
-				selectable: false,
-				opacity: 0,
-			});
-			var multiOccupancyErrorText = new fabric.Text(
-				"The idea of the Family Learning Cycle is that all children in the \n"+
-				"Investigate section are studying the same material. Please move \n"+
-				"all tokens in the Investigate section to a single location.",
-				{
-					top: foyerHeight + DiscoverHeight + 525,
-					left: 275,
-					fontFamily: "Source Sans Pro",
-					fontSize: 15,
-					selectable: false,
-					opacity: 0,
-				}
-			);
-			view.canvas.add(tokenPreviewRect, tokenPreviewText, autoPlaceText, multiOccupancyErrorRect, multiOccupancyErrorText);
+			view.canvas.add(tokenPreviewRect, tokenPreviewText, autoPlaceText);
 			view.showOccupancyError = function() {
-				multiOccupancyErrorRect.opacity = 1;
-				multiOccupancyErrorText.opacity = 1;
-				view.cycleBtn.setOptions({hoverCursor: "default"});
-				view.cycleBtn.setSrc(imgDir+'/cycle-err-btn.png', function(){ view.canvas.renderAll(); });
+				jQuery('#sandbox-toy-wrapper .storyText').hide();
+				jQuery('#sandbox-toy-wrapper .occupancyError').css('display', 'inline-block');
+				jQuery('#sandbox-toy-wrapper .storyNextBtn').attr('disabled', true);
 			};
 			view.hideOccupancyError = function() {
-				multiOccupancyErrorRect.opacity = 0;
-				multiOccupancyErrorText.opacity = 0;
-				view.cycleBtn.setOptions({hoverCursor: "pointer"});
-				view.cycleBtn.setSrc(imgDir+'/cycle-btn.png', function(){ view.canvas.renderAll(); });
+				jQuery('#sandbox-toy-wrapper .storyText').show();
+				jQuery('#sandbox-toy-wrapper .occupancyError').css('display', 'none');
+				jQuery('#sandbox-toy-wrapper .storyNextBtn').attr('disabled', false);
 			};
 
 			fabric.Image.fromURL(imgDir+'/delete-plain.png', function(loadedImage) {
@@ -220,20 +196,6 @@ function flcViewFactory(fabric, model, imgDir, canvasID, manual) {
 				lockMovementX: true,
 				lockMovementY: true,
 				name: "orphanage",
-			});
-			fabric.Image.fromURL(imgDir+'/cycle-btn.png', function(loadedImage) {
-				view.canvas.add(loadedImage);
-				view.cycleBtn = loadedImage;
-			}, {
-				selectable: true,
-				left: 400,
-				top: foyerHeight + DiscoverHeight + 350,
-				hoverCursor: "pointer",
-				hasControls: false,
-				hasBorders: false,
-				lockMovementX: true,
-				lockMovementY: true,
-				name: "cycle-btn",
 			});
 		} else { // not manual
 			view.showOccupancyError = function() {

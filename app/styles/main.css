@@ -55,10 +55,12 @@ canvas {
 }
 .storyShuttleBox {
   width: 486px;
+  min-height: 1.5em;
   background-color: white;
   border: 5px solid silver;
   padding: .5em;
   position: relative;
+  overflow: auto;
 }
 .storyShuttleBox.hidden {
    opacity: 0;
@@ -94,4 +96,11 @@ canvas {
 .smallPrint {
   font-size: .8em;
   line-height: 1.5em;
+}
+.occupancyError {
+  display: none;
+  vertical-align: top;
+}
+.warning {
+  color: #A11C3F;
 }

@@ -50,6 +50,7 @@ function toyFactory() {
 			if (manual) {
 				options.controls.find('input[type=radio]'         ).on('change', function() { flcToy.controller.tokenPreview.changeHandler(options); });
 				options.controls.find('input[type!=radio], select').on('input',  function() { flcToy.controller.tokenPreview.changeHandler(options); });
+				options.nextBtn.click(flcToy.controller.advanceCycle);
 			} else {
 				options.nextBtn.click(flcToy.controller.turnPageForward);
 				options.prevBtn.click(flcToy.controller.turnPageBackward);
@@ -86,6 +87,7 @@ var manualOptions = {
 	canvas: "sandbox-toy",
 	story: "manual",
 	controls: jQuery('#sandbox-toy-wrapper .toyControls'),
+	nextBtn: jQuery('#sandbox-toy-wrapper .storyNextBtn'),
 	nameField: jQuery('#nameField'),
 	gradeSelect: jQuery('#gradeSelect'),
 	heightSlider: jQuery('#heightSlider'),

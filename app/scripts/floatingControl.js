@@ -45,6 +45,7 @@ function floatControl($control, $aor, storyName) { // Make a control float over 
 jQuery(document).ready(function(){
 	floatControl(jQuery('#Robert-toy-wrapper .storyShuttleBox'), jQuery('#Robert-toy-wrapper .canvas-container'), "Robert");
 	floatControl(jQuery('#Carpenter-toy-wrapper .storyShuttleBox'), jQuery('#Carpenter-toy-wrapper .canvas-container'), "Carpenters");
+	floatControl(jQuery('#sandbox-toy-wrapper .storyShuttleBox'), jQuery('#sandbox-toy-wrapper .canvas-container'), "Sandbox");
 });
 
 jQuery('.colorBox').each(function(){
