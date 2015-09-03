@@ -1,3 +1,5 @@
+/* globals imgDir */
+
 /* Token taxonomy:
 	model.tokenRegistry: Collection of tokenData stored in model.js
 	tokenData: Found in model.tokenRegistry. Stores a tokenImage in tokenData.canvasGroup.
@@ -93,7 +95,7 @@ function flcControllerFactory(model, view, story) {
 		console.assert((typeof tokenIndex === "string"), "This is not a tokenIndex:", tokenIndex);
 		view.eraseTokenImage(model.tokenRegistry[tokenIndex].canvasGroup);
 		model.tokenRegistry[tokenIndex] = { orphaned: true };
-		view.orphanage.setSrc('images/delete-plain.png', function(){view.canvas.renderAll();});
+		view.orphanage.setSrc(imgDir+'/delete-plain.png', function(){view.canvas.renderAll();});
 	};
 	controller.hospitalize = function(tokenIndex) {
 		console.assert((typeof tokenIndex === "string"), "This is not a tokenIndex:", tokenIndex);
@@ -289,9 +291,9 @@ function flcControllerFactory(model, view, story) {
 		var orphanage = view.orphanage;
 		draggedToken.setCoords();
 		if (draggedToken.itemInGroupIntersectsWithObject(orphanage)) {
-			orphanage.setSrc('images/delete-hover.png');
+			orphanage.setSrc(imgDir+'/delete-hover.png');
 		} else {
-			orphanage.setSrc('images/delete-plain.png');
+			orphanage.setSrc(imgDir+'/delete-plain.png');
 		}
 		controller.blankControls();
 	};

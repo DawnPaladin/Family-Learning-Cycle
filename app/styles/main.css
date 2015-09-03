@@ -1,8 +1,10 @@
-.flcPage {
+#flcPage {
   width: 972px;
   font-family: "Source Sans Pro", sans-serif;
   margin: auto;
   font-size: 1.15em;
+}
+#flcPage * {
   line-height: 1.5em;
 }
 .img-right {
@@ -51,7 +53,6 @@ canvas {
 .storyShuttleBox.hover {
   position: fixed;
   bottom: 15px;
-  margin-left: -.75em;
 }
 .storyShuttleBox {
   width: 486px;
@@ -71,11 +72,6 @@ canvas {
 .storyShuttleBox.active {
   border: 5px solid #3498db;
 }
-@media (max-width: 1020px) {
-  .storyShuttleBox.hover {
-    margin-left: 0;
-  }
-}
 @media (max-width: 525px) {
   .storyShuttleBox.hover {
     width: 100%;
@@ -88,7 +84,7 @@ canvas {
 .scrollDownArrow {
   display: none;
   width: 50px;
-  height: 110%;
+  height: 115%;
   position: absolute;
   left: 103%;
   top: 0px;
@@ -105,4 +101,12 @@ canvas {
 }
 .warning {
   color: #A11C3F;
+}
+
+/* reset styles applied by Portal */
+#flcPage button {
+  border-radius: 0;
+}
+#flcPage .clearfix p {
+  line-height: 1.5;
 }
