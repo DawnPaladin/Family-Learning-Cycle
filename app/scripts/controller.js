@@ -154,11 +154,6 @@ function flcControllerFactory(model, view, story) {
 	};
 	view.canvas.on('object:modified', controller.dropToken);
 	view.canvas.on('mouse:down', function(options){
-		if (typeof options.target === 'object' && options.target.name === 'cycle-btn') {
-			if (model.checkForFLCMultiOccupancy() === false) {
-				controller.advanceCycle();
-			}
-		}
 		if (typeof options.target === 'object' && options.target.name === 'auto-place-btn') {
 			var autoPlaceRoster = model.platformRegistry.staging.residents.list();
 			controller.autoPlaceTokens(autoPlaceRoster);
@@ -542,6 +537,10 @@ function flcControllerFactory(model, view, story) {
 		model.verifyTokenData();
 	};
 	controller.turnPageBackward = function(){
+		if (story.currentPage === 0) {
+			console.warn("Tried to return past the story's beginning");
+			return false;
+		}
 		var oldPage = story.pages[story.currentPage];
 		var currentPage = story.pages[--story.currentPage];
 		story.box.html(currentPage.text);
@@ -561,6 +560,11 @@ function flcControllerFactory(model, view, story) {
 		}
 		
 		model.verifyTokenData();
+	};
+	controller.manualAdvanceHandler = function() {
+		if (model.checkForFLCMultiOccupancy() === false) {
+			controller.advanceCycle();
+		}
 	};
 
 	function christmasGhosts(tokenIndex) {

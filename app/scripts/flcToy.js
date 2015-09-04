@@ -50,7 +50,7 @@ function toyFactory() {
 			if (manual) {
 				options.controls.find('input[type=radio]'         ).on('change', function() { flcToy.controller.tokenPreview.changeHandler(options); });
 				options.controls.find('input[type!=radio], select').on('input',  function() { flcToy.controller.tokenPreview.changeHandler(options); });
-				options.nextBtn.click(flcToy.controller.advanceCycle);
+				options.nextBtn.click(flcToy.controller.manualAdvanceHandler);
 			} else {
 				options.nextBtn.click(flcToy.controller.turnPageForward);
 				options.prevBtn.click(flcToy.controller.turnPageBackward);

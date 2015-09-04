@@ -177,12 +177,12 @@ function flcViewFactory(fabric, model, imgDir, canvasID, manual) {
 			view.showOccupancyError = function() {
 				jQuery('#sandbox-toy-wrapper .storyText').hide();
 				jQuery('#sandbox-toy-wrapper .occupancyError').css('display', 'inline-block');
-				jQuery('#sandbox-toy-wrapper .storyNextBtn').attr('disabled', true);
+				jQuery('#sandbox-toy-wrapper .storyNextBtn').attr('src', 'images/next-btn-disabled.png').css('cursor', 'default');
 			};
 			view.hideOccupancyError = function() {
 				jQuery('#sandbox-toy-wrapper .storyText').show();
 				jQuery('#sandbox-toy-wrapper .occupancyError').css('display', 'none');
-				jQuery('#sandbox-toy-wrapper .storyNextBtn').attr('disabled', false);
+				jQuery('#sandbox-toy-wrapper .storyNextBtn').attr('src', 'images/next-btn.png').css('cursor', 'pointer');
 			};
 
 			fabric.Image.fromURL(imgDir+'/delete-plain.png', function(loadedImage) {

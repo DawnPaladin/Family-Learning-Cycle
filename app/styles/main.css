@@ -27,6 +27,9 @@ select, button {
 .toyControl {
   margin: 0 0.5em;
 }
+.storyNextBtn, .storyPrevBtn {
+  cursor: pointer;
+}
 #nameField {
   width: 8em;
 }
