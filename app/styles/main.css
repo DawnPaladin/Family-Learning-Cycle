@@ -38,10 +38,16 @@ select, button {
 }
 .colorBox {
   display: inline-block;
-  padding: .1em .25em;
+  text-align: center;
+  line-height: 30px !important;
+  height: 30px;
+  width: 30px;
+  box-sizing: border-box;
+  vertical-align: bottom;
 }
 .colorBox > input {
   display: inline-block;
+  height: 25px;
 }
 
 .flc-toy-wrapper {
