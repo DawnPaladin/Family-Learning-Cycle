@@ -83,6 +83,11 @@ canvas {
 }
 .storyControls {
   float: right;
+  margin: .25em 0 .1em .25em;
+  height: 27px;
+}
+.clearBoth {
+  clear: both;
 }
 .scrollDownArrow {
   display: none;
