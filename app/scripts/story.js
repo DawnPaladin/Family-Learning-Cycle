@@ -23,15 +23,15 @@ function flcStoryFactory(model, view) {
 				{ text: "In <i>Exploration to 1850</i>, our fourth year of chronological history, we explore the New World with Leif Ericsson, Christopher Columbus, and our Founding Fathers. We study the history of America from colonial times to the California gold rush, learn about the courage and faith of many who came to America, and see how U.S. and world history are interrelated.", advance: true },
 				{ text: "<i>1850 to Modern Times</i> rounds out our study of chronological history by studying states and capitals, reciting the Gettysburg Address, solving cryptography puzzles, and baking Vietnamese Apricot Coconut Cake, among other things.", advance: true },
 				{ text: "In 8th grade, Robert returns to <i>Exploring Countries and Cultures</i> to study it in greater depth than was possible in 3rd grade. As a 3rd grader, Robert studied countries by writing a sentence about each one. Now he studies countries by writing reports.", advance: true },
-				{ text: "In 9th grade, Robert exits the Family Learning Cycle and begins high school with <i>Ancient History and Literature</i>. He'll construct a timeline of Biblical and ancient history, analyze <i>The Epic of Gilgamesh</i>, and read all the way through the Old Testament.", advance: true },
+				{ text: "In 9th grade, Robert exits the Family Learning Cycle and begins high school with <i>Ancient History and Literature</i>. He'll construct a timeline of Biblical and ancient history, analyze <i>The Epic of Gilgamesh</i>, and read the entire Old Testament.", advance: true },
 				{ text: "In 10th grade, <i>World History and Literature</i> has Robert studying the history of the world from the fall of Rome to the founding of America. He'll read literature from each period of history he studies, as well as the entire New Testament. He'll study geography, learn to write a research paper, and build character by participating in service projects.", advance: true },
-				{ text: "In 11th grade, <i>U.S. History to 1877</i> will teach Robert about how the United States came to be and how it developed up through the Civil War. He'll develop a consistent Biblical worldview in the areas of theology, philosophy, biology, psychology, ethics, sociology, law, politics, economics, and history.", advance: true },
+				{ text: "In 11th grade, <i>U.S. History to 1877</i> will teach Robert about how the United States came to be and how it developed through the Civil War. He'll develop a consistent Biblical worldview in the areas of theology, philosophy, biology, psychology, ethics, sociology, law, politics, economics, and history.", advance: true },
 				{ text: "In 12th grade, <i>U.S. History 1877 to the Present</i> completes Robert's study of history. By studying economics, public speaking, and spiritual disciplines, Robert prepares his mind and spirit to leave home.", advance: true },
 				{ text: "Robert graduates from high school and is ready to begin a career or leave for college.", advance: true }
 			],
 			Carpenters: [
 				{
-					text: "Daniel is starting preschool at the same time Molly is transferring in from 2nd grade in a public school.",
+					text: "Daniel is starting preschool at the same time Molly is transferring from 2nd grade in a public school.",
 					tokens: [
 						{ //format: string name, string gradeIndex, int height (20-70), string color
 							name: "Daniel",
@@ -59,7 +59,7 @@ function flcStoryFactory(model, view) {
 					],
 					triggerFunc: function() { view.bridgeOut.hide(); }
 				}, {
-					text: "<i>Adventures in US History</i> is only used for students who don't have older siblings in the Family Learning Cycle. When Daniel finishes first grade, instead of doing <i>Adventures</i>, he joins Molly in the Family Learning Cycle, where he'll get similar content at a higher level. Mrs. Carpenter will teach <i>Exploration to 1850</i> to both children, giving each child material appropriate for their age level as spelled out in the Teacher's Manual.",
+					text: "<i>Adventures in US History</i> is only used for students who don't have older siblings in the Family Learning Cycle. When Daniel finishes first grade, instead of doing <i>Adventures</i>, he joins Molly in the Family Learning Cycle, where he'll get similar content at a higher level. Mrs. Carpenter will teach <i>Exploration to 1850</i> to both children, giving each child material appropriate for his or her age level as spelled out in the Teacher's Manual.",
 					advance: true,
 					tokens: [
 						{
@@ -77,7 +77,7 @@ function flcStoryFactory(model, view) {
 						}, 250);
 					}
 				}, {
-					text: "As each child finishes the Discover section (skipping <i>Adventures in US History</i>), they join the rest of the family in the Family Learning Cycle, whatever year they happen to be on.",
+					text: "As each child finishes the Discover section (skipping <i>Adventures in US History</i>), he joins the rest of the family in the Family Learning Cycle at whatever year they happen to be on.",
 					advance: true,
 					triggerFunc: function() { view.bridgeOut.hide(250); }
 				}, {
@@ -87,13 +87,13 @@ function flcStoryFactory(model, view) {
 					text: "As each child finishes the Discover section (skipping <i>Adventures in US History</i>), they join the rest of the family in the Family Learning Cycle, whatever year they happen to be on.",
 					advance: true
 				}, {
-					text: "When Molly hits 9th grade, she's finished the cycle and moves on to Declare. Her younger siblings continue the cycle without her.",
+					text: "When Molly begins 9th grade, she's finished the cycle and moves on to Declare. Her younger siblings continue the cycle without her.",
 					advance: true
 				}, {
-					text: "When Molly hits 9th grade, she's finished the cycle and moves on to Declare. Her younger siblings continue the cycle without her.",
+					text: "When Molly begins 9th grade, she's finished the cycle and moves on to Declare. Her younger siblings continue the cycle without her.",
 					advance: true
 				}, {
-					text: "When Daniel joined the Family Learning Cycle in 2nd grade, he did <i>Exploration to 1850</i> because that's what Molly was on at the time. Now he's doing <i>Exploration to 1850</i> again in 7th grade, learning the material in far more depth, solidifying his knowledge.",
+					text: "When Daniel joined the Family Learning Cycle in 2nd grade, he did <i>Exploration to 1850</i> because that's what Molly was studying at the time. Now he's doing <i>Exploration to 1850</i> again in 7th grade, learning the material in far more depth, solidifying his knowledge.",
 					advance: true
 				}, {
 					text: "As with <i>Exploration to 1850</i>, Daniel has studied <i>1850 to Modern Times</i> before, but he's now old enough to grasp it on a level he couldn't in 3rd grade. The Teacher's Manual has additional reading, exercises, and projects that an 8th grader is able to tackle on his own.",
