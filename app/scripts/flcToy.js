@@ -48,7 +48,7 @@ function toyFactory() {
 
 		jQuery.when.apply(jQuery, platformPromises).then(function(){ // when all promises in platformPromises are fulfilled (see http://stackoverflow.com/a/5627301/1805453)
 			if (manual) {
-				options.controls.find('input[type=radio]'         ).on('change', function() { flcToy.controller.tokenPreview.changeHandler(options); });
+				options.controls.find('input[type=radio], select' ).on('change', function() { flcToy.controller.tokenPreview.changeHandler(options); });
 				options.controls.find('input[type!=radio], select').on('input',  function() { flcToy.controller.tokenPreview.changeHandler(options); });
 				options.nextBtn.click(flcToy.controller.manualAdvanceHandler);
 			} else {
