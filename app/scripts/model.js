@@ -196,7 +196,7 @@ function flcModelFactory() {
 		return formation;
 	};
 	model.lookupPlatformByGradeIndex = function(gradeIndex) {
-		gradeIndex = Number(gradeIndex);
+		gradeIndex = Number(gradeIndex); // 0-indexed contents of Grade menu. 0 = Preschool, 4 = 2nd grade, 11 = 8th grade
 		var platformIndex = "platform";
 		if (gradeIndex < 4) { // Discover
 			platformIndex += gradeIndex; // place according to grade
@@ -206,9 +206,15 @@ function flcModelFactory() {
 			} else {
 				platformIndex += gradeIndex; // place according to grade
 			}
-		} else if (gradeIndex > 4 && gradeIndex < 10){ // Investigate
+		} else if (gradeIndex === 5) {
+			if (model.platformRegistry.ADV.disabled) {
+				platformIndex = model.cycleYear.platformIndex; // place in FLC
+			} else {
+				platformIndex += 4; // 3rd graders with no older siblings take Adventures
+			}
+		} else if (gradeIndex > 5 && gradeIndex < 11){ // Investigate
 			platformIndex = model.cycleYear.platformIndex; // place in FLC
-		} else if (gradeIndex >= 10) { // Declare
+		} else if (gradeIndex >= 11) { // Declare
 			platformIndex += (gradeIndex - 1); // as of ECC, gradeIndex and tokenIndex no longer match up, because if you're an only child you do ECC twice
 		} else {
 			console.error("Invalid gradeIndex:", gradeIndex);
