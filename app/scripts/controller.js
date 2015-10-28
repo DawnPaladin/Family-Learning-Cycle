@@ -274,9 +274,9 @@ function flcControllerFactory(model, view, story) {
 	};
 
 	controller.blankControls = function() {
-		document.getElementById('nameField').value = "";
-		document.getElementById('gradeSelect').value = "0";
-		document.getElementById('heightSlider').value = 45;
+		document.getElementById('name-field').value = "";
+		document.getElementById('grade-select').value = "0";
+		document.getElementById('height-slider').value = 45;
 		document.querySelector('input[name = "chooseColor"]:checked').checked = false;
 		document.querySelector('input[value = "#e77c09"]').checked = true;
 	};

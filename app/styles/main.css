@@ -1,10 +1,10 @@
-#flcPage {
+#flc-page {
   width: 972px;
   font-family: "Source Sans Pro", sans-serif;
   margin: auto;
   font-size: 1.15em;
 }
-#flcPage * {
+#flc-page * {
   line-height: 1.5em;
 }
 .img-right {
@@ -14,7 +14,7 @@
 .clearfix {
   overflow: auto;
 }
-.toyControls {
+.toy-controls {
   margin-top: 1em;
   margin-bottom: 1.5em;
   font-family: "Source Sans Pro", sans-serif;
@@ -24,19 +24,19 @@ select, button {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 16px;
 }
-.toyControl {
+.toy-control {
   margin: 0 0.5em;
 }
-.storyNextBtn, .storyPrevBtn {
+.story-next-btn, .story-prev-btn {
   cursor: pointer;
 }
-#nameField {
+#name-field {
   width: 8em;
 }
-#heightSlider {
+#height-slider {
    width: 8em;
 }
-.colorBox {
+.color-box {
   display: inline-block;
   text-align: center;
   line-height: 30px !important;
@@ -45,7 +45,7 @@ select, button {
   box-sizing: border-box;
   vertical-align: bottom;
 }
-.colorBox > input {
+.color-box > input {
   display: inline-block;
   height: 25px;
 }
@@ -59,11 +59,11 @@ canvas {
   -webkit-tap-highlight-color:rgba(0,0,0,0); /* prevent canvas from being highlighted on taps */
   margin-bottom: 20px;
 }
-.storyShuttleBox.hover {
+.story-shuttle-box.hover {
   position: fixed;
   bottom: 15px;
 }
-.storyShuttleBox {
+.story-shuttle-box {
   width: 486px;
   min-height: 1.5em;
   background-color: white;
@@ -71,31 +71,31 @@ canvas {
   padding: .5em;
   position: relative;
 }
-#sandbox-toy-wrapper .storyShuttleBox {
+#sandbox-toy-wrapper .story-shuttle-box {
   overflow: auto;
 }
-.storyShuttleBox.hidden {
+.story-shuttle-box.hidden {
    opacity: 0;
    z-index: -1;
 }
-.storyShuttleBox.active {
+.story-shuttle-box.active {
   border: 5px solid #3498db;
 }
 @media (max-width: 525px) {
-  .storyShuttleBox.hover {
+  .story-shuttle-box.hover {
     width: 100%;
     box-sizing: border-box;
   }
 }
-.storyControls {
+.story-controls {
   float: right;
   margin: .25em 0 .1em .25em;
   height: 27px;
 }
-.clearBoth {
+.clear-both {
   clear: both;
 }
-.scrollDownArrow {
+.scroll-down-arrow {
   display: none;
   width: 50px;
   height: 115%;
@@ -105,11 +105,11 @@ canvas {
   background-image: url('../images/pulsing-down-arrow-outline.gif');
   background-repeat: no-repeat;
 }
-.smallPrint {
+.small-print {
   font-size: .8em;
   line-height: 1.5em;
 }
-.occupancyError {
+.occupancy-error {
   display: none;
   vertical-align: top;
 }
@@ -118,9 +118,9 @@ canvas {
 }
 
 /* reset styles applied by Portal */
-#flcPage button {
+#flc-page button {
   border-radius: 0;
 }
-#flcPage .clearfix p {
+#flc-page .clearfix p {
   line-height: 1.5;
 }

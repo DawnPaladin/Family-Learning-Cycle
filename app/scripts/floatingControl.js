@@ -25,30 +25,30 @@ function floatControl($control, $aor, storyName) { // Make a control float over 
 
 	$control.each(function(){ // There are two copies of the story box at any given time, one hidden.
 		jQuery(this).on('HitFirstPage.'+storyName, function(event) {
-			jQuery(this).find('.storyPrevBtn').attr('src', 'images/prev-btn-disabled.png');
+			jQuery(this).find('.story-prev-btn').attr('src', 'images/prev-btn-disabled.png');
 		});
 		jQuery(this).on('LeaveFirstPage.'+storyName, function(event) {
-			jQuery(this).find('.storyPrevBtn').attr('src', 'images/prev-btn.png');
+			jQuery(this).find('.story-prev-btn').attr('src', 'images/prev-btn.png');
 		});
 		jQuery(this).on('HitLastPage.'+storyName, function(event) {
-			jQuery(this).find('.storyNextBtn').attr('src', 'images/next-scrolldown-btn.png').attr('alt', "Done (scroll down)");
-			jQuery(this).find('.scrollDownArrow').show();
+			jQuery(this).find('.story-next-btn').attr('src', 'images/next-scrolldown-btn.png').attr('alt', "Done (scroll down)");
+			jQuery(this).find('.scroll-down-arrow').show();
 			jQuery(this).removeClass('active');
 		});
 		jQuery(this).on('LeaveLastPage.'+storyName, function(event) {
-			jQuery(this).find('.storyNextBtn').attr('src', 'images/next-btn.png').attr('alt', "Next");
-			jQuery(this).find('.scrollDownArrow').hide();
+			jQuery(this).find('.story-next-btn').attr('src', 'images/next-btn.png').attr('alt', "Next");
+			jQuery(this).find('.scroll-down-arrow').hide();
 			jQuery(this).addClass('active');
 		});
 	});
 }
 jQuery(document).ready(function(){
-	floatControl(jQuery('#Robert-toy-wrapper .storyShuttleBox'), jQuery('#Robert-toy-wrapper .canvas-container'), "Robert");
-	floatControl(jQuery('#Carpenter-toy-wrapper .storyShuttleBox'), jQuery('#Carpenter-toy-wrapper .canvas-container'), "Carpenters");
-	floatControl(jQuery('#sandbox-toy-wrapper .storyShuttleBox'), jQuery('#sandbox-toy-wrapper .canvas-container'), "Sandbox");
+	floatControl(jQuery('#Robert-toy-wrapper .story-shuttle-box'), jQuery('#Robert-toy-wrapper .canvas-container'), "Robert");
+	floatControl(jQuery('#Carpenter-toy-wrapper .story-shuttle-box'), jQuery('#Carpenter-toy-wrapper .canvas-container'), "Carpenters");
+	floatControl(jQuery('#sandbox-toy-wrapper .story-shuttle-box'), jQuery('#sandbox-toy-wrapper .canvas-container'), "Sandbox");
 });
 
-jQuery('.colorBox').each(function(){
+jQuery('.color-box').each(function(){
 	var This = jQuery(this);
 	var control = This.find('input');
 	var color = control.val();

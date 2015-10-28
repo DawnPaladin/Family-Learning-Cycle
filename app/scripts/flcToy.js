@@ -70,27 +70,27 @@ function toyFactory() {
 var RobertOptions = {
 	canvas: "Robert-toy",
 	story: "Robert",
-	nextBtn: jQuery('#Robert-toy-wrapper .storyNextBtn'),
-	prevBtn: jQuery('#Robert-toy-wrapper .storyPrevBtn'),
-	textField: jQuery('#Robert-toy-wrapper .storyText'),
+	nextBtn: jQuery('#Robert-toy-wrapper .story-next-btn'),
+	prevBtn: jQuery('#Robert-toy-wrapper .story-prev-btn'),
+	textField: jQuery('#Robert-toy-wrapper .story-text'),
 };
 
 var CarpenterOptions = {
 	canvas: "Carpenter-toy",
 	story: "Carpenters",
-	nextBtn: jQuery('#Carpenter-toy-wrapper .storyNextBtn'),
-	prevBtn: jQuery('#Carpenter-toy-wrapper .storyPrevBtn'),
-	textField: jQuery('#Carpenter-toy-wrapper .storyText'),
+	nextBtn: jQuery('#Carpenter-toy-wrapper .story-next-btn'),
+	prevBtn: jQuery('#Carpenter-toy-wrapper .story-prev-btn'),
+	textField: jQuery('#Carpenter-toy-wrapper .story-text'),
 };
 
 var manualOptions = {
 	canvas: "sandbox-toy",
 	story: "manual",
-	controls: jQuery('#sandbox-toy-wrapper .toyControls'),
-	nextBtn: jQuery('#sandbox-toy-wrapper .storyNextBtn'),
-	nameField: jQuery('#nameField'),
-	gradeSelect: jQuery('#gradeSelect'),
-	heightSlider: jQuery('#heightSlider'),
+	controls: jQuery('#sandbox-toy-wrapper .toy-controls'),
+	nextBtn: jQuery('#sandbox-toy-wrapper .story-next-btn'),
+	nameField: jQuery('#name-field'),
+	gradeSelect: jQuery('#grade-select'),
+	heightSlider: jQuery('#height-slider'),
 	colorBoxes: "chooseColor",
 };
 
