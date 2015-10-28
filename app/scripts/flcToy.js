@@ -1,7 +1,7 @@
 /* jshint latedef: false */
 /* globals flcModelFactory, flcViewFactory, flcControllerFactory, flcStoryFactory */
 
-var imgDir = 'images';
+var imgDir = '/pages/family-learning-cycle/images';
 
 function toyFactory() {
 

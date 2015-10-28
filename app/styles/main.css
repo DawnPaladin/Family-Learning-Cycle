@@ -7,6 +7,9 @@
 #flc-page * {
   line-height: 1.5em;
 }
+#flcPage > h1:first-child {
+  text-align: center;
+}
 .img-right {
   float: right;
   margin: 0 1em;

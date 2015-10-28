@@ -173,8 +173,8 @@ module.exports = function (grunt) {
       dist: {
         files: {
           src: [
-            '<%= config.dist %>/scripts/{,*/}*.js',
-            '<%= config.dist %>/styles/{,*/}*.css',
+            //'<%= config.dist %>/scripts/{,*/}*.js',
+            //'<%= config.dist %>/styles/{,*/}*.css',
             //'<%= config.dist %>/images/{,*/}*.*', // don't rename images, since they need to be referenced by JavaScript
             '<%= config.dist %>/styles/fonts/{,*/}*.*',
             '<%= config.dist %>/*.{ico,png}'
