@@ -81,10 +81,10 @@ function flcStoryFactory(model, view) {
 					advance: true,
 					triggerFunc: function() { view.bridgeOut.hide(250); }
 				}, {
-					text: "As each child finishes the Discover section (skipping <i>Adventures in US History</i>), they join the rest of the family in the Family Learning Cycle, whatever year they happen to be on.",
+					text: "As each child finishes the Discover section (skipping <i>Adventures in US History</i>), he joins the rest of the family in the Family Learning Cycle at whatever year they happen to be on.",
 					advance: true
 				}, {
-					text: "As each child finishes the Discover section (skipping <i>Adventures in US History</i>), they join the rest of the family in the Family Learning Cycle, whatever year they happen to be on.",
+					text: "As each child finishes the Discover section (skipping <i>Adventures in US History</i>), he joins the rest of the family in the Family Learning Cycle at whatever year they happen to be on.",
 					advance: true
 				}, {
 					text: "When Molly begins 9th grade, she's finished the cycle and moves on to Declare. Her younger siblings continue the cycle without her.",
