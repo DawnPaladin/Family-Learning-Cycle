@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/pages/family-learning-cycle/styles/main.css">
+<link rel="stylesheet" href="/app/styles/main.css">
 
 <div id="flc-page">
    <h1><center>The Family Learning Cycle</center></h1>
@@ -17,7 +17,7 @@
    <h3>Here's how our curriculum works:</h3>
 
    <div class="clearfix">
-		<img class="img-right" src="/pages/family-learning-cycle/images/Discover_covers.png" alt="Discover for Preschool-3rd Grade" usemap="DiscoverMap">
+		<img class="img-right" src="/images/Discover_covers.png" alt="Discover for Preschool-3rd Grade" usemap="DiscoverMap">
 		<map name="DiscoverMap">
 			<area coords=41,24,99,110 href="/products/3/Preschool-for-2s-3s-All-Aboard-the-Animal-Train/">
 			<area coords=187,24,244,110 href="/products/5/Kindergarten-God-s-Creation-from-A-to-Z/">
@@ -167,6 +167,15 @@
    </div>
 </div>
 
+<script src="/lib/jquery-1.11.1.min.js"></script>
+<script src="/lib/fabric.js"></script>
+<script src="/app/scripts/model.js"></script>
+<script src="/app/scripts/view.js"></script>
+<script src="/app/scripts/controller.js"></script>
+<script src="/app/scripts/story.js"></script>
+<script src="/app/scripts/flcToy.js"></script>
+<script src="/app/scripts/floatingControl.js"></script>
+
 <script>
 function floatControl($control, $aor, storyName) { // Make a control float over the page, but only when a particular element (the Area of Responsibility) is onscreen
    var $placeholder = $control.filter('.placeholder');
@@ -213,8 +222,11 @@ function floatControl($control, $aor, storyName) { // Make a control float over 
    });
 }
 jQuery(document).ready(function(){
+   console.log(jQuery('#Robert-toy-wrapper .story-shuttle-box'), jQuery('#Robert-toy-wrapper .canvas-container'), "Robert")
    floatControl(jQuery('#Robert-toy-wrapper .story-shuttle-box'), jQuery('#Robert-toy-wrapper .canvas-container'), "Robert");
+   console.log(jQuery('#Carpenter-toy-wrapper .story-shuttle-box'), jQuery('#Carpenter-toy-wrapper .canvas-container'), "Carpenters");
    floatControl(jQuery('#Carpenter-toy-wrapper .story-shuttle-box'), jQuery('#Carpenter-toy-wrapper .canvas-container'), "Carpenters");
+   console.log(jQuery('#sandbox-toy-wrapper .story-shuttle-box'), jQuery('#sandbox-toy-wrapper .canvas-container'), "Sandbox");
    floatControl(jQuery('#sandbox-toy-wrapper .story-shuttle-box'), jQuery('#sandbox-toy-wrapper .canvas-container'), "Sandbox");
 });
 
@@ -227,5 +239,3 @@ jQuery('.color-box').each(function(){
 
 </script>
 
-<script src="/inc/js/fabric.min.js"></script>
-<script src="/inc/js/flcToy.js"></script>
