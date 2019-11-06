@@ -1,7 +1,7 @@
 /* jshint latedef: false */
 /* globals flcModelFactory, flcViewFactory, flcControllerFactory, flcStoryFactory */
 
-var imgDir = '/app/images';
+var imgDir = 'app/images';
 
 function toyFactory() {
 
