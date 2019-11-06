@@ -1,8 +1,0 @@
-{
-  "name": "flc-toy",
-  "private": true,
-  "dependencies": {
-    "jquery": "~1.11.1",
-    "fabric": "~1.5.0"
-  }
-}
