@@ -25,18 +25,20 @@ function floatControl($control, $aor, storyName) { // Make a control float over 
 
 	$control.each(function(){ // There are two copies of the story box at any given time, one hidden.
 		jQuery(this).on('HitFirstPage.'+storyName, function(event) {
-			jQuery(this).find('.story-prev-btn').attr('src', 'images/prev-btn-disabled.png');
+			jQuery(this).find('.story-prev-btn').attr('disabled', true);
+			jQuery(this).find('.story-prev-btn img').attr('src', 'images/prev-btn-disabled.png');
 		});
 		jQuery(this).on('LeaveFirstPage.'+storyName, function(event) {
-			jQuery(this).find('.story-prev-btn').attr('src', 'images/prev-btn.png');
+			jQuery(this).find('.story-prev-btn').attr('disabled', false);
+			jQuery(this).find('.story-prev-btn img').attr('src', 'images/prev-btn.png');
 		});
 		jQuery(this).on('HitLastPage.'+storyName, function(event) {
-			jQuery(this).find('.story-next-btn').attr('src', 'images/next-scrolldown-btn.png').attr('alt', "Done (scroll down)");
+			jQuery(this).find('.story-next-btn img').attr('src', 'images/next-scrolldown-btn.png').attr('alt', "Done (scroll down)");
 			jQuery(this).find('.scroll-down-arrow').show();
 			jQuery(this).removeClass('active');
 		});
 		jQuery(this).on('LeaveLastPage.'+storyName, function(event) {
-			jQuery(this).find('.story-next-btn').attr('src', 'images/next-btn.png').attr('alt', "Next");
+			jQuery(this).find('.story-next-btn img').attr('src', 'images/next-btn.png').attr('alt', "Next");
 			jQuery(this).find('.scroll-down-arrow').hide();
 			jQuery(this).addClass('active');
 		});

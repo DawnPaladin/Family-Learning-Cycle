@@ -27,8 +27,15 @@ select, button {
 .toy-control {
   margin: 0 0.5em;
 }
-.story-next-btn, .story-prev-btn {
+.button-looks-like-link {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
   cursor: pointer;
+}
+.button-looks-like-link[disabled=true] {
+  cursor: default;
 }
 #name-field {
   width: 8em;
@@ -65,6 +72,8 @@ canvas {
 }
 .story-shuttle-box {
   width: 486px;
+  height: auto;
+  display: table;
   min-height: 1.5em;
   background-color: white;
   border: 5px solid silver;
